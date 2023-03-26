@@ -69,7 +69,22 @@ public class RaindropRenderPass : ScriptableRenderPass
     }
     #endregion
 
+    // 渲染函数
+    #region 渲染
+    void Render(CommandBuffer cmd, ref RenderingData renderingData)
+    {
+        ref var cameraData = ref renderingData.cameraData;      // 获取摄像机属性
+        var camera = cameraData.camera;                         // 传入摄像机
+        var source = currentTarget;                             // 获取渲染图片
+        int destination = TempTargetId;                         // 渲染结果图片
 
+        raindropMat.SetFloat("_Size", raindrop.size.value);   // 获取volume component的颜色
+        cmd.SetGlobalTexture(MainTexId, source);                // 获取当前摄像机渲染的图片
+        cmd.GetTemporaryRT(destination, cameraData.camera.scaledPixelWidth, cameraData.camera.scaledPixelHeight, 0, FilterMode.Trilinear, RenderTextureFormat.Default);
+        cmd.Blit(source, destination);                          // 设置后处理
+        cmd.Blit(destination, source, raindropMat, 0);    // 传入颜色校正
+    }
+    #endregion
 
     // 执行函数
     #region 执行
@@ -104,22 +119,7 @@ public class RaindropRenderPass : ScriptableRenderPass
     }
     #endregion
 
-    // 渲染函数
-    #region 渲染
-    void Render(CommandBuffer cmd, ref RenderingData renderingData)
-    {
-        ref var cameraData = ref renderingData.cameraData;      // 获取摄像机属性
-        var camera = cameraData.camera;                         // 传入摄像机
-        var source = currentTarget;                             // 获取渲染图片
-        int destination = TempTargetId;                         // 渲染结果图片
 
-        raindropMat.SetFloat("_Size", raindrop.size.value);   // 获取volume component的颜色
-        cmd.SetGlobalTexture(MainTexId, source);                // 获取当前摄像机渲染的图片
-        cmd.GetTemporaryRT(destination, cameraData.camera.scaledPixelWidth, cameraData.camera.scaledPixelHeight, 0, FilterMode.Trilinear, RenderTextureFormat.Default);
-        cmd.Blit(source, destination);                          // 设置后处理
-        cmd.Blit(destination, source, raindropMat, 0);    // 传入颜色校正
-    }
-    #endregion
 }
 
 
