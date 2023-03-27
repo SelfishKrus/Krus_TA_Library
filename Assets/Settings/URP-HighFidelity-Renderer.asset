@@ -1,5 +1,24 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-4464675019466643322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06b63172626be9c439eb379dba31b589, type: 3}
+  m_Name: RaindropRendererFeature
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  settings:
+    renderPassEvent: 500
+    mat: {fileID: 0}
+    downsample: 1
+    copyToFramebuffer: 0
+    targetName: _MainTex
 --- !u!114 &-1878332245247344467
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39,6 +58,25 @@ MonoBehaviour:
   settings:
     renderPassEvent: 500
     shader: {fileID: 4800000, guid: 45e3cb27ee9327a4eb91420dc7b506cd, type: 3}
+--- !u!114 &-129267873607964880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06b63172626be9c439eb379dba31b589, type: 3}
+  m_Name: CustomRenderPassFeature
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  settings:
+    renderPassEvent: 500
+    mat: {fileID: 2100000, guid: d460179db0b004f4cb297f3879b86378, type: 2}
+    downsample: 1
+    copyToFramebuffer: 0
+    targetName: _MainTex
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -55,11 +93,10 @@ MonoBehaviour:
     debugReplacementPS: {fileID: 4800000, guid: cf852408f2e174538bcd9b7fda1c5ae7, type: 3}
   m_RendererFeatures:
   - {fileID: -1878332245247344467}
-  - {fileID: -1812177383102402892}
-  - {fileID: 246994420849655851}
-  m_RendererFeatureMap: adc0de57c6d2eee5b42e2f7a45dad9e62b403ffc1d806d03
+  - {fileID: -4464675019466643322}
+  m_RendererFeatureMap: adc0de57c6d2eee586682183b9490ac2
   m_UseNativeRenderPass: 0
-  postProcessData: {fileID: 0}
+  postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
   shaders:
     blitPS: {fileID: 4800000, guid: c17132b1f77d20942aa75f8429c0f8bc, type: 3}
@@ -104,10 +141,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9d3b31b4c3155974297af2bca8f3064f, type: 3}
+  m_Script: {fileID: 0}
   m_Name: ColorTintPass
   m_EditorClassIdentifier: 
-  m_Active: 0
-  settings:
-    renderPassEvent: 500
-    shader: {fileID: 4800000, guid: 7bb64ad67aeae274ca431cae94b9f02e, type: 3}
