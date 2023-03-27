@@ -38,7 +38,7 @@ public class RaindropRenderPass : ScriptableRenderPass
 {
     static readonly string k_RenderTag = "ColorTint Effects";    // 设置渲染 Tags
     static readonly int MainTexId = Shader.PropertyToID("_MainTex");   // 设置主贴图
-    static readonly int TempTargetId = Shader.PropertyToID("_TempTargetColorTint");    // 设置储存图像信息
+    static readonly int TempTargetId = Shader.PropertyToID("_TempTarget");    // 设置储存图像信息
 
     RaindropVolumeComponent raindrop;           // 传递到volume
     Material raindropMat;     // 后处理使用材质
@@ -78,11 +78,13 @@ public class RaindropRenderPass : ScriptableRenderPass
         var source = currentTarget;                             // 获取渲染图片
         int destination = TempTargetId;                         // 渲染结果图片
 
+        cmd.BeginSample("Rainddrop Render");
         raindropMat.SetFloat("_Size", raindrop.size.value);   // 获取volume component的颜色
         cmd.SetGlobalTexture(MainTexId, source);                // 获取当前摄像机渲染的图片
         cmd.GetTemporaryRT(destination, cameraData.camera.scaledPixelWidth, cameraData.camera.scaledPixelHeight, 0, FilterMode.Trilinear, RenderTextureFormat.Default);
         cmd.Blit(source, destination);                          // 设置后处理
         cmd.Blit(destination, source, raindropMat, 0);    // 传入颜色校正
+        cmd.EndSample("Rainddrop Render");
     }
     #endregion
 
