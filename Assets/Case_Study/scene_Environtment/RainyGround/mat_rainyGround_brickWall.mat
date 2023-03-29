@@ -1,0 +1,140 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: mat_rainyGround_brickWall
+  m_Shader: {fileID: 4800000, guid: d85c019cb216d56439a31e22a06b58e4, type: 3}
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 3000
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _HeightTex:
+        m_Texture: {fileID: 2800000, guid: 70b3d99dd563c5446a7faac31e5e0b8c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _LUT:
+        m_Texture: {fileID: 2800000, guid: d4211ed618cfe5d40b31a111bab01d35, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 5149d83968bab4b408afa270daba6935, type: 3}
+        m_Scale: {x: 2, y: 2}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalMap:
+        m_Texture: {fileID: 2800000, guid: 75a18101a8219454d9d1d0eacbabcb7a, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalTex:
+        m_Texture: {fileID: 2800000, guid: 75a18101a8219454d9d1d0eacbabcb7a, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _PuddleHeightMap:
+        m_Texture: {fileID: 2800000, guid: df8d1edb467852f42b534656998a511e, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _PuddleMap:
+        m_Texture: {fileID: 2800000, guid: cd9f14297323fb04aa176a1043337cfa, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _PuddleMask:
+        m_Texture: {fileID: 2800000, guid: df8d1edb467852f42b534656998a511e, type: 3}
+        m_Scale: {x: 15, y: 15}
+        m_Offset: {x: 0.39, y: -0.09}
+    - _RippleTex:
+        m_Texture: {fileID: 2800000, guid: e353184c6a38a5f4a8cb82b0dece3fda, type: 3}
+        m_Scale: {x: 2, y: 2}
+        m_Offset: {x: 0, y: 0}
+    - _WaveMap:
+        m_Texture: {fileID: 2800000, guid: bb457b1b210a9ff4ca3807251d388d08, type: 3}
+        m_Scale: {x: 15, y: 15}
+        m_Offset: {x: 0, y: 0}
+    - _diffuseMap:
+        m_Texture: {fileID: 2800000, guid: 5149d83968bab4b408afa270daba6935, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _normalMap:
+        m_Texture: {fileID: 2800000, guid: 75a18101a8219454d9d1d0eacbabcb7a, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _Blur: 1.5
+    - _BumpScale: 1
+    - _Cutoff: 0.5
+    - _DetailNormalMapScale: 1
+    - _Distortion: 50
+    - _DstBlend: 0
+    - _Gloss: 0
+    - _GlossMapScale: 1
+    - _Glossiness: 12.8
+    - _GlossyReflections: 1
+    - _HeightTexContrast: 0.898
+    - _Metallic: 0
+    - _Mode: 0
+    - _NormalInten: 1
+    - _NormalScale: 1
+    - _OcclusionStrength: 1
+    - _Parallax: 0.02
+    - _RippleIntens: 4.2
+    - _Smoothness: 0.105
+    - _SmoothnessTextureChannel: 0
+    - _SpecularHighlights: 1
+    - _SrcBlend: 1
+    - _UVSec: 0
+    - _WaterSmoothness: 0.462
+    - _WaveMapScale: 1
+    - _WaveXSpeed: 0.05
+    - _WaveYSpeed: 0.05
+    - _WetLevel: 1
+    - _ZWrite: 1
+    - _normalInten: 1
+    m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _Tint: {r: 1, g: 1, b: 1, a: 1}
+    - _WaterTint: {r: 0.16257459, g: 0.2735849, b: 0.058502402, a: 1}
+  m_BuildTextureStacks: []
