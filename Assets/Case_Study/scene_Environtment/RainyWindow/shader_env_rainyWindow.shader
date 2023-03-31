@@ -9,7 +9,7 @@ Shader "Rainy/RainyWindow"
     }
     SubShader
     {
-        Tags { "Queue"="Overlay" "RenderPipeline"="UniversalPipeline"}
+        Tags { "Queue"="Transparent" "RenderPipeline"="UniversalPipeline"}
         LOD 100
         Cull Off 
         ZWrite Off

@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: mat_rainyGround_brickWall
+  m_Name: mat_env_rainyGround_brickWall
   m_Shader: {fileID: 4800000, guid: d85c019cb216d56439a31e22a06b58e4, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -82,8 +82,8 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _PuddleMask:
         m_Texture: {fileID: 2800000, guid: df8d1edb467852f42b534656998a511e, type: 3}
-        m_Scale: {x: 15, y: 15}
-        m_Offset: {x: 0.39, y: -0.09}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _RippleTex:
         m_Texture: {fileID: 2800000, guid: e353184c6a38a5f4a8cb82b0dece3fda, type: 3}
         m_Scale: {x: 2, y: 2}

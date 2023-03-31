@@ -21,14 +21,14 @@ Shader "Common/ShaderTemplate"
 
             struct appdata
             {
-                float4 vertex : POSITION;
+                float4 posOS : POSITION;
                 float2 uv : TEXCOORD0;
             };
 
             struct v2f
             {
                 float2 uv : TEXCOORD0;
-                float4 vertex : SV_POSITION;
+                float4 pos : SV_POSITION;
             };
 
             CBUFFER_START(UnityPerMaterial)
@@ -40,7 +40,7 @@ Shader "Common/ShaderTemplate"
             v2f vert (appdata v)
             {
                 v2f o;
-                o.vertex = TransformObjectToHClip(v.vertex.xyz);
+                o.pos = TransformObjectToHClip(v.posOS.xyz);
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
                 return o;
             }
@@ -48,8 +48,8 @@ Shader "Common/ShaderTemplate"
             half4 frag (v2f i) : SV_Target
             {
                 
-                half4 col = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv);
-                return col;
+                half3 col = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv).rgb;
+                return half4(col, 1);
             }
             ENDHLSL
         }
