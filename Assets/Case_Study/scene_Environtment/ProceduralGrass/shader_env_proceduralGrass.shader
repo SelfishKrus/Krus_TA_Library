@@ -1,9 +1,19 @@
 Shader "Environment/ProceduralGrass"
 {
     Properties
-    {
+    {   
+        [Header(Color)]
         _TopCol ("Top Color", Color) = (0,1,0,1)
         _BotCol ("Bottom Color", Color) = (0,0.5,0,1)
+        [Space(30)]
+
+        [Header(Shape Control)]
+        _BendAmount ("Bend Amount", Range(0, 1)) = 0
+        _BladeWidth ("Blade Width", Float) = 0.5
+        _BladeHeight ("Blade Height", Float) = 1  
+        _BladeWidthRand ("Blade Width Randomness", Range(0, 1)) = 0
+        _BladeHeightRand ("Blade Height Randomness", Range(0, 1)) = 0
+
 
         _Test ("Test Factor", Vector) = (0,0,0,0)
     }
@@ -55,6 +65,12 @@ Shader "Environment/ProceduralGrass"
             float4 _Test;
             half4 _TopCol;
             half4 _BotCol;
+
+            half _BendAmount;
+            half _BladeWidth;
+            half _BladeHeight;
+            half _BladeWidthRand;
+            half _BladeHeightRand;
             CBUFFER_END
 
             TEXTURE2D(_MainTex);    SAMPLER(sampler_MainTex);
@@ -112,13 +128,19 @@ Shader "Environment/ProceduralGrass"
 
                 // TBN matrix - TS to OS
                 float3x3 matrix_TS2OS = transpose(float3x3(tangent, bitangent, normal));
-                float3x3 matrix_randFaceRotation = angleAxis3x3(rand(posOS) * PI * 2, half3(0, 0, 1)); 
-                float3x3 matrix_transformation = mul(matrix_TS2OS, matrix_randFaceRotation);
+                float3x3 matrix_randFaceRotation = angleAxis3x3(rand(posOS) * PI * 2, half3(0, 0, 1));
+                float3x3 matrix_randBendRotation = angleAxis3x3(rand(posOS.zyx) * _BendAmount * PI * 0.5, half3(1, 0, 0));
+
+                float3x3 matrix_transformation = mul(mul(matrix_TS2OS, matrix_randFaceRotation), matrix_randBendRotation);
+
+                // grass height & width
+                half width = (rand(posOS.xyz) * 2 - 1) * _BladeWidthRand + _BladeWidth;
+                half height = (rand(posOS.zyx) * 2 - 1) * _BladeHeightRand + _BladeHeight;
 
                 // output vertices
-                triStream.Append(OutputVertex( posOS + mul(matrix_transformation, float3(0.5, 0, 0)), float2(0, 0)));
-                triStream.Append(OutputVertex(posOS + mul(matrix_transformation, float3(-0.5, 0, 0)), float2(1, 0)));
-                triStream.Append(OutputVertex(posOS + mul(matrix_transformation, float3(0, 0, 1)), float2(0.5, 1)));
+                triStream.Append(OutputVertex( posOS + mul(matrix_transformation, float3(width, 0, 0)), float2(0, 0)));
+                triStream.Append(OutputVertex(posOS + mul(matrix_transformation, float3(-width, 0, 0)), float2(1, 0)));
+                triStream.Append(OutputVertex(posOS + mul(matrix_transformation, float3(0, 0, height)), float2(0.5, 1)));
                 triStream.RestartStrip();
             }
 

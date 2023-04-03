@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: mat_env_proceduralGrass
-  m_Shader: {fileID: 4800000, guid: 716dd37ef82dac047938569a8bebb180, type: 3}
+  m_Name: Common_Tessellation
+  m_Shader: {fileID: 4800000, guid: cb0685080223cd444a35bb8f7480e349, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -28,20 +28,6 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
-    m_Floats:
-    - _BendAmount: 0.322
-    - _BladeHeight: 1.44
-    - _BladeHeightRand: 0
-    - _BladeWidth: 0.24
-    - _BladeWidthRand: 0.356
-    - _Glossiness: 0.5
-    - _LineLength: 0.5
-    - _Metallic: 0
-    m_Colors:
-    - _BotCol: {r: 0, g: 0.4245283, b: 0, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _LineColor: {r: 0, g: 0, b: 1, a: 1}
-    - _LineColorLerp: {r: 0, g: 1, b: 0, a: 1}
-    - _Test: {r: 0, g: 0, b: 0, a: 0}
-    - _TopCol: {r: 0, g: 1, b: 0, a: 1}
+    m_Floats: []
+    m_Colors: []
   m_BuildTextureStacks: []
