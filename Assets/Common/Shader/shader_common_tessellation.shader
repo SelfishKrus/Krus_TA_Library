@@ -2,7 +2,7 @@ Shader "Common/Tessellation"
 {
     Properties
     {
-        _MainTex ("Texture", 2D) = "white" {}
+        _Test ("Test", Vector) = (1,1,1,1)
     }
     SubShader
     {
@@ -13,17 +13,24 @@ Shader "Common/Tessellation"
         {
             Tags {"LightMode"="UniversalForward"}
 
-            HLSLPROGRAM
+            HLSLPROGRAM 
             #pragma vertex vert
             #pragma hull hull
             #pragma domain domain
-            // #pragma geometry geom
+            #pragma geometry geom
             #pragma fragment frag
+
+            #pragma require geometry
+            #pragma require tessellation tessHW
 
             // needed
             #pragma target 4.6
 
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+
+            CBUFFER_START(UnityPerMaterial)
+            float4 _Test;
+            CBUFFER_END
 
             struct appdata
             {
@@ -31,6 +38,16 @@ Shader "Common/Tessellation"
                 float3 normal : NORMAL;
                 float4 tangent : TANGENT;
                 float2 uv : TEXCOORD0;
+            };
+            
+            // output of the first vert shader
+            // control points of tessllation shader
+            struct tessdata
+            {
+                float4 pos : SV_POSITION;
+                float3 normal : NORMAL;
+                float4 tangent : TANGENT;
+                float2 uv :TEXCOORD0;
             };
 
             struct vertdata
@@ -40,11 +57,11 @@ Shader "Common/Tessellation"
                 float4 tangent : TANGENT;
                 float2 uv : TEXCOORD0;
             };
-
-            struct frag_in
+            
+            struct geodata
             {
-                float2 uv : TEXCOORD0;
                 float4 pos : SV_POSITION;
+                half2 uv : TEXCOORD0;
             };
 
             // output of ConstantFunction
@@ -57,23 +74,42 @@ Shader "Common/Tessellation"
             // Constant functin 
             // invoked once per patch
             // to specify how many parts the patch should be divided into
-            TessellationFactors ConstantFunction(InputPatch<vertdata, 3> patch)
+            TessellationFactors ConstantFunction(InputPatch<tessdata, 3> patch)
             {
                 TessellationFactors f;
-                f.edge[0] = 1;
-                f.edge[1] = 1;
-                f.edge[2] = 1;
-                f.inside = 1;
+                f.edge[0] = _Test.x;
+                f.edge[1] = _Test.y;
+                f.edge[2] = _Test.z;
+                f.inside = _Test.w;
                 return f;
             }
 
-            CBUFFER_START(UnityPerMaterial)
-            float4 _MainTex_ST;
-            CBUFFER_END
+            
 
-            TEXTURE2D(_MainTex);    SAMPLER(sampler_MainTex);
+            // VERTEX PROGRAMMING FOR TESSELLATION //
+            tessdata tessVert(appdata v)
+            {
+                tessdata o;
+                o.pos = v.posOS;
+                o.normal = v.normal;
+                o.tangent = v.tangent;
+                o.uv = v.uv;
+                return o;
+            }
 
-            // Hull shader (Tessellation control shader)
+            // VERTEX SHADER // 
+            tessdata vert (appdata v)
+            {
+                tessdata o;
+                o.pos = v.posOS;
+                o.normal = v.normal;
+                o.tangent = v.tangent;
+                o.uv = v.uv;
+                return o;
+            }
+
+
+            // HULL SHADER (Tessellation control shader) //
             // evoked once per vertex in a patch
             // to break high-level mesh into a series of smaller patches and pass them to tessellation shader
             [domain("tri")]     // work with triangle
@@ -81,20 +117,20 @@ Shader "Common/Tessellation"
             [outputtopology("triangle_cw")]     // output triangle with clockwise winding
             [partitioning("integer")]   // integer partitioning mode
             [patchconstantfunc("ConstantFunction")]    // use constant function to calculate patch constant data
-            vertdata hull(InputPatch<vertdata, 3> patch, uint id : SV_OutputControlPointID)
+            tessdata hull(InputPatch<tessdata, 3> patch, uint id : SV_OutputControlPointID)
             {
 
                 return patch[id];
             }
 
-            // tessellation shader
+            // TESSELLATION SHADER // 
             // generate baycentric coordinates for vertices
             
-            // domain shader (Tessellation evaluation shader)
+            // DOMAIN SHADER (Tessellation evaluation shader) // 
             // invoked once per vertex in a patch
             // use baycentric coordinates to generate vertices
             [domain("tri")]
-            void domain(TessellationFactors factors, OutputPatch<vertdata, 3> patch, float3 barycentricCoordinates : SV_DomainLocation)
+            vertdata domain(TessellationFactors factors, OutputPatch<tessdata, 3> patch, float3 barycentricCoordinates : SV_DomainLocation)
             {
                 vertdata data;
 
@@ -108,19 +144,29 @@ Shader "Common/Tessellation"
                 DOMAIN_INTERPOLATE(normal)
                 DOMAIN_INTERPOLATE(tangent)
                 DOMAIN_INTERPOLATE(uv)
-            }
-            vertdata vert (appdata v)
-            {
-                vertdata o;
-                o.pos = TransformObjectToHClip(v.posOS.xyz);
-                o.uv = TRANSFORM_TEX(v.uv, _MainTex);
-                return o;
+
+                return tessVert(data);
             }
 
-            half4 frag (frag_in i) : SV_Target
+            // GEOMETRY SHADER //
+            [maxvertexcount(3)]
+            void geom (triangle vertdata v[3], inout TriangleStream<geodata> triStream)
             {
-                
-                half3 col = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv).rgb;
+                for (int i = 0; i < 3; i++)
+                {
+                    geodata o;
+                    o.pos = TransformObjectToHClip(v[i].pos.xyz);
+                    o.uv = v[i].uv;
+                    triStream.Append(o);
+                }
+                triStream.RestartStrip();
+            }
+
+
+            // FRAGMENT SHADER // 
+            half4 frag (geodata i) : SV_Target
+            {
+                half3 col = 0.5;
                 return half4(col, 1);
             }
             ENDHLSL

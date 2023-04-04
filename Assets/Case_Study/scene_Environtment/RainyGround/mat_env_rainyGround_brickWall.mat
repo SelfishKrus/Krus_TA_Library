@@ -9,6 +9,8 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: mat_env_rainyGround_brickWall
   m_Shader: {fileID: 4800000, guid: d85c019cb216d56439a31e22a06b58e4, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -17,6 +19,7 @@ Material:
   m_CustomRenderQueue: 3000
   stringTagMap: {}
   disabledShaderPasses: []
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -102,7 +105,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Blur: 1.5
+    - _Blur: 5.23
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
@@ -112,29 +115,29 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 12.8
     - _GlossyReflections: 1
-    - _HeightTexContrast: 0.898
+    - _HeightTexContrast: 0.69
     - _Metallic: 0
     - _Mode: 0
     - _NormalInten: 1
     - _NormalScale: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _RippleIntens: 4.2
+    - _RippleIntens: 4.64
     - _Smoothness: 0.105
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
-    - _WaterSmoothness: 0.462
+    - _WaterSmoothness: 0.589
     - _WaveMapScale: 1
     - _WaveXSpeed: 0.05
     - _WaveYSpeed: 0.05
-    - _WetLevel: 1
+    - _WetLevel: 0
     - _ZWrite: 1
     - _normalInten: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _Tint: {r: 1, g: 1, b: 1, a: 1}
-    - _WaterTint: {r: 0.16257459, g: 0.2735849, b: 0.058502402, a: 1}
+    - _WaterTint: {r: 0.18274216, g: 0.3207547, b: 0.05900677, a: 1}
   m_BuildTextureStacks: []
