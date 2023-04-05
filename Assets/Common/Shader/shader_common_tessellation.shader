@@ -32,6 +32,16 @@ Shader "Common/Tessellation"
             float4 _Test;
             CBUFFER_END
 
+            // FUNCTION START //////////////////////////
+            half3 DrawWireFrames(half3 barycentricCoordinates)
+            {
+                // float3 deltas = fwdith(barycentricCoordinates);
+                
+                half3 col = 1;
+                return col;
+            }
+            // FUNCTION END //////////////////////////
+
             struct appdata
             {
                 float4 posOS : POSITION;
