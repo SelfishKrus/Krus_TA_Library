@@ -2,15 +2,23 @@ Shader "Common/Tessellation"
 {
     Properties
     {
+        _BaseCol ("Base Color", Color) = (1,1,1,1)
+        [Space(10)]
+        
+        [Header(Wireframe)]
         _WireframeThickness ("Width", Range(0, 10)) = 1
         _WireframeSmoothing("Smoothness", Range(0, 10)) = 1
+        _WireframeCol ("Wireframe Color", Color) = (0,0,0,1)
+        [Space(10)]
+
+        [Toggle] _Alpha_Test ("Enable Aplpha Test", Float) = 0
+
         _Test ("Test", Vector) = (1,1,1,1)
     }
     SubShader
     {
         Tags { "RenderType"="Opaque" "RenderPipeline"="UniversalRenderPipeline" "Queue"="Geometry"}
         LOD 100
-        Cull Off
 
         Pass
         {
@@ -26,30 +34,35 @@ Shader "Common/Tessellation"
             #pragma require geometry
             #pragma require tessellation tessHW
 
+            #pragma multi_compile_local __ _ALPHA_TEST_ON
+
             // needed
             #pragma target 4.6
 
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 
             CBUFFER_START(UnityPerMaterial)
-            float4 _Test;
+            half4 _BaseCol;
+
             float _WireframeThickness;
             float _WireframeSmoothing;
+            half3 _WireframeCol;
+
+            float4 _Test;
             CBUFFER_END
 
             // FUNCTION START ////////////////////////////////////////////////////
-            half3 DrawWireFramesByBary(half3 barycentricCoordinates)
+            half3 DrawWireFramesByBary(half3 barycentricCoordinates, half3 wireframeCol, half3 baseCol)
             {
                 float3 deltas = fwidth(barycentricCoordinates);
+
                 float3 smoothing = deltas * _WireframeSmoothing;
 	            float3 thickness = deltas * _WireframeThickness;
 	            half3 barys = smoothstep(thickness, thickness + smoothing, barycentricCoordinates);
-                barys = float3(1, 1, 1) - barys;
-                half bary = max(barys.x, max(barys.y, barys.z));
-
-                
-
-                half3 col = bary;
+                // to remove margin artefacts
+                half minBary = min(barys.x, min(barys.y, barys.z));
+    
+                half3 col = lerp(wireframeCol, baseCol, minBary);
                 return col;
             }
 
@@ -207,11 +220,14 @@ Shader "Common/Tessellation"
                 // draw wireframes
                 // half edge = DrawWireFramesByStep(_Width, i.uv);
 
-                half3 deltas = DrawWireFramesByBary(i.barycentricCoordinates);
-                clip(1 - deltas - 0.1);
+                half3 wireframe = DrawWireFramesByBary(i.barycentricCoordinates, _WireframeCol, _BaseCol.rgb);
+                
+                #if _ALPHA_TEST_ON
+                    clip(0.01 - wireframe);
+                #endif
 
-                half3 col = deltas;
-                return half4(col, 1);
+                half3 col = wireframe;
+                return half4(col, _BaseCol.a);
             }
             ENDHLSL
         }

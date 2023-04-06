@@ -7,11 +7,12 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Common_Tessellation
+  m_Name: mat_common_wireframe
   m_Shader: {fileID: 4800000, guid: cb0685080223cd444a35bb8f7480e349, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
+  m_ValidKeywords:
+  - _ALPHA_TEST_ON
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -29,10 +30,13 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _Alpha_Test: 1
     - _Smoothness: 1
     - _Width: 0.08
-    - _WireframeSmoothing: 1.26
-    - _WireframeThickness: 2.48
+    - _WireframeSmoothing: 0.33
+    - _WireframeThickness: 1
     m_Colors:
+    - _BaseCol: {r: 1, g: 1, b: 1, a: 1}
     - _Test: {r: 1, g: 1, b: 1, a: 1}
+    - _WireframeCol: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []
