@@ -2,12 +2,15 @@ Shader "Common/Tessellation"
 {
     Properties
     {
+        _WireframeThickness ("Width", Range(0, 10)) = 1
+        _WireframeSmoothing("Smoothness", Range(0, 10)) = 1
         _Test ("Test", Vector) = (1,1,1,1)
     }
     SubShader
     {
         Tags { "RenderType"="Opaque" "RenderPipeline"="UniversalRenderPipeline" "Queue"="Geometry"}
         LOD 100
+        Cull Off
 
         Pass
         {
@@ -30,17 +33,37 @@ Shader "Common/Tessellation"
 
             CBUFFER_START(UnityPerMaterial)
             float4 _Test;
+            float _WireframeThickness;
+            float _WireframeSmoothing;
             CBUFFER_END
 
-            // FUNCTION START //////////////////////////
-            half3 DrawWireFrames(half3 barycentricCoordinates)
+            // FUNCTION START ////////////////////////////////////////////////////
+            half3 DrawWireFramesByBary(half3 barycentricCoordinates)
             {
-                // float3 deltas = fwdith(barycentricCoordinates);
+                float3 deltas = fwidth(barycentricCoordinates);
+                float3 smoothing = deltas * _WireframeSmoothing;
+	            float3 thickness = deltas * _WireframeThickness;
+	            half3 barys = smoothstep(thickness, thickness + smoothing, barycentricCoordinates);
+                barys = float3(1, 1, 1) - barys;
+                half bary = max(barys.x, max(barys.y, barys.z));
+
                 
-                half3 col = 1;
+
+                half3 col = bary;
                 return col;
             }
-            // FUNCTION END //////////////////////////
+
+            half3 DrawWireFramesByStep(float _Width, half2 uv)
+            {
+                float lowX = step(_Width, uv.x);
+                float lowY = step(_Width, uv.y);
+                float highX = step(uv.x, 1 - _Width);
+                float highY = step(uv.y, 1 - _Width);
+                float edge = lowX * lowY * highX * highY;
+
+                return edge;
+            }
+            // FUNCTION END ////////////////////////////////////////////////////
 
             struct appdata
             {
@@ -66,12 +89,14 @@ Shader "Common/Tessellation"
                 float3 normal : NORMAL;
                 float4 tangent : TANGENT;
                 float2 uv : TEXCOORD0;
+                half3 barycentricCoordinates : TEXCOORD1;
             };
             
             struct geodata
             {
                 float4 pos : SV_POSITION;
                 half2 uv : TEXCOORD0;
+                half3 barycentricCoordinates : TEXCOORD1;
             };
 
             // output of ConstantFunction
@@ -88,14 +113,14 @@ Shader "Common/Tessellation"
             {
                 TessellationFactors f;
                 f.edge[0] = _Test.x;
-                f.edge[1] = _Test.y;
-                f.edge[2] = _Test.z;
-                f.inside = _Test.w;
+                f.edge[1] = _Test.x;
+                f.edge[2] = _Test.x;
+                f.inside = _Test.x;
                 return f;
             }
 
             
-
+            // ?????????
             // VERTEX PROGRAMMING FOR TESSELLATION //
             tessdata tessVert(appdata v)
             {
@@ -125,7 +150,7 @@ Shader "Common/Tessellation"
             [domain("tri")]     // work with triangle
             [outputcontrolpoints(3)]    // output 3 control points per patch
             [outputtopology("triangle_cw")]     // output triangle with clockwise winding
-            [partitioning("integer")]   // integer partitioning mode
+            [partitioning("fractional_even")]   // integer partitioning mode
             [patchconstantfunc("ConstantFunction")]    // use constant function to calculate patch constant data
             tessdata hull(InputPatch<tessdata, 3> patch, uint id : SV_OutputControlPointID)
             {
@@ -155,7 +180,9 @@ Shader "Common/Tessellation"
                 DOMAIN_INTERPOLATE(tangent)
                 DOMAIN_INTERPOLATE(uv)
 
-                return tessVert(data);
+                data.barycentricCoordinates = barycentricCoordinates;
+
+                return data;
             }
 
             // GEOMETRY SHADER //
@@ -167,6 +194,7 @@ Shader "Common/Tessellation"
                     geodata o;
                     o.pos = TransformObjectToHClip(v[i].pos.xyz);
                     o.uv = v[i].uv;
+                    o.barycentricCoordinates = v[i].barycentricCoordinates;
                     triStream.Append(o);
                 }
                 triStream.RestartStrip();
@@ -176,7 +204,13 @@ Shader "Common/Tessellation"
             // FRAGMENT SHADER // 
             half4 frag (geodata i) : SV_Target
             {
-                half3 col = 0.5;
+                // draw wireframes
+                // half edge = DrawWireFramesByStep(_Width, i.uv);
+
+                half3 deltas = DrawWireFramesByBary(i.barycentricCoordinates);
+                clip(1 - deltas - 0.1);
+
+                half3 col = deltas;
                 return half4(col, 1);
             }
             ENDHLSL
