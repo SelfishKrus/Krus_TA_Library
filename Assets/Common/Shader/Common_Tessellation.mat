@@ -29,7 +29,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _Smoothness: 1
     - _Width: 0.08
+    - _WireframeSmoothing: 1.26
+    - _WireframeThickness: 2.48
     m_Colors:
-    - _Test: {r: 0.76, g: 1, b: 1, a: 1}
+    - _Test: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
