@@ -14,6 +14,11 @@ Shader "Environment/ProceduralGrass"
         _BladeWidthRand ("Blade Width Randomness", Range(0, 1)) = 0
         _BladeHeightRand ("Blade Height Randomness", Range(0, 1)) = 0
 
+        [Header(Wind)]
+        _WindNoiseMap ("Wind Noise Map", 2D) = "white" {}
+        _WindNoiseFrequency ("Wind Noise Frequency", Vector) = (0.5, 0.5, 0, 0)
+        _WindStrength ("Wind Strength", Float) = 1
+
 
         _Test ("Test Factor", Vector) = (0,0,0,0)
     }
@@ -31,35 +36,20 @@ Shader "Environment/ProceduralGrass"
             }
 
             HLSLPROGRAM
-            // #pragma require geometry
+
+            #pragma require geometry
+            #pragma require tessellation tessHW
+
             #pragma vertex vert
-            #pragma fragment frag
+            #pragma hull hull
+            #pragma domain domain 
             #pragma geometry geom
+            #pragma fragment frag
 
             #pragma target 4.6
 
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #include "Assets/Common/Library/KrusNoise.hlsl"
-
-            struct appdata
-            {
-                float4 posOS : POSITION;
-                float3 normal : NORMAL;
-                float4 tangent : TANGENT;
-            };
-
-            struct v2g
-            {
-                float4 posOS : SV_POSITION;
-                float3 normal : NORMAL;
-                float4 tangent : TANGENT;
-            };
-
-            struct g2f
-            {
-                float4 pos : SV_POSITION;
-                half2 uv : TEXCOORD0;
-            };
 
             CBUFFER_START(UnityPerMaterial)
             float4 _Test;
@@ -71,16 +61,72 @@ Shader "Environment/ProceduralGrass"
             half _BladeHeight;
             half _BladeWidthRand;
             half _BladeHeightRand;
+
+            sampler2D _WindNoiseMap;
+            float4 _WindNoiseMap_ST;
+            float2 _WindNoiseFrequency;
+            float _WindStrength;
             CBUFFER_END
 
-            TEXTURE2D(_MainTex);    SAMPLER(sampler_MainTex);
+            // TEXTURE2D(_WindNoiseMap);   SAMPLER(sampler_WindNoiseMap);
+
+            struct appdata
+            {
+                float4 posOS : POSITION;
+                half3 normal : NORMAL;
+                half4 tangent : TANGENT;
+                half2 uv : TEXCOORD0;
+            };
+
+            struct tessdata
+            {
+                float4 pos : SV_POSITION;
+                half3 normal : NORMAL;
+                half4 tangent : TANGENT;
+                half2 uv : TEXCOORD0;
+                half3 barycentricCoordinates : TEXCOORD1;
+            };
+
+            struct vertdata
+            {
+                float4 pos : SV_POSITION;
+                half3 normal : NORMAL;
+                half4 tangent : TANGENT;
+                half2 uv : TEXCOORD0;
+                half3 barycentricCoordinates : TEXCOORD1;
+            };
+
+            struct geomdata
+            {
+                float4 pos : SV_POSITION;
+                // half3 normal : NORMAL;
+                // half4 tangent : TANGENT;
+                half2 uv : TEXCOORD0;
+            };
+
+            struct TessellationFactors
+            {
+                float edge[3] : SV_TessFactor;
+                float inside : SV_InsideTessFactor;
+            };
+
+            // CONSTANT FUNCTION
+            TessellationFactors ConstantFunction(InputPatch<tessdata, 3> patch)
+            {
+                TessellationFactors f;
+                f.edge[0] = _Test.x;
+                f.edge[1] = _Test.x;
+                f.edge[2] = _Test.x;
+                f.inside = _Test.x;
+                return f;
+            }
 
             // FUNCTION START ////////////////////////////////////////////////////////
 
             // assign properties to vertices created in geom shader
-            g2f OutputVertex(float3 posOS, half2 uv)
+            geomdata OutputVertex(float3 posOS, half2 uv)
             {
-                g2f o;
+                geomdata o;
                 o.pos = TransformObjectToHClip(posOS);
                 o.uv = uv;
                 return o;
@@ -107,31 +153,89 @@ Shader "Environment/ProceduralGrass"
 
             // FUNCTION END ////////////////////////////////////////////////////////
 
-
-            v2g vert (appdata v)
+            // VERT PROGRAM FOR TESSELLATION // 
+            vertdata tessvert (tessdata v)
             {
-                v2g o;
-                o.posOS = v.posOS;
+                vertdata o;
+                o.pos = v.pos;
                 o.normal = v.normal;
                 o.tangent = v.tangent;
+                o.uv = v.uv;
+                o.barycentricCoordinates = v.barycentricCoordinates;
                 return o;
             }
 
+            // VERT SHADER //
+            tessdata vert (appdata v)
+            {
+                tessdata o;
+                o.pos = v.posOS;
+                o.normal = v.normal;
+                o.tangent = v.tangent;
+                o.uv = v.uv;
+                return o;
+            }
+
+            // HULL SHADER //
+            [domain("tri")]
+            [partitioning("integer")]
+            [outputtopology("triangle_cw")] 
+            [outputcontrolpoints(3)]
+            [patchconstantfunc("ConstantFunction")]
+            tessdata hull(InputPatch<tessdata, 3> patch, uint id : SV_OutputControlPointID)
+            {
+                return patch[id];
+            }
+
+            // TESSELLATOR //
+
+            // DOMAIN SHADER //
+            [domain("tri")]
+            vertdata domain(TessellationFactors factors, OutputPatch<tessdata, 3> patch, float3 barycentricCoordinates : SV_DomainLocation)
+            {
+                tessdata data;
+
+                #define DOMAIN_INTERPOLATE(fieldName) data.fieldName = \
+                    patch[0].fieldName * barycentricCoordinates.x + \
+                    patch[1].fieldName * barycentricCoordinates.y + \
+                    patch[2].fieldName * barycentricCoordinates.z;
+                
+                // interpolation
+                DOMAIN_INTERPOLATE(pos)
+                DOMAIN_INTERPOLATE(normal)
+                DOMAIN_INTERPOLATE(tangent)
+                DOMAIN_INTERPOLATE(uv)
+
+                data.barycentricCoordinates = barycentricCoordinates;
+
+                return tessvert(data);
+            }
+
+            // GEOM SHADER //
             [maxvertexcount(3)]
-            void geom (triangle v2g IN[3] : SV_POSITION, inout TriangleStream<g2f> triStream)
+            void geom (triangle vertdata IN[3] : SV_POSITION, inout TriangleStream<geomdata> triStream)
             {
                 // prepare variables
-                float3 posOS = IN[0].posOS.xyz ;
+                float3 posOS = IN[0].pos.xyz ;
                 half3 normal = IN[0].normal;
                 half3 tangent = IN[0].tangent.xyz;
                 half3 bitangent = cross(normal, tangent) * IN[0].tangent.w;
+
+
+                // wind
+                float2 windUV = posOS.xz * _WindNoiseMap_ST.xy + _WindNoiseMap_ST.zw + _WindNoiseFrequency * _Time.y;
+                float2 windSample = (tex2Dlod(_WindNoiseMap, float4(windUV,0,0)).xy * 2 - 1) * _WindStrength;
+                // rotation axis
+                half3 windAxis = normalize(float3(windSample.x, windSample.y, 0));
+                float3x3 matrix_windRotation = angleAxis3x3(PI * windSample, windAxis) ;
 
                 // TBN matrix - TS to OS
                 float3x3 matrix_TS2OS = transpose(float3x3(tangent, bitangent, normal));
                 float3x3 matrix_randFaceRotation = angleAxis3x3(rand(posOS) * PI * 2, half3(0, 0, 1));
                 float3x3 matrix_randBendRotation = angleAxis3x3(rand(posOS.zyx) * _BendAmount * PI * 0.5, half3(1, 0, 0));
 
-                float3x3 matrix_transformation = mul(mul(matrix_TS2OS, matrix_randFaceRotation), matrix_randBendRotation);
+                float3x3 matrix_transformation = mul(mul(mul(matrix_TS2OS, matrix_windRotation), matrix_randFaceRotation), matrix_randBendRotation);
+                
 
                 // grass height & width
                 half width = (rand(posOS.xyz) * 2 - 1) * _BladeWidthRand + _BladeWidth;
@@ -141,10 +245,12 @@ Shader "Environment/ProceduralGrass"
                 triStream.Append(OutputVertex( posOS + mul(matrix_transformation, float3(width, 0, 0)), float2(0, 0)));
                 triStream.Append(OutputVertex(posOS + mul(matrix_transformation, float3(-width, 0, 0)), float2(1, 0)));
                 triStream.Append(OutputVertex(posOS + mul(matrix_transformation, float3(0, 0, height)), float2(0.5, 1)));
+                
                 triStream.RestartStrip();
             }
 
-            half4 frag (g2f i) : SV_Target
+            // FRAG SHADER //
+            half4 frag (geomdata i) : SV_Target
             {
                 half3 col = lerp(_BotCol.rgb, _TopCol.rgb, i.uv.y);
                 return half4(col, 1);

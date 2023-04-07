@@ -27,21 +27,27 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _WindNoiseMap:
+        m_Texture: {fileID: 2800000, guid: 2e5ea46922b84fb4ba397ed0ef73e2ae, type: 3}
+        m_Scale: {x: 0.05, y: 0.05}
+        m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _BendAmount: 0.322
-    - _BladeHeight: 1.44
-    - _BladeHeightRand: 0
-    - _BladeWidth: 0.24
-    - _BladeWidthRand: 0.356
+    - _BendAmount: 0.336
+    - _BladeHeight: 1.28
+    - _BladeHeightRand: 0.623
+    - _BladeWidth: 0.15
+    - _BladeWidthRand: 0.159
     - _Glossiness: 0.5
     - _LineLength: 0.5
     - _Metallic: 0
+    - _WindStrength: 0.8
     m_Colors:
-    - _BotCol: {r: 0, g: 0.4245283, b: 0, a: 1}
+    - _BotCol: {r: 0.23616058, g: 0.4436317, b: 0.5754717, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _LineColor: {r: 0, g: 0, b: 1, a: 1}
     - _LineColorLerp: {r: 0, g: 1, b: 0, a: 1}
-    - _Test: {r: 0, g: 0, b: 0, a: 0}
-    - _TopCol: {r: 0, g: 1, b: 0, a: 1}
+    - _Test: {r: 7.23, g: -0.62, b: 0.08, a: 0}
+    - _TopCol: {r: 1, g: 1, b: 1, a: 1}
+    - _WindNoiseFrequency: {r: 0.2, g: 0.2, b: 0, a: 0}
   m_BuildTextureStacks: []
