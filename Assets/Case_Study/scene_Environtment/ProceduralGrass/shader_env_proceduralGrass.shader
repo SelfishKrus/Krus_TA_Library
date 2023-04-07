@@ -19,6 +19,10 @@ Shader "Environment/ProceduralGrass"
         _WindNoiseMap ("Wind Noise Map", 2D) = "white" {}
         _WindNoiseFrequency ("Wind Noise Frequency", Vector) = (0.5, 0.5, 0, 0)
         _WindStrength ("Wind Strength", Float) = 1
+<<<<<<< HEAD
+=======
+
+>>>>>>> 4e8e8f5e3380b34e76c32bb99a7aa5a785cae4eb
 
         _Test ("Test Factor", Vector) = (0,0,0,0)
     }
@@ -63,7 +67,10 @@ Shader "Environment/ProceduralGrass"
             half _BladeHeight;
             half _BladeWidthRand;
             half _BladeHeightRand;
+<<<<<<< HEAD
             int _BladeSegNum;
+=======
+>>>>>>> 4e8e8f5e3380b34e76c32bb99a7aa5a785cae4eb
 
             sampler2D _WindNoiseMap;
             float4 _WindNoiseMap_ST;
@@ -127,10 +134,17 @@ Shader "Environment/ProceduralGrass"
             // FUNCTION START ////////////////////////////////////////////////////////
 
             // assign properties to vertices created in geom shader
+<<<<<<< HEAD
             geomdata GenerateGrassVertices(float3 posOS, float3 offset, float3x3 matrix_transformation, half2 uv)
             {
                 geomdata o;
                 o.pos = TransformObjectToHClip(posOS + mul(matrix_transformation, offset));
+=======
+            geomdata OutputVertex(float3 posOS, half2 uv)
+            {
+                geomdata o;
+                o.pos = TransformObjectToHClip(posOS);
+>>>>>>> 4e8e8f5e3380b34e76c32bb99a7aa5a785cae4eb
                 o.uv = uv;
                 return o;
             }
@@ -215,7 +229,11 @@ Shader "Environment/ProceduralGrass"
             }
 
             // GEOM SHADER //
+<<<<<<< HEAD
             [maxvertexcount(BLADE_SEG_NUM * 2 + 1)]
+=======
+            [maxvertexcount(3)]
+>>>>>>> 4e8e8f5e3380b34e76c32bb99a7aa5a785cae4eb
             void geom (triangle vertdata IN[3] : SV_POSITION, inout TriangleStream<geomdata> triStream)
             {
                 // prepare variables
@@ -230,21 +248,31 @@ Shader "Environment/ProceduralGrass"
                 float2 windSample = (tex2Dlod(_WindNoiseMap, float4(windUV,0,0)).xy * 2 - 1) * _WindStrength;
                 // rotation axis
                 half3 windAxis = normalize(float3(windSample.x, windSample.y, 0));
+<<<<<<< HEAD
                 float3x3 matrix_windRotation = angleAxis3x3(PI * windSample.y, windAxis) ;
+=======
+                float3x3 matrix_windRotation = angleAxis3x3(PI * windSample, windAxis) ;
+>>>>>>> 4e8e8f5e3380b34e76c32bb99a7aa5a785cae4eb
 
                 // TBN matrix - TS to OS
                 float3x3 matrix_TS2OS = transpose(float3x3(tangent, bitangent, normal));
                 float3x3 matrix_randFaceRotation = angleAxis3x3(rand(posOS) * PI * 2, half3(0, 0, 1));
                 float3x3 matrix_randBendRotation = angleAxis3x3(rand(posOS.zyx) * _BendAmount * PI * 0.5, half3(1, 0, 0));
 
+<<<<<<< HEAD
                 // final rotation matrix for base or top
                 float3x3 matrix_transformation_tip = mul(mul(mul(matrix_TS2OS, matrix_windRotation), matrix_randFaceRotation), matrix_randBendRotation);
                 float3x3 matrix_transformation_base = mul(matrix_TS2OS, matrix_randFaceRotation);
+=======
+                float3x3 matrix_transformation = mul(mul(mul(matrix_TS2OS, matrix_windRotation), matrix_randFaceRotation), matrix_randBendRotation);
+                
+>>>>>>> 4e8e8f5e3380b34e76c32bb99a7aa5a785cae4eb
 
                 // grass height & width
                 half width = (rand(posOS.xyz) * 2 - 1) * _BladeWidthRand + _BladeWidth;
                 half height = (rand(posOS.zyx) * 2 - 1) * _BladeHeightRand + _BladeHeight;
 
+<<<<<<< HEAD
                 // GENERATE VERTICES //
                 // segment part
                 for (int i = 0; i < BLADE_SEG_NUM; i++)
@@ -263,6 +291,13 @@ Shader "Environment/ProceduralGrass"
                 triStream.Append(GenerateGrassVertices(posOS, float3(0, 0, height), matrix_transformation_tip, float2(0.5, 1)));
                 
 
+=======
+                // output vertices
+                triStream.Append(OutputVertex( posOS + mul(matrix_transformation, float3(width, 0, 0)), float2(0, 0)));
+                triStream.Append(OutputVertex(posOS + mul(matrix_transformation, float3(-width, 0, 0)), float2(1, 0)));
+                triStream.Append(OutputVertex(posOS + mul(matrix_transformation, float3(0, 0, height)), float2(0.5, 1)));
+                
+>>>>>>> 4e8e8f5e3380b34e76c32bb99a7aa5a785cae4eb
                 triStream.RestartStrip();
             }
 
