@@ -6,6 +6,7 @@ Shader "Common/Tessellation"
         [Space(10)]
         
         [Header(Wireframe)]
+        _UniformEdgeFactor ("Density", Range(0.1, 20)) = 1
         _WireframeThickness ("Width", Range(0, 10)) = 1
         _WireframeSmoothing("Smoothness", Range(0, 10)) = 1
         _WireframeCol ("Wireframe Color", Color) = (0,0,0,1)
@@ -44,6 +45,7 @@ Shader "Common/Tessellation"
             CBUFFER_START(UnityPerMaterial)
             half4 _BaseCol;
 
+            float _UniformEdgeFactor;
             float _WireframeThickness;
             float _WireframeSmoothing;
             half3 _WireframeCol;
@@ -125,10 +127,12 @@ Shader "Common/Tessellation"
             TessellationFactors ConstantFunction(InputPatch<tessdata, 3> patch)
             {
                 TessellationFactors f;
-                f.edge[0] = _Test.x;
-                f.edge[1] = _Test.x;
-                f.edge[2] = _Test.x;
-                f.inside = _Test.x;
+                float val = _UniformEdgeFactor * (sin(_Time.y * PI * _Test.x) + 1);
+
+                f.edge[0] = val;
+                f.edge[1] = val;
+                f.edge[2] = val;
+                f.inside = val;
                 return f;
             }
 
@@ -163,7 +167,7 @@ Shader "Common/Tessellation"
             [domain("tri")]     // work with triangle
             [outputcontrolpoints(3)]    // output 3 control points per patch
             [outputtopology("triangle_cw")]     // output triangle with clockwise winding
-            [partitioning("fractional_even")]   // integer partitioning mode
+            [partitioning("fractional_odd")]   // integer partitioning mode
             [patchconstantfunc("ConstantFunction")]    // use constant function to calculate patch constant data
             tessdata hull(InputPatch<tessdata, 3> patch, uint id : SV_OutputControlPointID)
             {

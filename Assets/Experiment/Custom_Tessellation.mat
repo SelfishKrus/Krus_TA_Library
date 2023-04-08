@@ -62,7 +62,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _BumpScale: 1
-    - _Cutoff: 0.5
+    - _Cutoff: 0.316
     - _DetailBumpScale: 1
     - _DstBlend: 0
     - _Metallic: 0
@@ -70,8 +70,8 @@ Material:
     - _ParallaxStrength: 0
     - _Smoothness: 0.1
     - _SrcBlend: 1
-    - _WireframeSmoothing: 1.48
-    - _WireframeThickness: 1.88
+    - _WireframeSmoothing: 2.92
+    - _WireframeThickness: 2.6
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
