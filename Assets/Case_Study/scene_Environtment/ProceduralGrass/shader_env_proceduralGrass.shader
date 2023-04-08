@@ -5,20 +5,24 @@ Shader "Environment/ProceduralGrass"
         [Header(Color)]
         _TopCol ("Top Color", Color) = (0,1,0,1)
         _BotCol ("Bottom Color", Color) = (0,0.5,0,1)
-        [Space(30)]
+        [Space(10)]
 
         [Header(Shape Control)]
+        _Density ("Grass Density", Range(1, 8)) = 3
         _BendAmount ("Bend Amount", Range(0, 1)) = 0
         _BladeWidth ("Blade Width", Float) = 0.5
         _BladeHeight ("Blade Height", Float) = 1  
-        _BladeWidthRand ("Blade Width Randomness", Range(0, 1)) = 0
+        _BladeWidthRand ("Blade Width Randomness", Range(0, 1)) = 0.1
         _BladeHeightRand ("Blade Height Randomness", Range(0, 1)) = 0
-        [IntRange] _BladeSegNum ("Blade Segment Number", Range(1, 10)) = 3
+        [IntRange] _BladeBendCurve ("Blade Bend Curve", Range(1, 4)) = 2
+        _BladeBendDistance ("Blade Bend Distance", Range(0, 3)) = 1.0
+        _TessellationnEdgeLength ("Tessellation Edge Length", Range(1, 30)) = 10
 
         [Header(Wind)]
         _WindNoiseMap ("Wind Noise Map", 2D) = "white" {}
         _WindNoiseFrequency ("Wind Noise Frequency", Vector) = (0.5, 0.5, 0, 0)
         _WindStrength ("Wind Strength", Float) = 1
+        [Space(10)]
 
         _Test ("Test Factor", Vector) = (0,0,0,0)
     }
@@ -28,24 +32,7 @@ Shader "Environment/ProceduralGrass"
         Cull Off
         ZWrite On
 
-        Pass
-        {
-            Tags 
-            {
-                "LightMode"="UniversalForward"
-            }
-
-            HLSLPROGRAM
-
-            #pragma require geometry
-            #pragma require tessellation tessHW
-
-            #pragma vertex vert
-            #pragma hull hull
-            #pragma domain domain 
-            #pragma geometry geom
-            #pragma fragment frag
-
+        HLSLINCLUDE
             #pragma target 4.6
 
             #define BLADE_SEG_NUM 3
@@ -58,13 +45,16 @@ Shader "Environment/ProceduralGrass"
             half4 _TopCol;
             half4 _BotCol;
 
+            half _Density;
             half _BendAmount;
             half _BladeWidth;
             half _BladeHeight;
             half _BladeWidthRand;
             half _BladeHeightRand;
-            int _BladeSegNum;
-
+            int _BladeBendCurve;
+            float _BladeBendDistance;
+            float _TessellationnEdgeLength;
+            
             sampler2D _WindNoiseMap;
             float4 _WindNoiseMap_ST;
             float2 _WindNoiseFrequency;
@@ -113,14 +103,32 @@ Shader "Environment/ProceduralGrass"
                 float inside : SV_InsideTessFactor;
             };
 
+
+            // TO DEFINE FACTOR BASED ON DISTANCE TO CAM //
+            float TessellationEdgeFactor(float3 p0_WS, float3 p1_WS)
+            {
+                float edgeLength = distance(p0_WS, p1_WS);
+
+                float3 edgeCenter = (p0_WS + p1_WS) * 0.5;
+                float dstToCam = distance(edgeCenter, _WorldSpaceCameraPos);
+                
+                return edgeLength / (_TessellationnEdgeLength * dstToCam);
+            }
+            
+
             // CONSTANT FUNCTION
             TessellationFactors ConstantFunction(InputPatch<tessdata, 3> patch)
-            {
+            {   
+                float3 p0_WS = TransformObjectToWorld(patch[0].pos).xyz;
+                float3 p1_WS = TransformObjectToWorld(patch[1].pos).xyz;
+                float3 p2_WS = TransformObjectToWorld(patch[2].pos).xyz;
+                
+
                 TessellationFactors f;
-                f.edge[0] = _Test.x;
-                f.edge[1] = _Test.x;
-                f.edge[2] = _Test.x;
-                f.inside = _Test.x;
+                f.edge[0] = TessellationEdgeFactor(p0_WS, p1_WS);
+                f.edge[1] = TessellationEdgeFactor(p1_WS, p2_WS);
+                f.edge[2] = TessellationEdgeFactor(p2_WS, p0_WS);
+                f.inside = (f.edge[0] + f.edge[1] + f.edge[2]) * 0.333;
                 return f;
             }
 
@@ -244,6 +252,7 @@ Shader "Environment/ProceduralGrass"
                 // grass height & width
                 half width = (rand(posOS.xyz) * 2 - 1) * _BladeWidthRand + _BladeWidth;
                 half height = (rand(posOS.zyx) * 2 - 1) * _BladeHeightRand + _BladeHeight;
+                half forward = rand(posOS.yxz) * _BladeBendDistance;
 
                 // GENERATE VERTICES //
                 // segment part
@@ -251,7 +260,7 @@ Shader "Environment/ProceduralGrass"
                 {
                     float t = i / (float)BLADE_SEG_NUM;
                     // added vertices' pos info
-                    float3 offset = float3(width * (1 - t), 0, height * t);
+                    float3 offset = float3(width * (1 - t), pow(t, _BladeBendCurve) * forward, height * t);
                     float3x3 matrix_transformation = (i == 0) ? matrix_transformation_base : matrix_transformation_tip;
                 
                     triStream.Append(GenerateGrassVertices(posOS, float3(offset.x, offset.y, offset.z), matrix_transformation, float2(0, t)));
@@ -260,18 +269,68 @@ Shader "Environment/ProceduralGrass"
                 }
                 
                 // tip part
-                triStream.Append(GenerateGrassVertices(posOS, float3(0, 0, height), matrix_transformation_tip, float2(0.5, 1)));
+                triStream.Append(GenerateGrassVertices(posOS, float3(0, forward, height), matrix_transformation_tip, float2(0.5, 1)));
                 
 
                 triStream.RestartStrip();
             }
 
+        ENDHLSL
+
+        Pass
+        {
+            Name "Grass"
+
+            Tags 
+            {
+                "LightMode"="UniversalForward"
+            }
+
+            HLSLPROGRAM
+            #pragma require geometry
+            #pragma require tessellation tessHW
+
+            #pragma vertex vert
+            #pragma hull hull
+            #pragma domain domain 
+            #pragma geometry geom
+            #pragma fragment frag
+            
             // FRAG SHADER //
             half4 frag (geomdata i) : SV_Target
             {
                 half3 col = lerp(_BotCol.rgb, _TopCol.rgb, i.uv.y);
                 return half4(col, 1);
             }
+            ENDHLSL
+        }
+
+        Pass 
+        {
+            Name "ShadowCaster"
+            Tags { "LightMode" = "ShadowCaster" }
+            
+            HLSLPROGRAM
+
+            #pragma require geometry
+            #pragma require tessellation tessHW
+
+            #pragma vertex vert
+            #pragma hull hull
+            #pragma domain domain 
+            #pragma geometry geom
+            #pragma fragment frag
+
+            #pragma target 4.6
+            #pragma multi_compile_shadowcaster
+
+            // #include "Packages/com.unity.render-pipelines.universal/Shaders/ShadowCasterPass.hlsl"
+
+            float4 frag(geomdata i) : SV_Target
+            {
+
+            }
+
             ENDHLSL
         }
     }
