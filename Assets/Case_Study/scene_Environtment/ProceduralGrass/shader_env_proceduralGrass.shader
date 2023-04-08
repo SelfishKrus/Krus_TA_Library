@@ -16,7 +16,8 @@ Shader "Environment/ProceduralGrass"
         _BladeHeightRand ("Blade Height Randomness", Range(0, 1)) = 0
         [IntRange] _BladeBendCurve ("Blade Bend Curve", Range(1, 4)) = 2
         _BladeBendDistance ("Blade Bend Distance", Range(0, 3)) = 1.0
-        _TessellationnEdgeLength ("Tessellation Edge Length", Range(1, 30)) = 10
+        _TessellationnEdgeLength ("Tessellation Edge Length", Range(0, 0.1)) = 0.05
+        [HideInInspector] [IntRange] _MaxEdgeFactor ("Max Edge Factor", Range(1, 10)) = 4
 
         [Header(Wind)]
         _WindNoiseMap ("Wind Noise Map", 2D) = "white" {}
@@ -54,6 +55,7 @@ Shader "Environment/ProceduralGrass"
             int _BladeBendCurve;
             float _BladeBendDistance;
             float _TessellationnEdgeLength;
+            half _MaxEdgeFactor;
             
             sampler2D _WindNoiseMap;
             float4 _WindNoiseMap_ST;
@@ -77,7 +79,6 @@ Shader "Environment/ProceduralGrass"
                 half3 normal : NORMAL;
                 half4 tangent : TANGENT;
                 half2 uv : TEXCOORD0;
-                half3 barycentricCoordinates : TEXCOORD1;
             };
 
             struct vertdata
@@ -86,7 +87,6 @@ Shader "Environment/ProceduralGrass"
                 half3 normal : NORMAL;
                 half4 tangent : TANGENT;
                 half2 uv : TEXCOORD0;
-                half3 barycentricCoordinates : TEXCOORD1;
             };
 
             struct geomdata
@@ -110,9 +110,11 @@ Shader "Environment/ProceduralGrass"
                 float edgeLength = distance(p0_WS, p1_WS);
 
                 float3 edgeCenter = (p0_WS + p1_WS) * 0.5;
-                float dstToCam = distance(edgeCenter, _WorldSpaceCameraPos);
+                float dstToCam = distance(edgeCenter, _WorldSpaceCameraPos.xyz);
+                // _MaxEdgeFactor is to prevent the tessellation factor from being too high
+                float factor = min(edgeLength / (_TessellationnEdgeLength * dstToCam), _MaxEdgeFactor);
                 
-                return edgeLength / (_TessellationnEdgeLength * dstToCam);
+                return factor;
             }
             
 
@@ -172,7 +174,6 @@ Shader "Environment/ProceduralGrass"
                 o.normal = v.normal;
                 o.tangent = v.tangent;
                 o.uv = v.uv;
-                o.barycentricCoordinates = v.barycentricCoordinates;
                 return o;
             }
 
@@ -216,8 +217,6 @@ Shader "Environment/ProceduralGrass"
                 DOMAIN_INTERPOLATE(normal)
                 DOMAIN_INTERPOLATE(tangent)
                 DOMAIN_INTERPOLATE(uv)
-
-                data.barycentricCoordinates = barycentricCoordinates;
 
                 return tessvert(data);
             }

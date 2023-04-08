@@ -41,18 +41,19 @@ Material:
     - _BladeSegNum: 2
     - _BladeWidth: 0.14
     - _BladeWidthRand: 0.1
-    - _Density: 2.16
+    - _Density: 1.71
     - _Glossiness: 0.5
     - _LineLength: 0.5
+    - _MaxEdgeFactor: 5
     - _Metallic: 0
-    - _TessellationnEdgeLength: 9
+    - _TessellationnEdgeLength: 0.0508
     - _WindStrength: 0.69
     m_Colors:
     - _BotCol: {r: 0.5188679, g: 0.24888638, b: 0.110137075, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _LineColor: {r: 0, g: 0, b: 1, a: 1}
     - _LineColorLerp: {r: 0, g: 1, b: 0, a: 1}
-    - _Test: {r: 0.51, g: 0.24, b: 0.08, a: 0}
+    - _Test: {r: 0.96, g: 0.24, b: 0.08, a: 0}
     - _TopCol: {r: 0.7169812, g: 0.7122715, b: 0.4836241, a: 1}
     - _WindNoiseFrequency: {r: 0.2, g: 0.2, b: 0, a: 0}
   m_BuildTextureStacks: []
