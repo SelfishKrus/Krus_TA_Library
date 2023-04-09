@@ -11,8 +11,12 @@ Material:
   m_Shader: {fileID: 4800000, guid: 716dd37ef82dac047938569a8bebb180, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
+  m_ValidKeywords:
+  - _MAIN_LIGHT_SHADOWS
+  - _MAIN_LIGHT_SHADOWS_CASCADE
+  m_InvalidKeywords:
+  - _MAIN_LIGHT_SHADOWS_CASCADE_ON
+  - _MAIN_LIGHT_SHADOWS_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -44,8 +48,12 @@ Material:
     - _Density: 1.71
     - _Glossiness: 0.5
     - _LineLength: 0.5
+    - _MAIN_LIGHT_SHADOWS: 1
+    - _MAIN_LIGHT_SHADOWS_CASCADE: 1
     - _MaxEdgeFactor: 5
     - _Metallic: 0
+    - _SBias: 0.25
+    - _ShadowBias: 0.25
     - _TessellationnEdgeLength: 0.0508
     - _WindStrength: 0.69
     m_Colors:

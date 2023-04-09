@@ -25,6 +25,10 @@ Shader "Environment/ProceduralGrass"
         _WindStrength ("Wind Strength", Float) = 1
         [Space(10)]
 
+        [Toggle(_MAIN_LIGHT_SHADOWS)] _MAIN_LIGHT_SHADOWS("Receive Shadow", Float) = 1
+        [Toggle(_MAIN_LIGHT_SHADOWS_CASCADE)] _MAIN_LIGHT_SHADOWS_CASCADE("Cast Shadow", Float) = 1
+
+
         _Test ("Test Factor", Vector) = (0,0,0,0)
     }
     SubShader
@@ -39,7 +43,12 @@ Shader "Environment/ProceduralGrass"
             #define BLADE_SEG_NUM 3
 
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
             #include "Assets/Common/Library/KrusNoise.hlsl"
+
+            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS
+            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS_CASCADE
+            #pragma multi_compile _ _SHADOWS_SOFT
 
             CBUFFER_START(UnityPerMaterial)
             float4 _Test;
@@ -61,21 +70,14 @@ Shader "Environment/ProceduralGrass"
             float4 _WindNoiseMap_ST;
             float2 _WindNoiseFrequency;
             float _WindStrength;
+
             CBUFFER_END
 
             // TEXTURE2D(_WindNoiseMap);   SAMPLER(sampler_WindNoiseMap);
 
             struct appdata
             {
-                float4 posOS : POSITION;
-                half3 normal : NORMAL;
-                half4 tangent : TANGENT;
-                half2 uv : TEXCOORD0;
-            };
-
-            struct tessdata
-            {
-                float4 pos : SV_POSITION;
+                float4 pos : POSITION;
                 half3 normal : NORMAL;
                 half4 tangent : TANGENT;
                 half2 uv : TEXCOORD0;
@@ -95,6 +97,7 @@ Shader "Environment/ProceduralGrass"
                 // half3 normal : NORMAL;
                 // half4 tangent : TANGENT;
                 half2 uv : TEXCOORD0;
+                float3 posWS : TEXCOORD1;
             };
 
             struct TessellationFactors
@@ -119,7 +122,7 @@ Shader "Environment/ProceduralGrass"
             
 
             // CONSTANT FUNCTION
-            TessellationFactors ConstantFunction(InputPatch<tessdata, 3> patch)
+            TessellationFactors ConstantFunction(InputPatch<appdata, 3> patch)
             {   
                 float3 p0_WS = TransformObjectToWorld(patch[0].pos).xyz;
                 float3 p1_WS = TransformObjectToWorld(patch[1].pos).xyz;
@@ -142,6 +145,7 @@ Shader "Environment/ProceduralGrass"
                 geomdata o;
                 o.pos = TransformObjectToHClip(posOS + mul(matrix_transformation, offset));
                 o.uv = uv;
+                o.posWS = TransformObjectToWorld(posOS + mul(matrix_transformation, offset)).xyz;
                 return o;
             }
 
@@ -167,7 +171,7 @@ Shader "Environment/ProceduralGrass"
             // FUNCTION END ////////////////////////////////////////////////////////
 
             // VERT PROGRAM FOR TESSELLATION // 
-            vertdata tessvert (tessdata v)
+            vertdata tessvert (appdata v)
             {
                 vertdata o;
                 o.pos = v.pos;
@@ -178,10 +182,10 @@ Shader "Environment/ProceduralGrass"
             }
 
             // VERT SHADER //
-            tessdata vert (appdata v)
+            vertdata vert (appdata v)
             {
-                tessdata o;
-                o.pos = v.posOS;
+                appdata o;
+                o.pos = v.pos;
                 o.normal = v.normal;
                 o.tangent = v.tangent;
                 o.uv = v.uv;
@@ -194,7 +198,7 @@ Shader "Environment/ProceduralGrass"
             [outputtopology("triangle_cw")] 
             [outputcontrolpoints(3)]
             [patchconstantfunc("ConstantFunction")]
-            tessdata hull(InputPatch<tessdata, 3> patch, uint id : SV_OutputControlPointID)
+            appdata hull(InputPatch<appdata, 3> patch, uint id : SV_OutputControlPointID)
             {
                 return patch[id];
             }
@@ -203,9 +207,9 @@ Shader "Environment/ProceduralGrass"
 
             // DOMAIN SHADER //
             [domain("tri")]
-            vertdata domain(TessellationFactors factors, OutputPatch<tessdata, 3> patch, float3 barycentricCoordinates : SV_DomainLocation)
+            vertdata domain(TessellationFactors factors, OutputPatch<appdata, 3> patch, float3 barycentricCoordinates : SV_DomainLocation)
             {
-                tessdata data;
+                appdata data;
 
                 #define DOMAIN_INTERPOLATE(fieldName) data.fieldName = \
                     patch[0].fieldName * barycentricCoordinates.x + \
@@ -278,7 +282,7 @@ Shader "Environment/ProceduralGrass"
 
         Pass
         {
-            Name "Grass"
+            Name "GrassLighting"
 
             Tags 
             {
@@ -298,7 +302,22 @@ Shader "Environment/ProceduralGrass"
             // FRAG SHADER //
             half4 frag (geomdata i) : SV_Target
             {
+                // grass color
                 half3 col = lerp(_BotCol.rgb, _TopCol.rgb, i.uv.y);
+
+                // receive shadow
+                #ifdef _MAIN_LIGHT_SHADOWS
+                    VertexPositionInputs vertexInput = (VertexPositionInputs)0;
+                    vertexInput.positionWS = i.posWS;
+                    
+                    half4 shadowCoord = GetShadowCoord(vertexInput);
+                    half shadowAttenuation = saturate(MainLightRealtimeShadow(shadowCoord) + 0.25);
+                    half3 shadow = lerp(0.0f, 1.0f, shadowAttenuation);
+
+                    // overlay shadow on grass color
+                    col *= shadow;
+                #endif
+
                 return half4(col, 1);
             }
             ENDHLSL
@@ -306,13 +325,13 @@ Shader "Environment/ProceduralGrass"
 
         Pass 
         {
-            Name "ShadowCaster"
+            Name "GrassShadowCaster"
             Tags { "LightMode" = "ShadowCaster" }
             
             HLSLPROGRAM
 
-            #pragma require geometry
-            #pragma require tessellation tessHW
+            // #pragma require geometry
+            // #pragma require tessellation tessHW
 
             #pragma vertex vert
             #pragma hull hull
@@ -323,11 +342,13 @@ Shader "Environment/ProceduralGrass"
             #pragma target 4.6
             #pragma multi_compile_shadowcaster
 
-            // #include "Packages/com.unity.render-pipelines.universal/Shaders/ShadowCasterPass.hlsl"
-
-            float4 frag(geomdata i) : SV_Target
+            half4 frag(geomdata i) : SV_Target
             {
-
+                #ifndef _MAIN_LIGHT_SHADOWS_CASCADE
+                    discard;
+                #endif
+                
+                return 0;
             }
 
             ENDHLSL
