@@ -24,7 +24,13 @@ Shader "Environment/ProceduralGrass"
         [IntRange] _BladeBendCurve ("Blade Bend Curve", Range(1, 4)) = 2
         _BladeBendDistance ("Blade Bend Distance", Range(0, 3)) = 1.0
         _TessellationnEdgeLength ("Grass Inv_Density (Tessellation Edge Length)", Range(0, 0.1)) = 0.05
-        [HideInInspector] [IntRange] _MaxEdgeFactor ("Max Edge Factor", Range(1, 10)) = 4
+        [IntRange] _MaxEdgeFactor ("Max density (Max Edge Factor)", Range(1, 10)) = 4
+        [Space(30)]
+
+        [Header(Interactor)]
+        _InteractorRadius ("Interactor Radius", Float) = 0.5
+        _InteractorStrength ("Interactor Strength", Float) = 5
+        [Space(30)]
 
         [Header(Wind)]
         _WindNoiseMap ("Wind Noise Map", 2D) = "white" {}
@@ -76,6 +82,10 @@ Shader "Environment/ProceduralGrass"
             half _ShadowIntensity;
             half _FakeShadowIntensity;
             half _FakeShadowRange;
+            
+            uniform float3 _InteractorPos0;
+            half _InteractorRadius;
+            float _InteractorStrength;
 
             float4 _Test;
             CBUFFER_END
@@ -147,12 +157,12 @@ Shader "Environment/ProceduralGrass"
             // FUNCTION START ////////////////////////////////////////////////////////
 
             // assign properties to vertices created in geom shader
-            geomdata GenerateGrassVertices(float3 posOS, float3 offset, float3x3 matrix_transformation, half2 uv)
+            geomdata GenerateGrassVertices(float3 newPosOS, float3 offset, float3x3 matrix_transformation, half2 uv)
             {
                 geomdata o;
-                o.pos = TransformObjectToHClip(posOS + mul(matrix_transformation, offset));
+                o.pos = TransformObjectToHClip(newPosOS + mul(matrix_transformation, offset));
                 o.uv = uv;
-                o.posWS = TransformObjectToWorld(posOS + mul(matrix_transformation, offset)).xyz;
+                o.posWS = TransformObjectToWorld(newPosOS + mul(matrix_transformation, offset)).xyz;
                 return o;
             }
 
@@ -238,6 +248,7 @@ Shader "Environment/ProceduralGrass"
             {
                 // prepare variables
                 float3 posOS = IN[0].pos.xyz ;
+                float3 posWS = TransformObjectToWorld(posOS).xyz;
                 half3 normal = IN[0].normal;
                 half3 tangent = IN[0].tangent.xyz;
                 half3 bitangent = cross(normal, tangent) * IN[0].tangent.w;
@@ -264,6 +275,13 @@ Shader "Environment/ProceduralGrass"
                 half height = (rand(posOS.zyx) * 2 - 1) * _BladeHeightRand + _BladeHeight;
                 half forward = rand(posOS.yxz) * _BladeBendDistance;
 
+                // Interactivity 
+                float dst = distance(_InteractorPos0, posWS);
+                float3 radius = 1 - saturate (dst / _InteractorRadius);
+                float3 sphereDisp = posWS - _InteractorPos0;
+                sphereDisp *= radius;
+                sphereDisp = clamp(sphereDisp * _InteractorStrength, -0.8, 0.8);
+
                 // GENERATE VERTICES //
                 // segment part
                 for (int i = 0; i < BLADE_SEG_NUM; i++)
@@ -272,14 +290,17 @@ Shader "Environment/ProceduralGrass"
                     // added vertices' pos info
                     float3 offset = float3(width * (1 - t), pow(t, _BladeBendCurve) * forward, height * t);
                     float3x3 matrix_transformation = (i == 0) ? matrix_transformation_base : matrix_transformation_tip;
+
+                    // interactor force field
+                    float3 newPosOS = (i == 0) ? posOS : posOS + sphereDisp * t;
                 
-                    triStream.Append(GenerateGrassVertices(posOS, float3(offset.x, offset.y, offset.z), matrix_transformation, float2(0, t)));
-                    triStream.Append(GenerateGrassVertices(posOS, float3(-offset.x, offset.y, offset.z), matrix_transformation, float2(1, t)));
+                    triStream.Append(GenerateGrassVertices(newPosOS, float3(offset.x, offset.y, offset.z), matrix_transformation, float2(0, t)));
+                    triStream.Append(GenerateGrassVertices(newPosOS, float3(-offset.x, offset.y, offset.z), matrix_transformation, float2(1, t)));
                     
                 }
                 
                 // tip part
-                triStream.Append(GenerateGrassVertices(posOS, float3(0, forward, height), matrix_transformation_tip, float2(0.5, 1)));
+                triStream.Append(GenerateGrassVertices(posOS + sphereDisp, float3(0, forward, height), matrix_transformation_tip, float2(0.5, 1)));
                 
 
                 triStream.RestartStrip();
@@ -312,8 +333,8 @@ Shader "Environment/ProceduralGrass"
                 // grass color
                 half3 col = 1;
 
-                half fakeShadow = saturate(floor(i.uv.x / _FakeShadowRange) + 1 - _FakeShadowIntensity);
-                half3 lerpCol = lerp(_BotCol, _TopCol, i.uv.y);
+                half fakeShadow = lerp( saturate(floor(i.uv.x / _FakeShadowRange) + (1 - _FakeShadowIntensity)), 1.0, i.uv.y);
+                half3 lerpCol = lerp(_BotCol.xyz, _TopCol.xyz, i.uv.y);
                 col = lerpCol * fakeShadow;
 
                 // receive shadow
