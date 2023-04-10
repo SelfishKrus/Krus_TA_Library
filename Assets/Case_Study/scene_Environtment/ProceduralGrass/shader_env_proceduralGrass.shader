@@ -7,8 +7,15 @@ Shader "Environment/ProceduralGrass"
         _BotCol ("Bottom Color", Color) = (0,0.5,0,1)
         [Space(10)]
 
+        [Header(Shadow)]
+        [Toggle(_MAIN_LIGHT_SHADOWS)] _MAIN_LIGHT_SHADOWS("Receive Shadow", Float) = 1
+        _ShadowIntensity ("Shadow Intensity", Range(0, 1)) = 0.25
+        [Header(Fake Shadow)]
+        _FakeShadowIntensity ("Fake Shadow Intensity", Range(0, 1)) = 0.25
+        _FakeShadowRange ("Fake Shadow Range", Range(0.1, 1)) = 0.5
+
+
         [Header(Shape Control)]
-        _Density ("Grass Density", Range(1, 8)) = 3
         _BendAmount ("Bend Amount", Range(0, 1)) = 0
         _BladeWidth ("Blade Width", Float) = 0.5
         _BladeHeight ("Blade Height", Float) = 1  
@@ -16,17 +23,14 @@ Shader "Environment/ProceduralGrass"
         _BladeHeightRand ("Blade Height Randomness", Range(0, 1)) = 0
         [IntRange] _BladeBendCurve ("Blade Bend Curve", Range(1, 4)) = 2
         _BladeBendDistance ("Blade Bend Distance", Range(0, 3)) = 1.0
-        _TessellationnEdgeLength ("Tessellation Edge Length", Range(0, 0.1)) = 0.05
+        _TessellationnEdgeLength ("Grass Inv_Density (Tessellation Edge Length)", Range(0, 0.1)) = 0.05
         [HideInInspector] [IntRange] _MaxEdgeFactor ("Max Edge Factor", Range(1, 10)) = 4
 
         [Header(Wind)]
         _WindNoiseMap ("Wind Noise Map", 2D) = "white" {}
         _WindNoiseFrequency ("Wind Noise Frequency", Vector) = (0.5, 0.5, 0, 0)
         _WindStrength ("Wind Strength", Float) = 1
-        [Space(10)]
-
-        [Toggle(_MAIN_LIGHT_SHADOWS)] _MAIN_LIGHT_SHADOWS("Receive Shadow", Float) = 1
-        [Toggle(_MAIN_LIGHT_SHADOWS_CASCADE)] _MAIN_LIGHT_SHADOWS_CASCADE("Cast Shadow", Float) = 1
+        [Space(30)]
 
 
         _Test ("Test Factor", Vector) = (0,0,0,0)
@@ -51,11 +55,9 @@ Shader "Environment/ProceduralGrass"
             #pragma multi_compile _ _SHADOWS_SOFT
 
             CBUFFER_START(UnityPerMaterial)
-            float4 _Test;
             half4 _TopCol;
             half4 _BotCol;
 
-            half _Density;
             half _BendAmount;
             half _BladeWidth;
             half _BladeHeight;
@@ -71,6 +73,11 @@ Shader "Environment/ProceduralGrass"
             float2 _WindNoiseFrequency;
             float _WindStrength;
 
+            half _ShadowIntensity;
+            half _FakeShadowIntensity;
+            half _FakeShadowRange;
+
+            float4 _Test;
             CBUFFER_END
 
             // TEXTURE2D(_WindNoiseMap);   SAMPLER(sampler_WindNoiseMap);
@@ -124,9 +131,9 @@ Shader "Environment/ProceduralGrass"
             // CONSTANT FUNCTION
             TessellationFactors ConstantFunction(InputPatch<appdata, 3> patch)
             {   
-                float3 p0_WS = TransformObjectToWorld(patch[0].pos).xyz;
-                float3 p1_WS = TransformObjectToWorld(patch[1].pos).xyz;
-                float3 p2_WS = TransformObjectToWorld(patch[2].pos).xyz;
+                float3 p0_WS = TransformObjectToWorld(patch[0].pos.xyz).xyz;
+                float3 p1_WS = TransformObjectToWorld(patch[1].pos.xyz).xyz;
+                float3 p2_WS = TransformObjectToWorld(patch[2].pos.xyz).xyz;
                 
 
                 TessellationFactors f;
@@ -238,15 +245,15 @@ Shader "Environment/ProceduralGrass"
 
                 // wind
                 float2 windUV = posOS.xz * _WindNoiseMap_ST.xy + _WindNoiseMap_ST.zw + _WindNoiseFrequency * _Time.y;
-                float2 windSample = (tex2Dlod(_WindNoiseMap, float4(windUV,0,0)).xy * 2 - 1) * _WindStrength;
+                half2 windSample = (tex2Dlod(_WindNoiseMap, float4(windUV,0,0)).xy * 2 - 1) * _WindStrength;
                 // rotation axis
                 half3 windAxis = normalize(float3(windSample.x, windSample.y, 0));
-                float3x3 matrix_windRotation = angleAxis3x3(PI * windSample.y, windAxis) ;
+                float3x3 matrix_windRotation = angleAxis3x3(PI * windSample.x, windAxis) ;
 
                 // TBN matrix - TS to OS
                 float3x3 matrix_TS2OS = transpose(float3x3(tangent, bitangent, normal));
-                float3x3 matrix_randFaceRotation = angleAxis3x3(rand(posOS) * PI * 2, half3(0, 0, 1));
-                float3x3 matrix_randBendRotation = angleAxis3x3(rand(posOS.zyx) * _BendAmount * PI * 0.5, half3(1, 0, 0));
+                float3x3 matrix_randFaceRotation = angleAxis3x3(rand(posOS) * PI * 2, float3(0, 0, 1));
+                float3x3 matrix_randBendRotation = angleAxis3x3(rand(posOS.zyx) * _BendAmount * PI * 0.5, float3(1, 0, 0));
 
                 // final rotation matrix for base or top
                 float3x3 matrix_transformation_tip = mul(mul(mul(matrix_TS2OS, matrix_windRotation), matrix_randFaceRotation), matrix_randBendRotation);
@@ -303,7 +310,11 @@ Shader "Environment/ProceduralGrass"
             half4 frag (geomdata i) : SV_Target
             {
                 // grass color
-                half3 col = lerp(_BotCol.rgb, _TopCol.rgb, i.uv.y);
+                half3 col = 1;
+
+                half fakeShadow = saturate(floor(i.uv.x / _FakeShadowRange) + 1 - _FakeShadowIntensity);
+                half3 lerpCol = lerp(_BotCol, _TopCol, i.uv.y);
+                col = lerpCol * fakeShadow;
 
                 // receive shadow
                 #ifdef _MAIN_LIGHT_SHADOWS
@@ -311,7 +322,7 @@ Shader "Environment/ProceduralGrass"
                     vertexInput.positionWS = i.posWS;
                     
                     half4 shadowCoord = GetShadowCoord(vertexInput);
-                    half shadowAttenuation = saturate(MainLightRealtimeShadow(shadowCoord) + 0.25);
+                    half shadowAttenuation = saturate(MainLightRealtimeShadow(shadowCoord) + _ShadowIntensity);
                     half3 shadow = lerp(0.0f, 1.0f, shadowAttenuation);
 
                     // overlay shadow on grass color
@@ -344,10 +355,6 @@ Shader "Environment/ProceduralGrass"
 
             half4 frag(geomdata i) : SV_Target
             {
-                #ifndef _MAIN_LIGHT_SHADOWS_CASCADE
-                    discard;
-                #endif
-                
                 return 0;
             }
 
