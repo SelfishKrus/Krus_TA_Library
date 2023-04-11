@@ -7,7 +7,7 @@ using UnityEditor;
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshRenderer))]
 [ExecuteInEditMode]
-public class GeometryGrassPainter : MonoBehaviour
+public class KrusGrassPainter : MonoBehaviour
 {
     private Mesh mesh;
     MeshFilter filter;
@@ -61,8 +61,10 @@ public class GeometryGrassPainter : MonoBehaviour
     public Vector3 hitNormal;
 
     int[] indi;
-    #if UNITY_EDITOR
-        void OnFocus()
+    
+    // only run in edit mode
+   #if UNITY_EDITOR
+    void OnFocus()
         {
             // Remove delegate listener if it has previously
             // been assigned.
@@ -96,14 +98,13 @@ public class GeometryGrassPainter : MonoBehaviour
 
         void OnScene(SceneView scene)
         {
-            // only allow painting while this object is selected
-            if ((Selection.Contains(gameObject)))
+            if (Selection.Contains(gameObject))
             {
                 Event e = Event.current;
                 RaycastHit terrainHit;
 
                 // convert mouse position in pixel space to scene view
-                mousePos = e.mousePosition;
+                mousePos = e.mousePosition; // mouse position in pixels
                 float ppp = EditorGUIUtility.pixelsPerPoint;
                 mousePos.y = scene.camera.pixelHeight - mousePos.y * ppp;
                 mousePos.x *= ppp;
@@ -112,18 +113,18 @@ public class GeometryGrassPainter : MonoBehaviour
                 Ray rayGizmo = scene.camera.ScreenPointToRay(mousePos);
                 RaycastHit hitGizmo;
 
+                // hit pos of ray for gizmo
                 if (Physics.Raycast(rayGizmo, out hitGizmo, 200f, hitMask.value))
                 {
                     hitPosGizmo = hitGizmo.point;
                 }
 
+                // ADD GRASS // 
                 if (e.type == EventType.MouseDrag && e.button == 1 && toolbarInt == 0)
                 {
-                    // place based on density
                     for (int k = 0; k < density; k++)
                     {
-
-                        // brushrange
+                        // brush range 
                         float t = 2f * Mathf.PI * Random.Range(0f, brushSize);
                         float u = Random.Range(0f, brushSize) + Random.Range(0f, brushSize);
                         float r = (u > 1 ? 2 - u : u);
@@ -142,7 +143,7 @@ public class GeometryGrassPainter : MonoBehaviour
 
                         // add random range to ray
                         Ray ray = scene.camera.ScreenPointToRay(mousePos);
-                        ray.origin += origin;
+                        ray.origin += origin; 
 
                         // if the ray hits something thats on the layer mask,  within the grass limit and within the y normal limit
                         if (Physics.Raycast(ray, out terrainHit, 200f, hitMask.value) && i < grassLimit && terrainHit.normal.y <= (1 + normalLimit) && terrainHit.normal.y >= (1 - normalLimit))
@@ -187,12 +188,12 @@ public class GeometryGrassPainter : MonoBehaviour
                                 }
                             }
 
-                        }
 
+                        }
                     }
                     e.Use();
                 }
-                
+
                 // removing mesh points
                 if (e.type == EventType.MouseDrag && e.button == 1 && toolbarInt == 1)
                 {
@@ -259,6 +260,7 @@ public class GeometryGrassPainter : MonoBehaviour
                     }
                     e.Use();
                 }
+
                 // set all info to mesh
                 mesh = new Mesh();
                 mesh.SetVertices(positions);
@@ -268,8 +270,7 @@ public class GeometryGrassPainter : MonoBehaviour
                 mesh.SetColors(colors);
                 mesh.SetNormals(normals);
                 filter.mesh = mesh;
-
             }
         }
-    #endif
+   #endif
 }

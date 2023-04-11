@@ -259,7 +259,7 @@ Shader "Environment/ProceduralGrass"
                 half2 windSample = (tex2Dlod(_WindNoiseMap, float4(windUV,0,0)).xy * 2 - 1) * _WindStrength;
                 // rotation axis
                 half3 windAxis = normalize(float3(windSample.x, windSample.y, 0));
-                float3x3 matrix_windRotation = angleAxis3x3(PI * windSample.x, windAxis) ;
+                float3x3 matrix_windRotation = angleAxis3x3(PI * windSample.y, windAxis) ;
 
                 // TBN matrix - TS to OS
                 float3x3 matrix_TS2OS = transpose(float3x3(tangent, bitangent, normal));
@@ -300,7 +300,7 @@ Shader "Environment/ProceduralGrass"
                 }
                 
                 // tip part
-                triStream.Append(GenerateGrassVertices(posOS + sphereDisp, float3(0, forward, height), matrix_transformation_tip, float2(0.5, 1)));
+                triStream.Append(GenerateGrassVertices(posOS + sphereDisp * 1.3, float3(0, forward, height), matrix_transformation_tip, float2(0.5, 1)));
                 
 
                 triStream.RestartStrip();
