@@ -1,4 +1,4 @@
-Shader "Environment/ProceduralGrass"
+Shader "Environment/TessellationGeometryGrass"
 {
     Properties
     {   

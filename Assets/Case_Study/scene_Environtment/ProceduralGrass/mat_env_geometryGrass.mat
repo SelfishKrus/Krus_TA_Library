@@ -7,11 +7,12 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: mat_env_proceduralGrass
-  m_Shader: {fileID: 4800000, guid: 716dd37ef82dac047938569a8bebb180, type: 3}
+  m_Name: mat_env_geometryGrass
+  m_Shader: {fileID: 4800000, guid: 68d948685113bbe4993042196b1cfafe, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
+  - _MAIN_LIGHT_SHADOWS
   - _MAIN_LIGHT_SHADOWS_CASCADE
   m_InvalidKeywords:
   - _MAIN_LIGHT_SHADOWS_CASCADE_ON
@@ -42,31 +43,31 @@ Material:
     - _BladeHeight: 1.16
     - _BladeHeightRand: 0.369
     - _BladeSegNum: 2
-    - _BladeWidth: 0.14
-    - _BladeWidthRand: 0.057
+    - _BladeWidth: 0.1
+    - _BladeWidthRand: 0.01
     - _Density: 1.71
-    - _FakeShadowIntensity: 1
+    - _FakeShadowIntensity: 0
     - _FakeShadowRange: 0.282
     - _Glossiness: 0.5
     - _InteractorRadius: 2.21
     - _InteractorStrength: 1.25
     - _LineLength: 0.5
-    - _MAIN_LIGHT_SHADOWS: 0
+    - _MAIN_LIGHT_SHADOWS: 1
     - _MAIN_LIGHT_SHADOWS_CASCADE: 1
     - _MaxEdgeFactor: 5
     - _Metallic: 0
     - _SBias: 0.25
     - _ShadowBias: 0.25
-    - _ShadowIntensity: 0.255
+    - _ShadowIntensity: 0.25
     - _TessellationnEdgeLength: 0.0634
-    - _WindStrength: 0.02
+    - _WindStrength: 0.1
     m_Colors:
-    - _BotCol: {r: 0.5188679, g: 0.24888638, b: 0.110137075, a: 1}
+    - _BotCol: {r: 0.33962262, g: 0.33962262, b: 0.33962262, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _FakeShadowCol: {r: 0, g: 0, b: 0, a: 1}
     - _LineColor: {r: 0, g: 0, b: 1, a: 1}
     - _LineColorLerp: {r: 0, g: 1, b: 0, a: 1}
     - _Test: {r: 1.25, g: 2.66, b: 1.48, a: 0.4}
-    - _TopCol: {r: 0.7169812, g: 0.7122715, b: 0.4836241, a: 1}
-    - _WindNoiseFrequency: {r: 0, g: 0, b: 0, a: 0}
+    - _TopCol: {r: 1, g: 1, b: 1, a: 1}
+    - _WindNoiseFrequency: {r: 0.05, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []

@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: mat_env_tessellationGeometryGrass
+  m_Shader: {fileID: 4800000, guid: 716dd37ef82dac047938569a8bebb180, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _WindNoiseMap:
+        m_Texture: {fileID: 2800000, guid: e52f116a219f5df48b04ac5f8ec462bd, type: 3}
+        m_Scale: {x: 0.01, y: 0.01}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _BendAmount: 0
+    - _BladeBendCurve: 2
+    - _BladeBendDistance: 0.73
+    - _BladeHeight: 1
+    - _BladeHeightRand: 0
+    - _BladeWidth: 0.08
+    - _BladeWidthRand: 0.1
+    - _FakeShadowIntensity: 0.248
+    - _FakeShadowRange: 0.549
+    - _InteractorRadius: 0.5
+    - _InteractorStrength: 5
+    - _MAIN_LIGHT_SHADOWS: 0
+    - _MaxEdgeFactor: 6
+    - _ShadowIntensity: 0.285
+    - _TessellationnEdgeLength: 0.0705
+    - _WindStrength: 0.24
+    m_Colors:
+    - _BotCol: {r: 0, g: 0.5, b: 0, a: 1}
+    - _Test: {r: 0, g: 0, b: 0, a: 0}
+    - _TopCol: {r: 0.5943396, g: 0.7924528, b: 0.5943396, a: 1}
+    - _WindNoiseFrequency: {r: 0.1, g: 0.01, b: 0, a: 0}
+  m_BuildTextureStacks: []

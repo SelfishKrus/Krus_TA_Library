@@ -259,6 +259,7 @@ public class GeometryGrassPainter : MonoBehaviour
                     }
                     e.Use();
                 }
+                
                 // set all info to mesh
                 mesh = new Mesh();
                 mesh.SetVertices(positions);
