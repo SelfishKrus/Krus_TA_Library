@@ -12,7 +12,6 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
-  - _MAIN_LIGHT_SHADOWS
   - _MAIN_LIGHT_SHADOWS_CASCADE
   m_InvalidKeywords:
   - _MAIN_LIGHT_SHADOWS_CASCADE_ON
@@ -45,14 +44,15 @@ Material:
     - _BladeSegNum: 2
     - _BladeWidth: 0.1
     - _BladeWidthRand: 0.01
+    - _CullingThreshold: 30
     - _Density: 1.71
-    - _FakeShadowIntensity: 0
-    - _FakeShadowRange: 0.282
+    - _FakeShadowIntensity: 1
+    - _FakeShadowRange: 0.302
     - _Glossiness: 0.5
-    - _InteractorRadius: 2.21
-    - _InteractorStrength: 1.25
+    - _InteractorRadius: 1.79
+    - _InteractorStrength: 1.76
     - _LineLength: 0.5
-    - _MAIN_LIGHT_SHADOWS: 1
+    - _MAIN_LIGHT_SHADOWS: 0
     - _MAIN_LIGHT_SHADOWS_CASCADE: 1
     - _MaxEdgeFactor: 5
     - _Metallic: 0
@@ -67,7 +67,7 @@ Material:
     - _FakeShadowCol: {r: 0, g: 0, b: 0, a: 1}
     - _LineColor: {r: 0, g: 0, b: 1, a: 1}
     - _LineColorLerp: {r: 0, g: 1, b: 0, a: 1}
-    - _Test: {r: 1.25, g: 2.66, b: 1.48, a: 0.4}
+    - _Test: {r: 0.26, g: 0.12, b: -0.15, a: 0.4}
     - _TopCol: {r: 1, g: 1, b: 1, a: 1}
     - _WindNoiseFrequency: {r: 0.05, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []

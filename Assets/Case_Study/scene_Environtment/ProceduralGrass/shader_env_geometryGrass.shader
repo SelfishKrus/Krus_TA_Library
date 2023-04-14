@@ -5,6 +5,7 @@ Shader "Environment/GeometryGrass"
         [Header(Color)]
         _TopCol ("Top Color", Color) = (0,1,0,1)
         _BotCol ("Bottom Color", Color) = (0,0.5,0,1)
+        _MainTex ("Main Texture", 2D) = "white" {}
         [Space(10)]
 
         [Header(Shadow)]
@@ -38,6 +39,8 @@ Shader "Environment/GeometryGrass"
         _WindStrength ("Wind Strength", Float) = 0.1
         [Space(30)]
 
+        _CullingThreshold ("Culling Threshold", Float) = 10
+
 
         _Test ("Test Factor", Vector) = (0,0,0,0)
     }
@@ -62,6 +65,8 @@ Shader "Environment/GeometryGrass"
             CBUFFER_START(UnityPerMaterial)
             half4 _TopCol;
             half4 _BotCol;
+            sampler2D _MainTex;
+            float4 _MainTex_ST;
 
             half _BendAmount;
             half _BladeWidth;
@@ -86,6 +91,8 @@ Shader "Environment/GeometryGrass"
             half _InteractorRadius;
             float _InteractorStrength;
 
+            float _CullingThreshold;
+
             float4 _Test;
             CBUFFER_END
 
@@ -103,7 +110,7 @@ Shader "Environment/GeometryGrass"
             struct geomdata
             {
                 float4 pos : SV_POSITION;
-                // half3 normal : NORMAL;
+                half3 normal : NORMAL;
                 // half4 tangent : TANGENT;
                 half2 uv : TEXCOORD0;
                 float3 posWS : TEXCOORD1;
@@ -118,13 +125,15 @@ Shader "Environment/GeometryGrass"
                 float3 offset, 
                 float3x3 matrix_transformation, 
                 half2 uv,
-                half3 color)
+                half3 color,
+                half3 faceNormalWS)
             {
                 geomdata o;
                 o.pos = TransformObjectToHClip(newPosOS + mul(matrix_transformation, offset));
                 o.uv = uv;
                 o.posWS = TransformObjectToWorld(newPosOS + mul(matrix_transformation, offset)).xyz;
                 o.color = color;
+                o.normal = faceNormalWS;
                 return o; 
             }
 
@@ -158,6 +167,9 @@ Shader "Environment/GeometryGrass"
                 o.tangent = v.tangent;
                 o.uv = v.uv;
                 o.color = v.color;
+
+                
+
                 return o;
             }
 
@@ -204,24 +216,33 @@ Shader "Environment/GeometryGrass"
                 sphereDisp *= radius;
                 sphereDisp = clamp(sphereDisp * _InteractorStrength, -0.8, 0.8);
 
+                // Face normal
+                half3 faceNormalTS = half3(0,1,0);
+
                 // GENERATE VERTICES //
                 // segment part
                 for (int i = 0; i < BLADE_SEG_NUM; i++)
-                {
+                {   
+                    
+                    // dwindling factor
                     float t = i / (float)BLADE_SEG_NUM;
                     // added vertices' pos info
-                    float3 offset = float3(width * (1 - t), pow(t, _BladeBendCurve) * forward, height * t);
+                    // offset done in Tangent space so offset.z is height
+                    float3 offset = float3(width * (1 - t),   pow(t, _BladeBendCurve) * forward , height * t);
                     float3x3 matrix_transformation = (i == 0) ? matrix_transformation_base : matrix_transformation_tip;
+
+                    half3 faceNormalWS = TransformObjectToWorldDir(mul(matrix_transformation, faceNormalTS));
 
                     // interactor force field
                     float3 newPosOS = (i == 0) ? posOS : posOS + sphereDisp * t;
                 
-                    triStream.Append(GenerateGrassVertices(newPosOS, float3(offset.x, offset.y, offset.z), matrix_transformation, float2(0, t), IN[0].color));
-                    triStream.Append(GenerateGrassVertices(newPosOS, float3(-offset.x, offset.y, offset.z), matrix_transformation, float2(1, t), IN[0].color));
+                    triStream.Append(GenerateGrassVertices(newPosOS, float3(offset.x, offset.y, offset.z), matrix_transformation, float2(0, t), IN[0].color, faceNormalWS));
+                    triStream.Append(GenerateGrassVertices(newPosOS, float3(-offset.x, offset.y, offset.z), matrix_transformation, float2(1, t), IN[0].color, faceNormalWS));
                 }
                 
                 // tip part
-                triStream.Append(GenerateGrassVertices(posOS + sphereDisp * 1.3, float3(0, forward, height), matrix_transformation_tip, float2(0.5, 1), IN[0].color));
+                half3 faceNormalWS = TransformObjectToWorldDir(mul(faceNormalTS, matrix_transformation_tip));
+                triStream.Append(GenerateGrassVertices(posOS + sphereDisp * 1.3, float3(0, forward, height), matrix_transformation_tip, float2(0.5, 1), IN[0].color, faceNormalWS));
                 
                 triStream.RestartStrip();
             }
@@ -233,7 +254,6 @@ Shader "Environment/GeometryGrass"
             Name "GrassLighting"
             ZWrite On
             ZTest LEqual
-            Cull Off
 
             Tags 
             {
@@ -250,11 +270,16 @@ Shader "Environment/GeometryGrass"
             
             // FRAG SHADER //
             half4 frag (geomdata i) : SV_Target
-            {
+            {   
+                // culling based on distance
+                float dst = distance(i.posWS, _WorldSpaceCameraPos);
+                clip(_CullingThreshold - dst);
+
                 // grass color
                 half3 col = 1;
-                
+                half3 texCol = tex2D(_MainTex, i.uv).rgb;
                 half3 lerpCol = lerp(_BotCol.xyz, _TopCol.xyz, i.uv.y) * i.color;
+                half3 baseCol = lerpCol * texCol;
 
                 // fakeShadow
                 half fakeShadow = lerp( saturate(floor(i.uv.x / _FakeShadowRange) + (1 - _FakeShadowIntensity)), 1.0, i.uv.y);
@@ -270,8 +295,13 @@ Shader "Environment/GeometryGrass"
                     shadow = lerp(0.0f, 1.0f, shadowAttenuation);
                 #endif
 
-                
-                col = lerpCol * fakeShadow * shadow;
+                // Lambert
+                Light mainLight = GetMainLight();
+                half nl = max(saturate(dot(i.normal, mainLight.direction)), 0.00001);
+                half nl_half = nl * 0.5 + 0.5;
+                half3 diffuse = mainLight.color * baseCol * nl_half;
+
+                col = diffuse * fakeShadow * shadow;
                 return half4(col, 1);
             }
             ENDHLSL

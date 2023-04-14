@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06b63172626be9c439eb379dba31b589, type: 3}
   m_Name: RaindropRendererFeature
   m_EditorClassIdentifier: 
-  m_Active: 1
+  m_Active: 0
   settings:
     renderPassEvent: 500
-    mat: {fileID: 0}
+    mat: {fileID: 2100000, guid: d460179db0b004f4cb297f3879b86378, type: 2}
     downsample: 1
-    copyToFramebuffer: 0
+    copyToFramebuffer: 1
     targetName: _MainTex
 --- !u!114 &-1878332245247344467
 MonoBehaviour:
