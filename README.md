@@ -1,3 +1,9 @@
+# 3 - Droplet Effect 
+![2023-04-14-23-58-22 mp4_20230414_235923](https://user-images.githubusercontent.com/79186991/232098318-356d769a-4ef7-4e9c-9a6a-3f485213374a.gif)
+## 3.1 - Reference 
+1. [Youtube | Making a rainy window in Unity - Part 1](https://www.youtube.com/watch?v=EBrAdahFtuo&t=2077s) 
+2. [Youtube | Making a rainy window in Unity - Part 2](https://www.youtube.com/watch?v=0flY11lVCwY&t=17s) 
+
 # 2 - Geometry Grass
 ![Movie_001 mp4_20230414_231611](https://user-images.githubusercontent.com/79186991/232084887-e96e8136-25ef-41df-96d8-51203b39a56e.gif)
 ## 2.1 - Features
