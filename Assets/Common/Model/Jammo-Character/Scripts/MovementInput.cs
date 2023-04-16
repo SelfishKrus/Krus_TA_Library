@@ -21,7 +21,7 @@ public class MovementInput : MonoBehaviour {
 	public float allowPlayerRotation = 0.1f;
 	public Camera cam;
 	public CharacterController controller;
-	public bool isGrounded = false;
+	public bool isGrounded;
 
     [Header("Animation Smoothing")]
     [Range(0, 1f)]
