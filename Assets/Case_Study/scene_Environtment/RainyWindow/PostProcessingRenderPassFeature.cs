@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
-public class RaindropRendererFeature : ScriptableRendererFeature
+public class PostProcessingRenderPassFeature : ScriptableRendererFeature
 {
     // RenderFeature UI Settings ////////////////////////////////////////////////////////////////////////
     [System.Serializable]

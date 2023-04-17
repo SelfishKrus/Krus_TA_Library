@@ -130,7 +130,7 @@ Shader "Environment/VolumeFog"
                 posWS.xyz -= _BoxCenter;
                 posWS.y /=  _BoxExtents.y;
 
-                half density = SAMPLE_TEXTURE2D(_NoiseMap, sampler_NoiseMap, posWS.xz * _NoiseScale + wind);
+                half density = SAMPLE_TEXTURE2D(_NoiseMap, sampler_NoiseMap, posWS.xz * _NoiseScale + wind).r;
                 
 
                 // height gradient 
