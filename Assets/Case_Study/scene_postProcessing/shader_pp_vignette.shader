@@ -2,6 +2,8 @@ Shader "PostProcessing/Vignette"
 {
     Properties
     {
+        _MainTex ("Texture", 2D) = "" {}
+        // _CameraImage ("Camera Image", 2D) = "" {}
         _FallOff("FallOff", Range(0, 5)) = 3
     }
     SubShader
@@ -32,10 +34,9 @@ Shader "PostProcessing/Vignette"
                 float4 vertex : SV_POSITION;
             };
 
-            CBUFFER_START(UnityPerMaterial)
             float _FallOff;
             sampler2D _CameraImage;
-            CBUFFER_END
+            sampler2D _MainTex;
 
             v2f vert (appdata v)
             {
@@ -52,7 +53,7 @@ Shader "PostProcessing/Vignette"
                 half dst_2 = dst * dst + 1.0;
                 half vignette = 1 / (dst_2 * dst_2);
                 
-                half3 col = tex2D(_CameraImage, i.uv).rgb;
+                half3 col = tex2D(_MainTex, i.uv).rgb;
                 col *= vignette;
                 return half4(col, 1.0);
             }
