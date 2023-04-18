@@ -14,7 +14,7 @@ public class PostProcessingRenderPassFeature : ScriptableRendererFeature
         [Range(1,4)]
         public int downsample = 1;    // downsample factor
         public bool copyToFramebuffer;  // copy to framebuffer or not
-        public string targetName = "_CameraImage";  // The texture camera'll render to & shader'll sample from
+        public string targetName = "_MainTex";  // The texture camera'll render to & shader'll sample from
     }
 
     public RenderFeatureSettings settings = new RenderFeatureSettings();
@@ -64,7 +64,7 @@ public class PostProcessingRenderPassFeature : ScriptableRendererFeature
         }
 
         // Execute Render Pass ////////////////////////////////////////////////////////////////////////////
-        public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
+        public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)  
         {
             // Get camera color texture
             cameraColorTexture = renderingData.cameraData.renderer.cameraColorTarget;
