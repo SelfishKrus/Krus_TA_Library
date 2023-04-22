@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06b63172626be9c439eb379dba31b589, type: 3}
   m_Name: PostProcessingRenderPassFeature
   m_EditorClassIdentifier: 
-  m_Active: 1
+  m_Active: 0
   settings:
     renderPassEvent: 500
     mat: {fileID: 2100000, guid: 2e5fa084064b71e44b4e02362f2e7e5a, type: 2}
