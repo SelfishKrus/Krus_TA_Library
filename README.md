@@ -15,9 +15,13 @@
 # 1 - Tessellation&Wireframe <a name="c1"></a>
 
 ## 1.1 - Demo <a name="c1demo"></a>
-<img src="https://user-images.githubusercontent.com/79186991/230733377-5270dc49-1dab-4f82-9dc3-2bbf4087a013.gif" width="70%" height="70%"/>
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/79186991/230733377-5270dc49-1dab-4f82-9dc3-2bbf4087a013.gif" width="70%" height="70%">
+  <br> > Tessellation Shader
+</p>
 
 ## 1.2 - Flowchart <a name="c1fc"></a> 
+![Tessellation Shader](https://user-images.githubusercontent.com/79186991/233772762-b9bfa527-97b9-4e4d-800a-a1d0b3aae74c.png)
 
 > ## Reference <a name="c1ref"></a> 
 > 1. [shaders-botw-grass/BotWGrass.shader at main · daniel-ilett/shaders-botw-grass](https://github.com/daniel-ilett/shaders-botw-grass/blob/main/Assets/Shaders/BotWGrass.shader) 
@@ -34,12 +38,13 @@
 - [ ] \<OPT> Pre-Z
 
 ## 2.1 - Demo <a name="c2demo"></a>
-<img src="https://user-images.githubusercontent.com/79186991/232084887-e96e8136-25ef-41df-96d8-51203b39a56e.gif" width="100%" height="100%">
-  > Demo
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/79186991/232084887-e96e8136-25ef-41df-96d8-51203b39a56e.gif" width="100%" height="100%">
+  <br> > Geograss
+</p>
+
 <img src="https://user-images.githubusercontent.com/79186991/233769617-cd639b01-596d-4fea-a9eb-46e34a460414.gif" width="50%" height="50%" alt="tool"> 
   > Grass Painting Tool
-
-##
 
 > ## Reference <a name="c2ref"></a>
 > 1. [Unity Grass Geometry Shader Tutorial at Roystan](https://roystan.net/articles/grass-shader/) 
@@ -50,12 +55,15 @@
 
 ---
 
-# 3 - Droplet Effect  <a name="c3"></a
-<img src="https://user-images.githubusercontent.com/79186991/232098318-356d769a-4ef7-4e9c-9a6a-3f485213374a.gif" width="100%" height="100%">
-<div align="center">sb</div>
-
+# 3 - Droplet Effect  <a name="c3"></a>
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/79186991/232098318-356d769a-4ef7-4e9c-9a6a-3f485213374a.gif" width="100%" height="100%">
+  <br> > Droplet FX
+</p>
 
 > ## Reference <a name="c3ref"></a>
 > 1. [Youtube | Making a rainy window in Unity - Part 1](https://www.youtube.com/watch?v=EBrAdahFtuo&t=2077s) 
 > 2. [Youtube | Making a rainy window in Unity - Part 2](https://www.youtube.com/watch?v=0flY11lVCwY&t=17s) 
+
+---
 
