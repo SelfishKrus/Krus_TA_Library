@@ -8,6 +8,8 @@
 * #### [2.1 - Demo](#c2demo)
 * #### [Reference](#c2ref)
 ### [3 - Droplet Effect](#c3)
+* #### [3.1 - Demo](#c3demo)
+* #### [3.2 - Flowchart](#c3fc)
 * #### [Reference](#c3ref)
 
 ---
@@ -56,10 +58,15 @@
 ---
 
 # 3 - Droplet Effect  <a name="c3"></a>
+
+## 3.1 - Demo <a name="c3demo"></a>
 <p align="center">
   <img src="https://user-images.githubusercontent.com/79186991/232098318-356d769a-4ef7-4e9c-9a6a-3f485213374a.gif" width="100%" height="100%">
   <br> > Droplet FX
 </p>
+
+## 3.2 - Flowchart <a name="c3fc"></a>
+![Case - medium](https://user-images.githubusercontent.com/79186991/233773569-53676c57-8245-4be6-b686-9ac57a637cd5.png)
 
 > ## Reference <a name="c3ref"></a>
 > 1. [Youtube | Making a rainy window in Unity - Part 1](https://www.youtube.com/watch?v=EBrAdahFtuo&t=2077s) 
