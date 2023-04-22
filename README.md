@@ -52,8 +52,13 @@
   <br> > Geograss
 </p>
 
-<img src="https://user-images.githubusercontent.com/79186991/233769617-cd639b01-596d-4fea-a9eb-46e34a460414.gif" width="50%" height="50%" alt="tool"> 
-  > Grass Painting Tool
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/79186991/233769617-cd639b01-596d-4fea-a9eb-46e34a460414.gif"  height="350" alt="tool"> 
+  <img src="https://user-images.githubusercontent.com/79186991/233777662-ae1a2857-d731-4432-aafa-bfa5e745eb85.gif" height="350"> 
+  <br> > Grass Painter Tool & Collider Interactor
+</p>
+
+
 
 > ## Reference <a name="geograss_ref"></a>
 > 1. [Unity Grass Geometry Shader Tutorial at Roystan](https://roystan.net/articles/grass-shader/) 
