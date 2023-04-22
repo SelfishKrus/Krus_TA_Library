@@ -82,11 +82,17 @@
 ---
 
 # 4 - Double-layered BRDF - a Practice of Rainy Ground Rendering <a name="rainyground"></a>
+- [x] \<VFX> Ripple FX
+- [x] \<VFX> Water level go-up
 
 ## 4.1 - Demo <a name="rainyground_demo"></a>
 <p align="center">
   <img src="https://user-images.githubusercontent.com/79186991/233775740-80ca6f81-e30f-4af6-b20a-7ad97ef733c6.gif" width="100%" height="100%">
   <br> > Rainy Ground
+</p>
+<p align="left">
+  <img src="https://user-images.githubusercontent.com/79186991/233776939-22c30b28-0232-459d-b3de-af0abdc307ae.gif" width="50%" height="50%">
+  <br> > Water Level Go-up
 </p>
 
 ## 4.2 - Note <a name="rainyground_nt"></a>
