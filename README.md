@@ -2,7 +2,7 @@
 
 ### [1 - Tessellation & Wireframe](#tess)
 * #### [1.1 - Demo](#tess_demo)
-* #### [1.2 - Flowchart](#tess_fc)
+* #### [1.2 - Flowchart](#tess_nt)
 * #### [Reference](#tess_ref)
 
 ### [2 - Geometry Grass](#geograss)
@@ -11,20 +11,25 @@
 
 ### [3 - Droplet Effect](#dropletFX)
 * #### [3.1 - Demo](#dropletFX_demo)
-* #### [3.2 - Flowchart](#dropletFX_fc)
+* #### [3.2 - Flowchart](#dropletFX_nt)
 * #### [Reference](#dropletFX_ref)
+
+### [4 - Double-layered BRDF - a Practice of Rainy Ground Rendering](#rainyground)
+* #### [4.1 - Demo](#rainyground_demo)
+* #### [4.2 - Notes](#rainyground_nt)
+* #### [Reference](#rainyground_ref)
 
 ---
 
 # 1 - Tessellation&Wireframe <a name="tess"></a>
 
-## 1.1 - Demo <a name="tess_Demo"></a>
+## 1.1 - Demo <a name="tess_demo"></a>
 <p align="center">
   <img src="https://user-images.githubusercontent.com/79186991/230733377-5270dc49-1dab-4f82-9dc3-2bbf4087a013.gif" width="70%" height="70%">
   <br> > Tessellation Shader
 </p>
 
-## 1.2 - Flowchart <a name="tess_fc"></a> 
+## 1.2 - Flowchart <a name="tess_nt"></a> 
 ![Tessellation Shader](https://user-images.githubusercontent.com/79186991/233772762-b9bfa527-97b9-4e4d-800a-a1d0b3aae74c.png)
 
 > ## Reference <a name="tess_ref"></a> 
@@ -67,7 +72,7 @@
   <br> > Droplet FX
 </p>
 
-## 3.2 - Flowchart <a name="dropletFX_fc"></a>
+## 3.2 - Flowchart <a name="dropletFX_nt"></a>
 ![Case - medium](https://user-images.githubusercontent.com/79186991/233773569-53676c57-8245-4be6-b686-9ac57a637cd5.png)
 
 > ## Reference <a name="dropletFX_ref"></a>
@@ -76,4 +81,24 @@
 
 ---
 
-# 4 - Double-layered BRDF - a Practice of Rainy Ground Rendering <a name="rainyGround"></a>
+# 4 - Double-layered BRDF - a Practice of Rainy Ground Rendering <a name="rainyground"></a>
+
+## 4.1 - Demo <a name="rainyground_demo"></a>
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/79186991/233775740-80ca6f81-e30f-4af6-b20a-7ad97ef733c6.gif" width="100%" height="100%">
+  <br> > Rainy Ground
+</p>
+
+## 4.2 - Note <a name="rainyground_nt"></a>
+![Case - medium](https://user-images.githubusercontent.com/79186991/233775919-eee8bc52-c246-4061-bc01-3a30c945d9ce.png)
+![PBR](https://user-images.githubusercontent.com/79186991/233776072-30ea3e3b-bfc0-4fda-92c9-8227c40e915f.png)
+
+> ## Reference <a name="rainyground_ref"></a>
+> 1. [如何在Unity中造一个PBR Shader轮子](https://zhuanlan.zhihu.com/p/68025039)
+> 2. [URP管线的自学HLSL之路 第三十七篇 造一个PBR的轮子](https://www.bilibili.com/read/cv7510082)
+> 3. [【基于物理的渲染（PBR）白皮书】（一） 开篇：PBR核心知识体系总结与概览](https://zhuanlan.zhihu.com/p/53086060) 
+> 4. [Water drop 2b – Dynamic rain and its effects](https://seblagarde.wordpress.com/2013/01/03/water-drop-2b-dynamic-rain-and-its-effects/) 
+> 5. [Unity Shader 实现雨天的水面涟漪效果](https://zhuanlan.zhihu.com/p/83219238)
+> 6. [Unity Shader 水体渲染](https://zhuanlan.zhihu.com/p/179249031)
+
+
