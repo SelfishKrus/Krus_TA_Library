@@ -11,6 +11,9 @@ scopes = {
 	"last_search.310DEAF1" = "shader"
 	"OpenInspectorPreview.310DEAF1" = "0"
 	"currentGroup.310DEAF1" = "all"
+	"last_search.E8DA15E5" = ""
+	"OpenInspectorPreview.E8DA15E5" = "0"
+	"currentGroup.E8DA15E5" = "all"
 }
 providers = {
 	adb = {
