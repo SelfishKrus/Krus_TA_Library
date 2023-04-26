@@ -64,6 +64,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _NormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _NormalTex:
         m_Texture: {fileID: 2800000, guid: 6bdb4d2a3398b90468a0cbfbcd66b813, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -98,32 +102,47 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _BlurStepScale: 0.01
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DiffuseEnvironmetAmount: 1
     - _DstBlend: 0
+    - _EnergyConservation: 0
     - _Exposure: 1
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
+    - _Grow: 0.00005
     - _Metallic: 0
+    - _Mix: 0.5
     - _Mode: 0
     - _NormalBlurredBias: 3
     - _OcclusionStrength: 1
     - _Parallax: 0.02
+    - _Roughness: 0
     - _SmoothnessTextureChannel: 0
+    - _SpecPower: 1
     - _SpecularEnvironmetAmount: 1
     - _SpecularHighlights: 1
     - _SpecularIntensity: 0.15
     - _SrcBlend: 1
+    - _TSMSpread: 200
+    - _ThicknessConst: 0.2
     - _Tonemap: 1
+    - _TranslucencyPower: 1
     - _TrnAmbient: 0
     - _TrnDistortion: 0.5
     - _TrnPower: 6
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
+    - _Blur1WV: {r: 0.233, g: 0.455, b: 0.649, a: 0.0064}
+    - _Blur2WV: {r: 0.1, g: 0.336, b: 0.344, a: 0.0484}
+    - _Blur3WV: {r: 0.118, g: 0.198, b: 0, a: 0.187}
+    - _Blur4WV: {r: 0.113, g: 0.007, b: 0.007, a: 0.567}
+    - _Blur5WV: {r: 0.358, g: 0.004, b: 0, a: 1.99}
+    - _Blur6WV: {r: 0.078, g: 0, b: 0, a: 7.41}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _CurvatureBias: {r: 1, g: 0, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
