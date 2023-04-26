@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Case_Study/scene_CharacterRendering/MaleHead/shader_CR_skin.shader.meta
+guid: b80aa7bf6a354934f98f98dbe0cbb399
+========
+guid: a88bb8e300eca9941b66be160313fe19
+>>>>>>>> origin/main:Assets/Common/Shader/shader_common_shaderTemplate 1.shader.meta
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  preprocessorOverride: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
