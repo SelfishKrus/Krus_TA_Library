@@ -174,16 +174,7 @@
     }
 
     // BRDF - direct light - specular
-    float3 GetBRDF_specular_DL(PBR_setup pbrSetup, PBR_vectors pbrVectors) {
 
-        float D = GetD(pbrVectors.nh, pbrSetup.roughness);
-        float G = GetG(pbrVectors.nv, pbrVectors.nl, pbrSetup.roughness);
-        float3 F_direct = GetF_DL(pbrSetup.F0.r, max(pbrVectors.hv,0));
-        float3 BRDF_direct_spec = D * G * F_direct / ( 4*pbrVectors.nv*pbrVectors.nl );
-
-        return BRDF_direct_spec;
-
-    }
     
     // approximate BRDF - indirect light - specular
     // unity fitting curve instead of UE LUT
@@ -225,53 +216,6 @@
         return max(0, col);
     }
 
-    // PBR MAIN FUNCTIONS /////////////////////////////////////////////////////////
-
-    // === Specular - Cook-Torrance - Direct Light === // 
-    half3 GetSpecCol_DL(PBR_setup pbrSetup, PBR_vectors pbrVectors, Light mainLight) {
-    
-        float3 BRDF_direct_spec = GetBRDF_specular_DL(pbrSetup, pbrVectors);
-        half3 SpecCol_direct = BRDF_direct_spec * mainLight.color * pbrVectors.nl * PI;   // to compensate for PI igonred in diffuse part
-    
-        return SpecCol_direct;
-    }
-
-    // === Diffuse - Lambert - Direct Light === //
-    half3 GetDiffCol_DL(PBR_setup pbrSetup, PBR_vectors pbrVectors, Light mainLight) {
-        
-        float3 k_s_direct = GetF_DL(pbrSetup.F0.r, max(pbrVectors.hv,0));
-        float3 k_d_direct = (1 - k_s_direct) * (1 - pbrSetup.metallic);
-        float3 DiffCol_direct = k_d_direct * pbrSetup.baseCol * mainLight.color * pbrVectors.nl;
-    
-        return DiffCol_direct;
-    }
-
-    // === Specular - Cook-Torrance - Indirect Light === // 
-    // IBL
-    half3 GetSpecCol_IDL(PBR_setup pbrSetup, PBR_vectors pbrVectors, half3 Li_indirect_specular) {
-
-        float3 k_s_indirect = GetF_IDL(max(pbrVectors.hv, 0), pbrSetup.F0, pbrSetup.roughness);
-        float3 BRDF_direct_spec = GetBRDF_specular_DL(pbrSetup, pbrVectors);
-        float3 BRDF_indirect_spec = GetBRDF_specular_IDL(pbrSetup.roughness, pbrSetup.smoothness, BRDF_direct_spec, pbrSetup.F0, pbrVectors.nv);
-        float3 SpecCol_indirect = k_s_indirect * Li_indirect_specular * BRDF_indirect_spec * PI;
-
-        return SpecCol_indirect; 
-
-    }
-
-    // === Diffuse - Lambert - Indirect Light === //
-    // SH
-    half3 GetDiffCol_IDL(PBR_setup pbrSetup, PBR_vectors pbrVectors, half3 Li_indirect_diffuse) {
-
-        float F_indirect = GetF_IDL(max(pbrVectors.hv, 0), pbrSetup.F0, pbrSetup.roughness);
-        float k_d_indirect = (1 - F_indirect) * (1 - pbrSetup.metallic);
-        float3 DiffCol_indirect = Li_indirect_diffuse * k_d_indirect * pbrSetup.baseCol;
-        
-        return DiffCol_indirect;
-
-    }
-
-
     // PBR VERTEX SHADER ////////////////////////////////////////////////////
 
     v2f_PBR vert_PBR (appdata_PBR v)
@@ -295,50 +239,6 @@
         o.shadowCoord = GetShadowCoord(vertexInput);
 
         return o;
-    }
-
-    // PBR FRAGMENT SHADER ////////////////////////////////////////////////////
-
-    half4 frag_PBR (v2f_PBR i) : SV_Target
-    {
-        // === VARIABLE PREPARATION === //
-        PBR_setup pbrSetup;
-        SetupPBRVariables(i, pbrSetup);
-
-        PBR_vectors pbrVectors;
-        SetupPBRVectors(i, pbrVectors);
-
-        // Get direct light info
-        Light mainLight = GetMainLight(i.shadowCoord);
-        
-        // === DIRECT LIGHT === //
-        // Get specular color from direct light
-        half3 SpecCol_direct = GetSpecCol_DL(pbrSetup, pbrVectors, mainLight);
-        // Diffuse - Lambert
-        half3 DiffCol_direct = GetDiffCol_DL(pbrSetup, pbrVectors, mainLight);
-        // Color from direct light
-        float3 DirectCol = DiffCol_direct + SpecCol_direct;
-
-        // === INDIRECT LIGHT === //
-        // Specular - Cook-Torrance
-        float3 IBLCol = GetIBL(pbrVectors.n, pbrVectors.v, pbrSetup.roughness);
-        half3 SpecCol_indirect = GetSpecCol_IDL(pbrSetup, pbrVectors, IBLCol);
-        // Diffuse - Lambert
-        float3 SHCol = GetSH(pbrVectors.n);
-        half3 DiffCol_indirect = GetDiffCol_IDL(pbrSetup, pbrVectors, SHCol);
-        // Color from indirect light
-        float3 IndirectCol = SpecCol_indirect + DiffCol_indirect;
-
-        // === FINAL COLOR RESULT === //
-        // shadow
-        float3 shadow = mainLight.shadowAttenuation;
-
-        float3 finalCol = DirectCol * shadow * pbrSetup.AO + IndirectCol;
-
-        half4 col = 1; 
-        col.rgb = finalCol;
-        col.a = pbrSetup.alpha;
-        return col;
     }
 
 #endif
