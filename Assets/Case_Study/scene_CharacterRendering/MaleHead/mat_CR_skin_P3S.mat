@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: mat_CR_skin_P3S
-  m_Shader: {fileID: 4800000, guid: 945dcaad2d4e55b49b9d1f29b64ad23a, type: 3}
+  m_Shader: {fileID: 4800000, guid: fe4df78dc59e3db46a50c5175069dbac, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
