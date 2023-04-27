@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: mat_pp_radialDistortion
+  m_Shader: {fileID: 4800000, guid: 107f9a73dee3b074cb824ddd085b8456, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NoiseMap:
+        m_Texture: {fileID: 2800000, guid: 123aa73d64557e84880ce25b1c079141, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _DistortionIntensity: 0.19
+    - _DistortionRange: 0.55
+    - _DistrotionIntensity: 3
+    - _Frequency: 4
+    - _MaskInnerRadius: 0
+    - _MaskOuterRadius: 5
+    - _RippleIntensity: 1
+    - _Speed: 0.275
+    m_Colors:
+    - _Center: {r: 0.5, g: 0.5, b: 0, a: 0}
+    - _MaskRadiuses: {r: 0, g: 2.65, b: 0, a: 0}
+    - _ScaleUV: {r: 0.99, g: 1.06, b: 0, a: 0}
+    - _Test: {r: 0, g: 3.59, b: 0, a: 0}
+    - _TestFactor: {r: 0.56, g: 1.04, b: 0, a: 0}
+  m_BuildTextureStacks: []
