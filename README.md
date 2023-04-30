@@ -20,9 +20,9 @@
 * #### [Reference](#rainyground_ref)
 
 ### [5 - Pre-integrated Subsurface Scattering Skin](#piss)
-* #### [5.1 - Demo](#PISS_demo)
-* #### [5.2 - Notes](#PISS_nt)
-* #### [Reference](#PISS_ref)
+* #### [5.1 - Demo](#piss_demo)
+* #### [5.2 - Notes](#piss_nt)
+* #### [Reference](#piss_ref)
 
 ---
 
@@ -119,13 +119,13 @@
 
 ---
 
-# 5 - Pre-integrated Subsurface Scattering Skin <a name="PISS"></a>
+# 5 - Pre-integrated Subsurface Scattering Skin <a name="piss"></a>
 - [x] \<VFX> BSSRDF - Pre-integrated Subsurface Scattering
 - [x] \<VFX> Specular BRDF - by Kelemen/Szirmay-Kalos
 - [x] \<VFX> non-physics-based BTDF - by Colin Barré-Brisebois/ Marc Bouchard 
 - [x] \<VFX> Filmic tonemapping 
 
-## 5.1 - Demo <a name="PISS_demo"></a>
+## 5.1 - Demo <a name="piss_demo"></a>
 <p align="center">
   <img src="https://user-images.githubusercontent.com/79186991/235362825-debf6777-6e92-41e1-8bb5-ddb02e7df61a.png" width="100%" height="100%">
   <br> > Skin Rendering
@@ -137,10 +137,10 @@
   <br> > PISS BSSRDF (left) & Common PBR (right)
 </p>
 
-## 5.2 - Note <a name="PISS_nt"></a>
+## 5.2 - Note <a name="piss_nt"></a>
 ![PISS](https://user-images.githubusercontent.com/79186991/235363366-3d5b4c7b-4c80-41ae-8529-64fe9d9f5dc6.png)
 
-> ## Reference <a name="PISS_ref"></a>
+> ## Reference <a name="piss_ref"></a>
 > 1. [Pre-Integrated Skin Shading 的常见问题解答](https://zhuanlan.zhihu.com/p/384541607)
 > 2. [Pre-Integrated Skin Shading 数学模型理解](https://zhuanlan.zhihu.com/p/56052015)
 > 3. [Pre-Integrated Skin Shading实现笔记](https://zhuanlan.zhihu.com/p/60343513) 
