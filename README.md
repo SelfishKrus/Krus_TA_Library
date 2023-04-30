@@ -58,7 +58,7 @@
 </p>
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/79186991/233769617-cd639b01-596d-4fea-a9eb-46e34a460414.gif"  width="30%"> 
+  <img src="https://user-images.githubusercontent.com/79186991/233769617-cd639b01-596d-4fea-a9eb-46e34a460414.gif"  width="34%"> 
   <img src="https://user-images.githubusercontent.com/79186991/233777662-ae1a2857-d731-4432-aafa-bfa5e745eb85.gif" width="60%"> 
   <br> > Grass Painter Tool & Collider Interactor
 </p>
