@@ -16,11 +16,14 @@ float3 EvaluateDiffuseLight(float3 lightDir, float3 albedo, float3 normalGeom, f
 {
     ambienLight = 0;
 
+    // diffuse lighting based on curvature
     float NoL_BlurredUnclamped = dot(normalBlurred, lightDir);
     float curvatureScaled = curvature * _CurvatureBias.x + _CurvatureBias.y;
     float2 uvCurvature = float2(NoL_BlurredUnclamped * 0.5 + 0.5, curvatureScaled);
-    float3 rgbCurvature = tex2D(_CurvatureTex_LUT, uvCurvature) * 0.5 - 0.25;
+    float3 rgbCurvature = tex2D(_CurvatureTex_LUT, uvCurvature) * 0.5 - 0.25; // [0, 1] => [-0.25, 0.25]
 
+    // N dot L for different color channels
+    // lambert??
     float normalSmoothFactor = saturate(1.0 - NoL_BlurredUnclamped);
     normalSmoothFactor *= normalSmoothFactor;
     float3 normalShadeG = normalize(lerp(normalShade, normalBlurred, 0.3 + 0.7 * normalSmoothFactor));
@@ -57,7 +60,7 @@ float3 EvaluateDiffuseLight(float3 lightDir, float3 albedo, float3 normalGeom, f
     #endif
 
     float3 rgbLitDiffuse = albedo * rgbLightDiffuse;
-    
+ 
     return rgbLitDiffuse;
 }
 
@@ -107,7 +110,7 @@ float3 EvaluateSpecularLight(float3 lightDir, float2 uv, float3 normalGeom, floa
     
     float edgeDarken = saturate(5.0 * dot(normalGeom, lightDir));
     float3 rgbLitSpecular = lightColor * NoL * edgeDarken * specResult * shadow;
-				
+
 	// IBL Spec
     float3 IBL_Specular = EvaluateSpecularIBL(gloss, viewDir, normalShade, specReflectance, specLobeBlend, NoV);
 
