@@ -19,7 +19,7 @@
 * #### [4.2 - Notes](#rainyground_nt)
 * #### [Reference](#rainyground_ref)
 
-### [5 - Pre-integrated Subsurface Scattering Skin](#PISS)
+### [5 - Pre-integrated Subsurface Scattering Skin](#piss)
 * #### [5.1 - Demo](#PISS_demo)
 * #### [5.2 - Notes](#PISS_nt)
 * #### [Reference](#PISS_ref)
