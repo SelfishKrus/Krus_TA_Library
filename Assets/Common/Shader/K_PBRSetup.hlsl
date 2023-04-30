@@ -1,5 +1,10 @@
+<<<<<<<< HEAD:Assets/Common/Shader/K_PBRSetup.hlsl
 #ifndef K_PBRSETUP_INCLUDED
 #define K_PBRSETUP_INCLUDED
+========
+#ifndef SJSJ_PBRSETUP_INCLUDED
+#define SJSJ_PBRSETUP_INCLUDED
+>>>>>>>> 741fa6ec2e26c87ee5252dd213a3e893de25c036:Assets/Common/Shader/SJSJ_PBRSetup.hlsl
 
     // PBR VARIABLES PREPARATION ////////////////////////////////////////////////////
 
