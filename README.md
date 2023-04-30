@@ -100,8 +100,8 @@
   <img src="https://user-images.githubusercontent.com/79186991/233775740-80ca6f81-e30f-4af6-b20a-7ad97ef733c6.gif" width="100%" height="100%">
   <br> > Rainy Ground
 </p>
-<p align="left">
-  <img src="https://user-images.githubusercontent.com/79186991/233776939-22c30b28-0232-459d-b3de-af0abdc307ae.gif" width="50%" height="50%">
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/79186991/233776939-22c30b28-0232-459d-b3de-af0abdc307ae.gif" width="70%" >
   <br> > Water Level Go-up
 </p>
 
