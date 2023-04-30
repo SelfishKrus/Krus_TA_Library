@@ -58,8 +58,8 @@
 </p>
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/79186991/233769617-cd639b01-596d-4fea-a9eb-46e34a460414.gif"  width="49%"> 
-  <img src="https://user-images.githubusercontent.com/79186991/233777662-ae1a2857-d731-4432-aafa-bfa5e745eb85.gif" width="49%"> 
+  <img src="https://user-images.githubusercontent.com/79186991/233769617-cd639b01-596d-4fea-a9eb-46e34a460414.gif"  height="400"> 
+  <img src="https://user-images.githubusercontent.com/79186991/233777662-ae1a2857-d731-4432-aafa-bfa5e745eb85.gif" height="400"> 
   <br> > Grass Painter Tool & Collider Interactor
 </p>
 
@@ -134,7 +134,7 @@
 <p align="center">
   <img src="https://user-images.githubusercontent.com/79186991/235362943-2ed63645-587f-4ec5-8544-8c73692e3d60.png" width="49%">
   <img src="https://user-images.githubusercontent.com/79186991/235363005-543d969c-46ca-462c-ac0c-65107864b060.png" width="49%">
-  <br> > PISS BSSRDF (left) & Common PBR (right)
+  <br> > PISS BSSRDF (left) & Common BRDF (right)
 </p>
 
 ## 5.2 - Note <a name="piss_nt"></a>
