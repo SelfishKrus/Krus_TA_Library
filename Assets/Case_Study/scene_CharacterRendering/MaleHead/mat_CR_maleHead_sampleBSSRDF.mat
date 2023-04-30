@@ -20,7 +20,7 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
-  m_LockedProperties: _MainTex
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -109,7 +109,7 @@ Material:
     - _DiffuseEnvironmetAmount: 1
     - _DstBlend: 0
     - _EnergyConservation: 0
-    - _Exposure: 1
+    - _Exposure: 1.18
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -117,7 +117,7 @@ Material:
     - _Metallic: 0
     - _Mix: 0.5
     - _Mode: 0
-    - _NormalBlurredBias: 3
+    - _NormalBlurredBias: 1.93
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _Roughness: 0
@@ -132,7 +132,7 @@ Material:
     - _Tonemap: 1
     - _TranslucencyPower: 1
     - _TrnAmbient: 0
-    - _TrnDistortion: 0.5
+    - _TrnDistortion: 0.4
     - _TrnPower: 6
     - _UVSec: 0
     - _ZWrite: 1
@@ -147,5 +147,5 @@ Material:
     - _CurvatureBias: {r: 1, g: 0, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowBias: {r: 1, g: 0, b: 0, a: 0}
-    - _TrnColor: {r: 0.1792453, g: 0, b: 0, a: 1}
+    - _TrnColor: {r: 0.9150943, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []
