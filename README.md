@@ -132,8 +132,8 @@
 </p>
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/79186991/235362943-2ed63645-587f-4ec5-8544-8c73692e3d60.png" width="300">
-  <img src="https://user-images.githubusercontent.com/79186991/235363005-543d969c-46ca-462c-ac0c-65107864b060.png" width="300">
+  <img src="https://user-images.githubusercontent.com/79186991/235362943-2ed63645-587f-4ec5-8544-8c73692e3d60.png" width="350">
+  <img src="https://user-images.githubusercontent.com/79186991/235363005-543d969c-46ca-462c-ac0c-65107864b060.png" width="350">
   <br> > PISS BSSRDF (left) & Common PBR (right)
 </p>
 
