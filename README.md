@@ -24,6 +24,11 @@
 * #### [5.2 - Notes](#piss_nt)
 * #### [Reference](#piss_ref)
 
+### [6 - 2D Animation](#2danimation)
+* #### [6.1 - Demo](#2danimation_demo)
+* #### [6.2 - Notes](#2danimation_nt)
+* #### [Reference](#2danimation_ref)
+
 ---
 
 # 1 - Tessellation&Wireframe <a name="tess"></a>
@@ -154,3 +159,21 @@
 > 11. [Alan Zucconi | Fast Subsurface Scattering in Unity (Part 2)](https://www.alanzucconi.com/2017/08/30/fast-subsurface-scattering-2/)
 > 12. [GDC 2011 – Approximating Translucency for a Fast, Cheap and Convincing Subsurface Scattering Look](https://colinbarrebrisebois.com/2011/03/07/gdc-2011-approximating-translucency-for-a-fast-cheap-and-convincing-subsurface-scattering-look/) 
 > 13. [GPU Gems | Chapter 16. Real-Time Approximations to Subsurface Scattering](https://developer.nvidia.com/gpugems/gpugems/part-iii-materials/chapter-16-real-time-approximations-subsurface-scattering) 
+
+--- 
+
+# 6 - 2D Animation <a name="2danimation"></a>
+- [x] \<VFX> Frame Animation - sample a texture atlas by indexes
+- [x] \<VFX> UV Rolling
+
+## 6.1 - Demo <a name="2danimation_demo"></a>
+<p align="center">
+  <img src="Movie_011 mp4_20230501_195945](https://user-images.githubusercontent.com/79186991/235449858-c1cfd0a7-e3a7-4300-9fd3-02f261b34d71.gif" width="100%" height="100%">
+  <br> > 2D Animation
+</p>
+
+## 6.2 - Note <a name="2danimation_nt"></a>
+![2danimationnote](https://user-images.githubusercontent.com/79186991/235450017-1d07dd5b-d070-41a9-9b04-e7b000e8eaf7.png)
+
+> ## Reference <a name="2danimation_ref"></a>
+> 1. Unity Shader 入门精要
