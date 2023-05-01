@@ -24,7 +24,7 @@
 * #### [5.2 - Notes](#piss_nt)
 * #### [Reference](#piss_ref)
 
-### [6 - 2D Animation](#2danimation)
+### [6 - 2D Frame Animation](#2danimation)
 * #### [6.1 - Demo](#2danimation_demo)
 * #### [6.2 - Notes](#2danimation_nt)
 * #### [Reference](#2danimation_ref)
@@ -162,14 +162,14 @@
 
 --- 
 
-# 6 - 2D Animation <a name="2danimation"></a>
+# 6 - 2D Frame Animation <a name="2danimation"></a>
 - [x] \<VFX> Frame Animation - sample a texture atlas by indexes
 - [x] \<VFX> UV Rolling
 
 ## 6.1 - Demo <a name="2danimation_demo"></a>
 <p align="center">
   <img src="https://user-images.githubusercontent.com/79186991/235449858-c1cfd0a7-e3a7-4300-9fd3-02f261b34d71.gif" width="100%" height="100%">
-  <br> > 2D Animation
+  <br> > Frame Animation
 </p>
 
 ## 6.2 - Note <a name="2danimation_nt"></a>
