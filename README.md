@@ -168,7 +168,7 @@
 
 ## 6.1 - Demo <a name="2danimation_demo"></a>
 <p align="center">
-  <img src="Movie_011 mp4_20230501_195945](https://user-images.githubusercontent.com/79186991/235449858-c1cfd0a7-e3a7-4300-9fd3-02f261b34d71.gif" width="100%" height="100%">
+  <img src="https://user-images.githubusercontent.com/79186991/235449858-c1cfd0a7-e3a7-4300-9fd3-02f261b34d71.gif" width="100%" height="100%">
   <br> > 2D Animation
 </p>
 
