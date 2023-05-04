@@ -78,7 +78,7 @@ namespace SJSJ.BattleRendererApplication.RenderPipeline {
             RenderTargetIdentifier cameraColorTexture;
 
             public DrawObjectsRenderPass(RenderPassEvent renderPassEvent) {
-                this.renderPassEvent = renderPassEvent;
+                this.renderPassEvent = renderPassEvent + 1;
             }
 
             public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData) {
@@ -111,6 +111,10 @@ namespace SJSJ.BattleRendererApplication.RenderPipeline {
                     context.DrawRenderers(renderingData.cullResults, ref drawingSettings, ref filteringSettings, ref renderStateBlock);
                     
                 }
+
+                context.ExecuteCommandBuffer(cmd);
+                CommandBufferPool.Release(cmd);
+
 
             }
 

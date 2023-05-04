@@ -65,10 +65,10 @@ Shader "CharacterRendering/Skin_PI3S"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
 
-            #include "Assets/Common/Shader/K_PBRSetup.hlsl"
-            #include "Assets/Common/Shader/K_BRDF.hlsl"
-            #include "Assets/Common/Shader/K_BSSRDF.hlsl"
-            #include "Assets/Common/Shader/K_BTDF.hlsl"
+            #include "Assets/Common/Shader/SJSJ_PBRSetup.hlsl"
+            #include "Assets/Common/Shader/SJSJ_BRDF.hlsl"
+            #include "Assets/Common/Shader/SJSJ_BSSRDF.hlsl"
+            #include "Assets/Common/Shader/SJSJ_BTDF.hlsl"
             #include "Assets/Common/Shader/Tonemapping.hlsl"
 
 

@@ -1,7 +1,9 @@
-#ifndef K_PBRSETUP_INCLUDED
-#define K_PBRSETUP_INCLUDED
+#ifndef SJSJ_PBRSETUP_INCLUDED
+#define SJSJ_PBRSETUP_INCLUDED
 
     // PBR VARIABLES PREPARATION ////////////////////////////////////////////////////
+
+    #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 
     // === VARIABLES DECLARATION === //
     CBUFFER_START(UnityPerMaterial)
