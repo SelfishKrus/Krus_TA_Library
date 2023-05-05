@@ -254,6 +254,6 @@ MonoBehaviour:
   m_Name: DrawObjectsRendererFeature
   m_EditorClassIdentifier: 
   m_Active: 1
-  getCameraTextureRenderPassEvent: 500
+  getCameraTextureRenderPassEvent: 600
   targetName: _CameraColorTexture
   drawObjectsRenderPassEvent: 1000
