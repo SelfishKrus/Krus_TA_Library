@@ -41,8 +41,8 @@ Shader "Common/PBR"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
 
-            #include "K_PBRSetup.hlsl"
-            #include "K_BRDF.hlsl"
+            #include "SJSJ_PBRSetup.hlsl"
+            #include "SJSJ_BRDF.hlsl"
 
             half4 frag_PBR (v2f_PBR i) : SV_Target
             {
@@ -86,7 +86,7 @@ Shader "Common/PBR"
                 // Li - SH
                 float3 SHCol = SampleSH(pbr_vectors.n);
                 // BRDF - Lambert
-                float k_d_IDL = (1 - k_s_IDL) * (1 - pbr_setup.metallic);
+                float3 k_d_IDL = (1 - k_s_IDL) * (1 - pbr_setup.metallic);
                 half3 DiffCol_IDL = SHCol * k_d_IDL * pbr_setup.baseCol;
                 // Color from indirect light
                 half3 IndirectCol = SpecCol_IDL + DiffCol_IDL;
