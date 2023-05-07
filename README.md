@@ -29,6 +29,11 @@
 * #### [6.2 - Notes](#2danimation_nt)
 * #### [Reference](#2danimation_ref)
 
+### [7 - Hair](#hair)
+* #### [6.1 - Demo](#hair_demo)
+* #### [6.2 - Notes](#hair_nt)
+* #### [Reference](#hair_ref)
+
 ---
 
 # 1 - Tessellation&Wireframe <a name="tess"></a>
@@ -177,3 +182,18 @@
 
 > ## Reference <a name="2danimation_ref"></a>
 > 1. Unity Shader 入门精要
+
+--- 
+
+# 7 - Hair <a name="hair"></a>
+- [x] \<VFX> Kajiya-Kay Model
+
+## 7.1 - Demo <a name="hair_demo"></a>
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/79186991/236669338-8f5c3d02-0519-437d-9041-7c4e2acf6879.gif" width="100%" height="100%">
+  <br> > Kajiya-Kay Hair Model
+</p>
+
+## 7.2 - Note <a name="hair_nt"></a>
+
+> ## Reference <a name="hair_ref"></a>
