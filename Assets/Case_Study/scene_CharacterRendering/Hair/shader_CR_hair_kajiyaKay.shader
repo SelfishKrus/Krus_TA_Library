@@ -11,105 +11,76 @@ Shader "CharacterRendering/Hair_KajiyaKay"
         _RoughnessScale ("Roughness Scale", Range(0, 1)) = 1.0
         [NoScaleOffset] _AOTex ("AO Map", 2D) = "white" {}
         _AOScale ("AO Scale", Range(0, 3)) = 1.0
+        [Space(50)]
 
         _ShiftTangentTex ("Shift Tangent Map", 2D) = "white" {}
-        _SpecCol1 ("Specular Color 1", Color) = (1,0,0,1)
-        _SpecCol2 ("Specular Color 2", Color) = (0,0,1,1)
+        _SpecCol ("Specular Color 1", Color) = (1,0,0,1)
         _Shift ("Shift", Vector) = (0.5,1,0,0)
         _Glossiness ("Glossiness", Vector) = (1, 1, 0, 0)
+        _Alpha ("Alpha Intensity", Range(1, 10)) = 1
+        _ShadowIntensity ("Shadow Intensity", Range(0, 1)) = 0.25
+        [Space(50)]
+
 
         _TestFactor ("Test Factor", float) = 0.5
     }
     SubShader
     {   
-        Tags { "RenderType"="Opaque" "RenderPipeline"="UniversalRenderPipeline" "Queue"="Transparent" }
+        Tags { "RenderPipeline"="UniversalRenderPipeline" "Queue"="Transparent" "RenderType"="Opaque" }
         LOD 100
-        Blend SrcAlpha OneMinusSrcAlpha
-        ZWrite Off
-
+        
         Pass
-        {
-            Tags {"LightMode"="UniversalForward"}
+        {   
+            
+            Name "PreZ"
+            Tags {"LightMode"="DepthOnly"}
+
+            Cull Off
+            ZWrite On
+            ZTest Less
+            ColorMask 0
 
             HLSLPROGRAM
             #pragma vertex vert_PBR
-            #pragma fragment frag
+            #pragma fragment frag_preZ
 
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
 
             #include "Assets/Common/Shader/SJSJ_PBRSetup.hlsl"
             #include "Assets/Common/Shader/SJSJ_BRDF.hlsl"
+            #include "hairMain.hlsl"
+            ENDHLSL
 
-            half3 _SpecCol1;
-            half3 _SpecCol2;
-            sampler2D _ShiftTangentTex;
-            half2 _Shift;
-            half2 _Glossiness;
+        }
 
-            struct appdata
-            {
-                float4 posOS : POSITION;
-                float2 uv : TEXCOORD0;
-            };
+        Pass
+        {   
+            Name "DrawHair"
+            Tags {"LightMode"="UniversalForward"}
 
-            struct v2f
-            {
-                float2 uv : TEXCOORD0;
-                float4 pos : SV_POSITION;
-            };
+            Cull Off
+            ZWrite Off
+            ZTest LEqual
+            Blend SrcAlpha OneMinusSrcAlpha
 
-            // FUNCTION START ////////////////////////////////////////////////
+            HLSLPROGRAM
+            #pragma vertex vert_PBR
+            #pragma fragment frag_hair
 
-            half StrandSpecular (half3 t, half3 v, half3 l, half exponent) {
-                half3 h = normalize(l + v);
-                half th = dot(t, h);
-                half sin_th = sqrt(1 - th * th);
-                half dirAtten = smoothstep(-1, 0, th);
+            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS
+            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS_CASCADE
+            #pragma multi_compile _ _SHADOWS_SOFT
 
-                return dirAtten * pow(sin_th, exponent);
-            }
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
 
-            half3 ShiftTangent (half3 t, half3 n, half shift) {
-                half3 shiftedT = t + shift * n;
-                return normalize(shiftedT);
-            }
-
-            // FUNCTION END /////////////////////////////////////////////////
-
-            half4 frag (v2f_PBR i) : SV_Target
-            {
-                // === VARIABLE PREPARATION === //
-                PBR_setup pbr_setup;
-                SetupPBRVariables(i, pbr_setup);
-
-                PBR_vectors pbr_vectors;
-                SetupPBRVectors(i, pbr_vectors);
-
-                // Get direct light info
-                Light mainLight = GetMainLight(i.shadowCoord);
-
-                half3 tangentWS = {i.TBN0.x, i.TBN1.x, i.TBN2.x};
-                half3 bitangentWS = {i.TBN0.y, i.TBN1.y, i.TBN2.y};
-
-                // === DIRECT LIGHT === //
-                // Diffuse // 
-                half3 diffCol_DL = pbr_setup.baseCol * lerp(0.25, 1.0, pbr_vectors.nl);
-                // Specular // 
-                half shiftTex = tex2D(_ShiftTangentTex, i.uv).r - 0.5;
-                half3 t1 = ShiftTangent(tangentWS, pbr_vectors.n, _Shift.x + shiftTex);
-                half3 t2 = ShiftTangent(tangentWS, pbr_vectors.n, _Shift.y + shiftTex);
-
-                half3 specCol_DL = _SpecCol1 * StrandSpecular(t1, pbr_vectors.v, pbr_vectors.l, _Glossiness.x)
-                                    + _SpecCol2 * StrandSpecular(t2, pbr_vectors.v, pbr_vectors.l, _Glossiness.y);
-
-
-                half3 col;
-                col = (diffCol_DL + specCol_DL) * mainLight.color;
-                half alpha = tex2D(_BaseTex, i.uv).a;
-                return half4(col, alpha);
-            }
+            #include "Assets/Common/Shader/SJSJ_PBRSetup.hlsl"
+            #include "Assets/Common/Shader/SJSJ_BRDF.hlsl"
+            #include "hairMain.hlsl"
+            
             ENDHLSL
         }
+
     }
 }
