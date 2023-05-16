@@ -19,10 +19,11 @@
 * #### [4.2 - Notes](#rainyground_nt)
 * #### [Reference](#rainyground_ref)
 
-### [5 - Pre-integrated Subsurface Scattering Skin](#piss)
-* #### [5.1 - Demo](#piss_demo)
-* #### [5.2 - Notes](#piss_nt)
-* #### [Reference](#piss_ref)
+### [5 - Realistic Character Rendering](#rcr)
+* #### [5.1 - Skin](#rcr_skin)
+  * ##### [5.1.1 - Demo](#rcr_skin_demo)
+  * ##### [5.1.2 - Notes](#rcr_skin_nt)
+  * ##### [5.1.3 - Reference](#rcr_skin_ref)
 
 ### [6 - 2D Frame Animation](#2danimation)
 * #### [6.1 - Demo](#2danimation_demo)
@@ -124,41 +125,43 @@
 
 ---
 
-# 5 - Pre-integrated Subsurface Scattering Skin <a name="piss"></a>
-- [x] \<VFX> BSSRDF - Pre-integrated Subsurface Scattering
-- [x] \<VFX> Specular BRDF - by Kelemen/Szirmay-Kalos
-- [x] \<VFX> non-physics-based BTDF - by Colin Barré-Brisebois/ Marc Bouchard 
-- [x] \<VFX> Filmic tonemapping 
+# 5 - Realistic Character Rendering <a name="rcr"></a>
 
-## 5.1 - Demo <a name="piss_demo"></a>
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/79186991/235362825-debf6777-6e92-41e1-8bb5-ddb02e7df61a.png" width="100%" height="100%">
-  <br> > Skin Rendering
-</p>
+  ## 5.1 - Skin <a name="rcr_skin"></a>
+  - [x] \<VFX> BSSRDF - Pre-integrated Subsurface Scattering
+  - [x] \<VFX> Specular BRDF - by Kelemen/Szirmay-Kalos
+  - [x] \<VFX> non-physics-based BTDF - by Colin Barré-Brisebois/ Marc Bouchard 
+  - [x] \<VFX> Filmic tonemapping 
 
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/79186991/235362943-2ed63645-587f-4ec5-8544-8c73692e3d60.png" width="49%">
-  <img src="https://user-images.githubusercontent.com/79186991/235363005-543d969c-46ca-462c-ac0c-65107864b060.png" width="49%">
-  <br> > PISS BSSRDF (left) & Common BRDF (right)
-</p>
+    ### 5.1.1 - Demo <a name="rcr_skin_demo"></a>
+    <p align="center">
+      <img src="https://user-images.githubusercontent.com/79186991/235362825-debf6777-6e92-41e1-8bb5-ddb02e7df61a.png" width="100%" height="100%">
+      <br> > Skin Rendering
+    </p>
 
-## 5.2 - Note <a name="piss_nt"></a>
-![PISS](https://user-images.githubusercontent.com/79186991/235363366-3d5b4c7b-4c80-41ae-8529-64fe9d9f5dc6.png)
+    <p align="center">
+      <img src="https://user-images.githubusercontent.com/79186991/235362943-2ed63645-587f-4ec5-8544-8c73692e3d60.png" width="49%">
+      <img src="https://user-images.githubusercontent.com/79186991/235363005-543d969c-46ca-462c-ac0c-65107864b060.png" width="49%">
+      <br> > PISS BSSRDF (left) & Common BRDF (right)
+    </p>
 
-> ## Reference <a name="piss_ref"></a>
-> 1. [Pre-Integrated Skin Shading 的常见问题解答](https://zhuanlan.zhihu.com/p/384541607)
-> 2. [Pre-Integrated Skin Shading 数学模型理解](https://zhuanlan.zhihu.com/p/56052015)
-> 3. [Pre-Integrated Skin Shading实现笔记](https://zhuanlan.zhihu.com/p/60343513) 
-> 4. [Simon's Tech Blog - Pre-Integrated Skin Shading](http://simonstechblog.blogspot.com/2015/02/pre-integrated-skin-shading.html) 
-> 5. [Adam Chen - Skin Rendering](https://progmdong.github.io/2019-02-03/Skin_Rendering/)
-> 6. [SIGGRAPH 2011- Pre-Integrated Skin Shading](http://advances.realtimerendering.com/s2011/Penner%20-%20Pre-Integrated%20Skin%20Rendering%20(Siggraph%202011%20Advances%20in%20Real-Time%20Rendering%20Course).pptx) 
-> 7. GPU Pro 2_ Advanced Rendering Techniques_Engel W. (Ed.)
-> 8. [GPU Gems 3 | Chapter 14. Advanced Techniques for Realistic Real-Time Skin Rendering](https://developer.nvidia.com/gpugems/gpugems3/part-iii-rendering/chapter-14-advanced-techniques-realistic-real-time-skin) 
-> 9. [A Microfacet Based Coupled Specular-Matte BRDF Model with Importance Sampling](http://www.hungrycat.hu/microfacet.pdf)
-> 10. [Alan Zucconi | Fast Subsurface Scattering in Unity (Part 1)](https://www.alanzucconi.com/2017/08/30/fast-subsurface-scattering-1/) 
-> 11. [Alan Zucconi | Fast Subsurface Scattering in Unity (Part 2)](https://www.alanzucconi.com/2017/08/30/fast-subsurface-scattering-2/)
-> 12. [GDC 2011 – Approximating Translucency for a Fast, Cheap and Convincing Subsurface Scattering Look](https://colinbarrebrisebois.com/2011/03/07/gdc-2011-approximating-translucency-for-a-fast-cheap-and-convincing-subsurface-scattering-look/) 
-> 13. [GPU Gems | Chapter 16. Real-Time Approximations to Subsurface Scattering](https://developer.nvidia.com/gpugems/gpugems/part-iii-materials/chapter-16-real-time-approximations-subsurface-scattering) 
+    ### 5.1.2 - Note <a name="rcr_skin_nt"></a>
+    ![PISS](https://user-images.githubusercontent.com/79186991/235363366-3d5b4c7b-4c80-41ae-8529-64fe9d9f5dc6.png)
+
+    > ### 5.1.3 Reference <a name="rcr_skin_ref"></a>
+    > 1. [Pre-Integrated Skin Shading 的常见问题解答](https://zhuanlan.zhihu.com/p/384541607)
+    > 2. [Pre-Integrated Skin Shading 数学模型理解](https://zhuanlan.zhihu.com/p/56052015)
+    > 3. [Pre-Integrated Skin Shading实现笔记](https://zhuanlan.zhihu.com/p/60343513) 
+    > 4. [Simon's Tech Blog - Pre-Integrated Skin Shading](http://simonstechblog.blogspot.com/2015/02/pre-integrated-skin-shading.html) 
+    > 5. [Adam Chen - Skin Rendering](https://progmdong.github.io/2019-02-03/Skin_Rendering/)
+    > 6. [SIGGRAPH 2011- Pre-Integrated Skin Shading](http://advances.realtimerendering.com/s2011/Penner%20-%20Pre-Integrated%20Skin%20Rendering%20(Siggraph%202011%20Advances%20in%20Real-Time%20Rendering%20Course).pptx) 
+    > 7. GPU Pro 2_ Advanced Rendering Techniques_Engel W. (Ed.)
+    > 8. [GPU Gems 3 | Chapter 14. Advanced Techniques for Realistic Real-Time Skin Rendering](https://developer.nvidia.com/gpugems/gpugems3/part-iii-rendering/chapter-14-advanced-techniques-realistic-real-time-skin) 
+    > 9. [A Microfacet Based Coupled Specular-Matte BRDF Model with Importance Sampling](http://www.hungrycat.hu/microfacet.pdf)
+    > 10. [Alan Zucconi | Fast Subsurface Scattering in Unity (Part 1)](https://www.alanzucconi.com/2017/08/30/fast-subsurface-scattering-1/) 
+    > 11. [Alan Zucconi | Fast Subsurface Scattering in Unity (Part 2)](https://www.alanzucconi.com/2017/08/30/fast-subsurface-scattering-2/)
+    > 12. [GDC 2011 – Approximating Translucency for a Fast, Cheap and Convincing Subsurface Scattering Look](https://colinbarrebrisebois.com/2011/03/07/gdc-2011-approximating-translucency-for-a-fast-cheap-and-convincing-subsurface-scattering-look/) 
+    > 13. [GPU Gems | Chapter 16. Real-Time Approximations to Subsurface Scattering](https://developer.nvidia.com/gpugems/gpugems/part-iii-materials/chapter-16-real-time-approximations-subsurface-scattering) 
 
 --- 
 
@@ -177,3 +180,7 @@
 
 > ## Reference <a name="2danimation_ref"></a>
 > 1. Unity Shader 入门精要
+
+--- 
+
+# 7 - 
