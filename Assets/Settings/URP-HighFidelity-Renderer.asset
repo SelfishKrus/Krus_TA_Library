@@ -1,48 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-7839353297660815783
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b3d386ba5cd94485973aee1479b272e, type: 3}
-  m_Name: RenderObjects
-  m_EditorClassIdentifier: 
-  m_Active: 0
-  settings:
-    passTag: RenderObjects
-    Event: 500
-    filterSettings:
-      RenderQueueType: 1
-      LayerMask:
-        serializedVersion: 2
-        m_Bits: 2147483647
-      PassNames:
-      - VFX
-    overrideMaterial: {fileID: 0}
-    overrideMaterialPassIndex: 0
-    overrideShader: {fileID: 0}
-    overrideShaderPassIndex: 0
-    overrideMode: 1
-    overrideDepthState: 0
-    depthCompareFunction: 4
-    enableWrite: 1
-    stencilSettings:
-      overrideStencilState: 0
-      stencilReference: 0
-      stencilCompareFunction: 8
-      passOperation: 0
-      failOperation: 0
-      zFailOperation: 0
-    cameraSettings:
-      overrideCamera: 0
-      restoreCamera: 1
-      offset: {x: 0, y: 0, z: 0, w: 0}
-      cameraFieldOfView: 60
 --- !u!114 &-4464675019466643322
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62,6 +19,22 @@ MonoBehaviour:
     downsample: 1
     copyToFramebuffer: 0
     targetName: _MainTex
+--- !u!114 &-1933483439274283846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9811329575365147a5f7fe8b98b55f8, type: 3}
+  m_Name: DistortPass
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  distortSettings:
+    renderPassEvent: 550
+    distortMaterial: {fileID: 2100000, guid: 987cc1f319ed2d6449c4a1e7075a1f9b, type: 2}
 --- !u!114 &-1878332245247344467
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -113,6 +86,20 @@ MonoBehaviour:
   settings:
     renderPassEvent: 500
     shader: {fileID: 4800000, guid: 45e3cb27ee9327a4eb91420dc7b506cd, type: 3}
+--- !u!114 &-1619260576177665274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 281b5c019b4fd8a428e172b85955991b, type: 3}
+  m_Name: CameraTransparentTextureRenderPassFeature
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  textureName: _CameraTransparentTexture
 --- !u!114 &-390333726739092589
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -190,9 +177,9 @@ MonoBehaviour:
   - {fileID: -1878332245247344467}
   - {fileID: -4464675019466643322}
   - {fileID: -390333726739092589}
-  - {fileID: 5091516712030760024}
-  - {fileID: -7839353297660815783}
-  m_RendererFeatureMap: adc0de57c6d2eee586682183b9490ac293abdc298b4195fa58ec8e3c79b3a84659d623e0b5053593
+  - {fileID: -1933483439274283846}
+  - {fileID: -1619260576177665274}
+  m_RendererFeatureMap: adc0de57c6d2eee586682183b9490ac293abdc298b4195fabaacf4560ee32ae506cb22ce153b87e9
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
@@ -241,19 +228,3 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: ColorTintPass
   m_EditorClassIdentifier: 
---- !u!114 &5091516712030760024
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd8424fe5dbadfa42b07931295b8a82f, type: 3}
-  m_Name: DrawObjectsRendererFeature
-  m_EditorClassIdentifier: 
-  m_Active: 1
-  getCameraTextureRenderPassEvent: 600
-  targetName: _CameraColorTexture
-  drawObjectsRenderPassEvent: 1000

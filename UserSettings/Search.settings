@@ -14,6 +14,26 @@ scopes = {
 	"last_search.E8DA15E5" = ""
 	"OpenInspectorPreview.E8DA15E5" = "0"
 	"currentGroup.E8DA15E5" = "all"
+	"picker_window_position_offset.3172962C" = "220.5714;-14.28577;320;550.2858"
+	"picker_search_text.3172962C" = "plane"
+	"last_search.3172962C" = "plane"
+	"OpenInspectorPreview.3172962C" = "0"
+	"currentGroup.3172962C" = "all"
+	"picker_window_position_offset.937786DF" = "359.4286;-10.28571;320;550.2858"
+	"picker_search_text.937786DF" = ""
+	"last_search.937786DF" = ""
+	"OpenInspectorPreview.937786DF" = "0"
+	"currentGroup.937786DF" = "all"
+	"picker_window_position_offset.7E63D72B" = "946.8572;46.28571;320;550.2858"
+	"picker_search_text.7E63D72B" = ""
+	"last_search.7E63D72B" = ""
+	"OpenInspectorPreview.7E63D72B" = "0"
+	"currentGroup.7E63D72B" = "all"
+	"picker_window_position_offset.74AD8FDB" = "847.4286;-13.71429;320;550.2858"
+	"picker_search_text.74AD8FDB" = ""
+	"last_search.74AD8FDB" = ""
+	"OpenInspectorPreview.74AD8FDB" = "0"
+	"currentGroup.74AD8FDB" = "all"
 }
 providers = {
 	adb = {
@@ -60,6 +80,7 @@ providers = {
 objectSelectors = {
 }
 recentSearches = [
+	" "
 ]
 searchItemFavorites = [
 ]

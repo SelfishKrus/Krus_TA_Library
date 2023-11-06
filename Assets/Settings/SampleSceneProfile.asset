@@ -1,5 +1,27 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-9195716880432092230
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fc9c734e477c0c45b62f657fa0df3a0, type: 3}
+  m_Name: TestVolumeComponent
+  m_EditorClassIdentifier: 
+  active: 1
+  noiseIntensity:
+    m_OverrideState: 1
+    m_Value: 8.8
+  flowSpeed:
+    m_OverrideState: 1
+    m_Value: {x: 1.2, y: 1.2}
+  texScale:
+    m_OverrideState: 1
+    m_Value: 0.62
 --- !u!114 &-7893295128165547882
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -12,16 +34,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b2db86121404754db890f4c8dfe81b2, type: 3}
   m_Name: Bloom
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   skipIterations:
     m_OverrideState: 0
     m_Value: 1
   threshold:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0.4
   intensity:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 6.76
   scatter:
     m_OverrideState: 0
     m_Value: 0.7
@@ -120,6 +142,7 @@ MonoBehaviour:
   - {fileID: 849379129802519247}
   - {fileID: -7893295128165547882}
   - {fileID: -7011558710299706105}
+  - {fileID: -9195716880432092230}
 --- !u!114 &348323077636246367
 MonoBehaviour:
   m_ObjectHideFlags: 3
