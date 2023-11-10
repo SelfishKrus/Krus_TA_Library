@@ -973,7 +973,7 @@ VisualEffect:
       m_Array: []
     m_Uint:
       m_Array:
-      - m_Value: 1000
+      - m_Value: 1500
         m_Name: ConstantSpawnRate
         m_Overridden: 1
     m_Int:
@@ -1200,7 +1200,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   VFX: {fileID: 1830367533}
-  dissolveRate: 0.01
+  dissolveRate: 0.0006
   refreshRate: 0
 --- !u!4 &2044106237 stripped
 Transform:

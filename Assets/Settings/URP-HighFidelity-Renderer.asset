@@ -31,7 +31,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9811329575365147a5f7fe8b98b55f8, type: 3}
   m_Name: DistortPass
   m_EditorClassIdentifier: 
-  m_Active: 1
+  m_Active: 0
   distortSettings:
     renderPassEvent: 550
     distortMaterial: {fileID: 2100000, guid: 987cc1f319ed2d6449c4a1e7075a1f9b, type: 2}
