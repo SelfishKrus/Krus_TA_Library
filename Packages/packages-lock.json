@@ -14,6 +14,14 @@
       "dependencies": {},
       "hash": "d5cc76125efeb0bec575961f6a16e0143704d8b1"
     },
+    "com.sidefx.vat": {
+      "version": "file:D:/Program Files/Side Effects Software/sidefx_packages/SideFXLabs19.5/unity/shaders/URP_VAT3",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.unity.render-pipelines.universal": "12.0.0"
+      }
+    },
     "com.unity.ai.navigation": {
       "version": "1.1.1",
       "depth": 0,
@@ -75,16 +83,6 @@
         "com.autodesk.fbx": "4.2.1"
       },
       "url": "https://packages.unity.com"
-    },
-    "com.unity.formats.usd": {
-      "version": "file:C:/Users/27336/Desktop/usd-unity-sdk-Release-3.0.0-exp.5/usd-unity-sdk-Release-3.0.0-exp.5/package/com.unity.formats.usd",
-      "depth": 0,
-      "source": "local",
-      "dependencies": {
-        "com.unity.timeline": "1.0.0",
-        "com.unity.modules.screencapture": "1.0.0",
-        "com.unity.modules.physics": "1.0.0"
-      }
     },
     "com.unity.ide.rider": {
       "version": "3.0.18",

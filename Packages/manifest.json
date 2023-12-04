@@ -1,13 +1,13 @@
 {
   "dependencies": {
     "com.cyanilux.bakeshader": "https://github.com/Cyanilux/BakeShader.git",
+    "com.sidefx.vat": "file:D:/Program Files/Side Effects Software/sidefx_packages/SideFXLabs19.5/unity/shaders/URP_VAT3",
     "com.unity.ai.navigation": "1.1.1",
     "com.unity.cinemachine": "2.9.5",
     "com.unity.collab-proxy": "2.0.1",
     "com.unity.ext.nunit": "1.0.6",
     "com.unity.formats.alembic": "2.3.4",
     "com.unity.formats.fbx": "4.2.1",
-    "com.unity.formats.usd": "file:C:/Users/27336/Desktop/usd-unity-sdk-Release-3.0.0-exp.5/usd-unity-sdk-Release-3.0.0-exp.5/package/com.unity.formats.usd",
     "com.unity.ide.rider": "3.0.18",
     "com.unity.ide.visualstudio": "2.0.17",
     "com.unity.ide.vscode": "1.2.5",
