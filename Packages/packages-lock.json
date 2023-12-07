@@ -76,16 +76,6 @@
       },
       "url": "https://packages.unity.com"
     },
-    "com.unity.formats.usd": {
-      "version": "file:C:/Users/27336/Desktop/usd-unity-sdk-Release-3.0.0-exp.5/usd-unity-sdk-Release-3.0.0-exp.5/package/com.unity.formats.usd",
-      "depth": 0,
-      "source": "local",
-      "dependencies": {
-        "com.unity.timeline": "1.0.0",
-        "com.unity.modules.screencapture": "1.0.0",
-        "com.unity.modules.physics": "1.0.0"
-      }
-    },
     "com.unity.ide.rider": {
       "version": "3.0.18",
       "depth": 0,
@@ -96,7 +86,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ide.visualstudio": {
-      "version": "2.0.17",
+      "version": "2.0.22",
       "depth": 0,
       "source": "registry",
       "dependencies": {
