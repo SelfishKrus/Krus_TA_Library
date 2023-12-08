@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FloatingTransformation : MonoBehaviour
+public class FloatingTransformationFFT : MonoBehaviour
 {
     GameObject ocean;
     Mesh oceanMesh;
@@ -18,7 +18,7 @@ public class FloatingTransformation : MonoBehaviour
     {
         this_initialPos = transform.position;
 
-        ocean = GameObject.Find("SM_OceanSimulation");
+        ocean = GameObject.Find("Mod_OceanMesh");
         oceanMesh = ocean.GetComponent<SkinnedMeshRenderer>().sharedMesh;
         Vector3[] verticesOS = oceanMesh.vertices;
         float minDistance = Mathf.Infinity;

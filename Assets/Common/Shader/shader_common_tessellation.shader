@@ -37,7 +37,10 @@ Shader "Common/Tessellation"
             float _WireframeSmoothing;
             CBUFFER_END
 
-            // FUNCTION START ////////////////////////////////////////////////////
+            //////////////////////////////////////////////////////////////////////////////////////////////
+            //////////////////////////                 FUNCTION                  /////////////////////////
+            //////////////////////////////////////////////////////////////////////////////////////////////
+
             half3 DrawWireFramesByBary(half3 barycentricCoordinates)
             {
                 float3 deltas = fwidth(barycentricCoordinates);
@@ -61,7 +64,10 @@ Shader "Common/Tessellation"
 
                 return edge;
             }
-            // FUNCTION END ////////////////////////////////////////////////////
+
+            //////////////////////////////////////////////////////////////////////////////////////////////
+            //////////////////////////                  STRUCT                   /////////////////////////
+            //////////////////////////////////////////////////////////////////////////////////////////////
 
             struct appdata
             {
@@ -133,7 +139,10 @@ Shader "Common/Tessellation"
                 return o;
             }
 
-            // VERTEX SHADER // 
+            //////////////////////////////////////////////////////////////////////////////////////////////
+            //////////////////////////              VERTEX SHADER                /////////////////////////
+            //////////////////////////////////////////////////////////////////////////////////////////////
+
             tessdata vert (appdata v)
             {
                 tessdata o;
@@ -144,8 +153,10 @@ Shader "Common/Tessellation"
                 return o;
             }
 
+            //////////////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////// HULL SHADER (Tessellation control shader) /////////////////////////
+            //////////////////////////////////////////////////////////////////////////////////////////////
 
-            // HULL SHADER (Tessellation control shader) //
             // evoked once per vertex in a patch
             // to break high-level mesh into a series of smaller patches and pass them to tessellation shader
             [domain("tri")]     // work with triangle
@@ -158,10 +169,16 @@ Shader "Common/Tessellation"
                 return patch[id];
             }
 
-            // TESSELLATION SHADER // 
+            //////////////////////////////////////////////////////////////////////////////////////////////
+            //////////////////////////      TESSELLATION SHADER  (On Hardware)   /////////////////////////
+            //////////////////////////////////////////////////////////////////////////////////////////////
+
             // generate baycentric coordinates for vertices
             
-            // DOMAIN SHADER (Tessellation evaluation shader) // 
+            //////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////   DOMAIN SHADER (Tessellation evaluation shader)  ////////////////////
+            //////////////////////////////////////////////////////////////////////////////////////////////
+
             // invoked once per vertex in a patch
             // use baycentric coordinates to generate vertices
             [domain("tri")]
@@ -185,14 +202,18 @@ Shader "Common/Tessellation"
                 return tessvert(data);
             }
 
-            // GEOMETRY SHADER //
+            //////////////////////////////////////////////////////////////////////////////////////////////
+            //////////////////////////              GEOMETRY SHADER              /////////////////////////
+            //////////////////////////////////////////////////////////////////////////////////////////////
+
             [maxvertexcount(3)]
             void geom (triangle vertdata v[3], inout TriangleStream<geomdata> triStream)
             {
                 for (int i = 0; i < 3; i++)
                 {
                     geomdata o;
-                    o.pos = TransformObjectToHClip(v[i].pos.xyz);
+                    // MVP transform can be done in domain shader as well
+                    o.pos = TransformObjectToHClip(v[i].pos.xyz); 
                     o.uv = v[i].uv;
                     o.barycentricCoordinates = v[i].barycentricCoordinates;
                     triStream.Append(o);
@@ -200,8 +221,10 @@ Shader "Common/Tessellation"
                 triStream.RestartStrip();
             }
 
+            //////////////////////////////////////////////////////////////////////////////////////////////
+            //////////////////////////              FRAGMENT SHADER              /////////////////////////
+            //////////////////////////////////////////////////////////////////////////////////////////////
 
-            // FRAGMENT SHADER // 
             half4 frag (geomdata i) : SV_Target
             {
                 // draw wireframes

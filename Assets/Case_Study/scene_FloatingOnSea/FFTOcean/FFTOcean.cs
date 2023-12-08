@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// [ExecuteInEditMode]
 public class FFTOcean : MonoBehaviour
 {
     //////////////////////////////////////////////////////////////////////////////////////////////
@@ -42,6 +43,10 @@ public class FFTOcean : MonoBehaviour
     }
 
     [Header("Spectrum Settings")]
+    public float tileGlobalScale = 1f;
+    public float globalScale = 1f;
+    public float tessellationFactor = 10.0f;
+
     [Range(0, 100000)]
     public int seed = 0;
 
@@ -269,7 +274,11 @@ public class FFTOcean : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // shader
+        // shader'
+        material.SetFloat("_TileGlobalScale", tileGlobalScale);
+        material.SetFloat("_GlobalScale", globalScale);
+        material.SetFloat("_TessellationFactor", tessellationFactor);
+
         material.SetFloat("_Tile0", tile1);
         material.SetFloat("_Tile1", tile2);
         material.SetFloat("_Tile2", tile3);
