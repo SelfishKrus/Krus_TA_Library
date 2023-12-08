@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "com.cyanilux.bakeshader": "https://github.com/Cyanilux/BakeShader.git",
+    "com.sidefx.vat": "file:D:/Program Files/Side Effects Software/sidefx_packages/SideFXLabs19.5/unity/shaders/URP_VAT3",
     "com.unity.ai.navigation": "1.1.1",
     "com.unity.cinemachine": "2.9.5",
     "com.unity.collab-proxy": "2.0.1",
