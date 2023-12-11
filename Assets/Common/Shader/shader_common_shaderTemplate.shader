@@ -27,8 +27,8 @@ Shader "Common/ShaderTemplate"
 
             struct v2f
             {
-                float4 pos : SV_POSITION;
                 float2 uv : TEXCOORD0;
+                float4 pos : SV_POSITION;
             };
 
             CBUFFER_START(UnityPerMaterial)
@@ -47,6 +47,7 @@ Shader "Common/ShaderTemplate"
 
             half4 frag (v2f i) : SV_Target
             {
+                
                 half3 col = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv).rgb;
                 return half4(col, 1);
             }

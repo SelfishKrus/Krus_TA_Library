@@ -12,10 +12,17 @@ Shader "KrusShader/FakeTyndall"
     }
     SubShader
     {
+<<<<<<< HEAD
         Tags { "RenderType"="Transparent" "RenderPipeline"="UniversalRenderPipeline" "Queue"="Transparent" "IgnoreProjector"="True" "DisableBatching"="True"}
         LOD 100
         Blend SrcAlpha OneMinusSrcAlpha
         Cull Back
+=======
+        Tags { "RenderType"="Transparent" "RenderPipeline"="UniversalRenderPipeline" "Queue"="Transparent" "IgnoreProjector"="True"}
+        LOD 100
+        Blend SrcAlpha OneMinusSrcAlpha
+        Cull Off
+>>>>>>> origin/main
         ZWrite Off
 
         Pass
@@ -32,8 +39,11 @@ Shader "KrusShader/FakeTyndall"
             {
                 float4 posOS : POSITION;
                 float2 uv : TEXCOORD0;
+<<<<<<< HEAD
                 float3 normalOS : NORMAL;
                 float3 tangentOS : TANGENT;
+=======
+>>>>>>> origin/main
             };
 
             struct v2f
@@ -42,8 +52,11 @@ Shader "KrusShader/FakeTyndall"
                 float4 uvs1 : TEXCOORD1;
                 float2 uv : TEXCOORD2;
                 float3 posOS : TEXCOORD3;
+<<<<<<< HEAD
                 float3 normalWS : TEXCOORD4;
                 float3 posWS : TEXCOORD5;
+=======
+>>>>>>> origin/main
                 float4 pos : SV_POSITION;
             };
 
@@ -63,6 +76,7 @@ Shader "KrusShader/FakeTyndall"
             v2f vert (appdata v)
             {
                 v2f o;
+<<<<<<< HEAD
                 
                 
                 float3 centerOS = float3(0,0,0);
@@ -84,6 +98,13 @@ Shader "KrusShader/FakeTyndall"
                 o.uvs1 = float4(v.uv * _Noise_ST.xy + _Noise_ST.zw, v.uv * _Dirt_ST.xy + _Dirt_ST.zw);
                 o.uv = v.uv; 
                 o.posOS = v.posOS.xyz;
+=======
+                o.pos = TransformObjectToHClip(v.posOS.xyz);
+                o.uvs0 = float4(v.uv * _MainTex_ST.xy + _MainTex_ST.zw, v.uv * _Beam_ST.xy + _Beam_ST.zw);
+                o.uvs1 = float4(v.uv * _Noise_ST.xy + _Noise_ST.zw, v.uv * _Dirt_ST.xy + _Dirt_ST.zw);
+                o.uv = v.uv;
+                o.posOS = v.posOS;
+>>>>>>> origin/main
                 return o;
             }
 
@@ -98,6 +119,7 @@ Shader "KrusShader/FakeTyndall"
                 half gBeam = tex2D(_MainTex, uv_beam ).r;
                 half gDirt = tex2D(_MainTex, uv_dirt).b;
 
+<<<<<<< HEAD
                 // Fade-out closing to grazing angle
                 float3 camToPixelDirWS = normalize(i.posWS - _WorldSpaceCameraPos);
                 float fade = abs(dot(i.normalWS, camToPixelDirWS));
@@ -105,6 +127,10 @@ Shader "KrusShader/FakeTyndall"
 
                 half3 col = _BeamCol * gNoise + _DirtCol * gDirt;
                 return half4(col, gBeam * fade);
+=======
+                half3 col = _BeamCol * gNoise + _DirtCol * gDirt;
+                return half4(col, gBeam);
+>>>>>>> origin/main
             }
             ENDHLSL
         }
