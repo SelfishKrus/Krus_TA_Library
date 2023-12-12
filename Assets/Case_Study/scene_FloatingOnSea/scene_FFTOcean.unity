@@ -234,7 +234,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 59641043}
   m_LocalRotation: {x: 0.20698383, y: -0.54665345, z: 0.36895457, w: 0.72263426}
-  m_LocalPosition: {x: 0, y: 3.88, z: 0}
+  m_LocalPosition: {x: 0, y: 4.682, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -346,43 +346,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!84 &455245774
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_ForcedFallbackFormat: 4
-  m_DownscaleFallback: 0
-  m_IsAlphaChannelOptional: 0
-  serializedVersion: 5
-  m_Width: 1024
-  m_Height: 1024
-  m_AntiAliasing: 1
-  m_MipCount: -1
-  m_DepthStencilFormat: 0
-  m_ColorFormat: 48
-  m_MipMap: 1
-  m_GenerateMips: 0
-  m_SRGB: 0
-  m_UseDynamicScale: 0
-  m_BindMS: 0
-  m_EnableCompatibleFormat: 1
-  m_TextureSettings:
-    serializedVersion: 2
-    m_FilterMode: 1
-    m_Aniso: 16
-    m_MipBias: 0
-    m_WrapU: 0
-    m_WrapV: 0
-    m_WrapW: 0
-  m_Dimension: 5
-  m_VolumeDepth: 4
-  m_ShadowSamplingMode: 2
 --- !u!1 &755321971 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 4e0a69347ba9c784892d0a06d31aa49d, type: 3}
@@ -401,7 +364,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fftComputeShader: {fileID: 7200000, guid: 4e28932459a4b7b438be9dea2c50a237, type: 3}
-  RTResolution: 1024
   tileGlobalScale: 10
   globalScale: 8
   tessellationFactor: 10
@@ -507,49 +469,6 @@ MonoBehaviour:
     swell: 0
     peakEnhancement: 0
     shortWavesFade: 0
-  displacementTextures: {fileID: 1688650290}
-  slopeTextures: {fileID: 1749940219}
-  initialSpectrumTextures: {fileID: 455245774}
-  pingPongTex: {fileID: 0}
-  pingPongTex2: {fileID: 0}
-  spectrumTextures: {fileID: 901796721}
---- !u!84 &901796721
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_ForcedFallbackFormat: 4
-  m_DownscaleFallback: 0
-  m_IsAlphaChannelOptional: 0
-  serializedVersion: 5
-  m_Width: 1024
-  m_Height: 1024
-  m_AntiAliasing: 1
-  m_MipCount: -1
-  m_DepthStencilFormat: 0
-  m_ColorFormat: 48
-  m_MipMap: 1
-  m_GenerateMips: 0
-  m_SRGB: 0
-  m_UseDynamicScale: 0
-  m_BindMS: 0
-  m_EnableCompatibleFormat: 1
-  m_TextureSettings:
-    serializedVersion: 2
-    m_FilterMode: 1
-    m_Aniso: 16
-    m_MipBias: 0
-    m_WrapU: 0
-    m_WrapV: 0
-    m_WrapW: 0
-  m_Dimension: 5
-  m_VolumeDepth: 8
-  m_ShadowSamplingMode: 2
 --- !u!1001 &1141821318
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -651,8 +570,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: {x: 0, y: -2.7, z: 0}
-  xzScale: 0.05
-  yScale: 0.04
 --- !u!95 &1201397217
 Animator:
   serializedVersion: 5
@@ -974,6 +891,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _OceanLitTex:
+        m_Texture: {fileID: 2800000, guid: 869b6a8cfc71f90499f913dee57ee6ec, type: 3}
+        m_Scale: {x: 4, y: 4}
+        m_Offset: {x: 0, y: 0}
     - _OceanTile:
         m_Texture: {fileID: 2800000, guid: 2711c42666dbd334aa4546632e9a179d, type: 3}
         m_Scale: {x: 4, y: 4}
@@ -1017,6 +938,7 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _DstBlendAlpha: 0
+    - _EdgeContrast: 1
     - _EnvironmentReflections: 1
     - _FlowScale0: 0.1
     - _FlowScale1: 0.1
@@ -1025,6 +947,7 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
+    - _HexSize: 0.1
     - _LOD: 0
     - _LOD0: 0
     - _LOD1: 0
@@ -1050,10 +973,10 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Col0: {r: 0.8773585, g: 0.29442355, b: 0.29442355, a: 1}
-    - _Col1: {r: 0, g: 0, b: 0, a: 1}
-    - _Col2: {r: 0, g: 0, b: 0, a: 1}
-    - _Col3: {r: 0, g: 0, b: 0, a: 1}
+    - _Col0: {r: 1, g: 1, b: 1, a: 1}
+    - _Col1: {r: 1, g: 0, b: 0, a: 1}
+    - _Col2: {r: 0, g: 1, b: 0.4034543, a: 1}
+    - _Col3: {r: 0, g: 0.7604742, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DeepCol: {r: 0.043482676, g: 0.30025062, b: 0.5377358, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
@@ -1231,77 +1154,3 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!84 &1688650290
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_ForcedFallbackFormat: 4
-  m_DownscaleFallback: 0
-  m_IsAlphaChannelOptional: 0
-  serializedVersion: 5
-  m_Width: 1024
-  m_Height: 1024
-  m_AntiAliasing: 1
-  m_MipCount: -1
-  m_DepthStencilFormat: 0
-  m_ColorFormat: 48
-  m_MipMap: 1
-  m_GenerateMips: 0
-  m_SRGB: 0
-  m_UseDynamicScale: 0
-  m_BindMS: 0
-  m_EnableCompatibleFormat: 1
-  m_TextureSettings:
-    serializedVersion: 2
-    m_FilterMode: 1
-    m_Aniso: 16
-    m_MipBias: 0
-    m_WrapU: 0
-    m_WrapV: 0
-    m_WrapW: 0
-  m_Dimension: 5
-  m_VolumeDepth: 4
-  m_ShadowSamplingMode: 2
---- !u!84 &1749940219
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_ForcedFallbackFormat: 4
-  m_DownscaleFallback: 0
-  m_IsAlphaChannelOptional: 0
-  serializedVersion: 5
-  m_Width: 1024
-  m_Height: 1024
-  m_AntiAliasing: 1
-  m_MipCount: -1
-  m_DepthStencilFormat: 0
-  m_ColorFormat: 46
-  m_MipMap: 1
-  m_GenerateMips: 0
-  m_SRGB: 0
-  m_UseDynamicScale: 0
-  m_BindMS: 0
-  m_EnableCompatibleFormat: 1
-  m_TextureSettings:
-    serializedVersion: 2
-    m_FilterMode: 1
-    m_Aniso: 16
-    m_MipBias: 0
-    m_WrapU: 0
-    m_WrapV: 0
-    m_WrapW: 0
-  m_Dimension: 5
-  m_VolumeDepth: 4
-  m_ShadowSamplingMode: 2
