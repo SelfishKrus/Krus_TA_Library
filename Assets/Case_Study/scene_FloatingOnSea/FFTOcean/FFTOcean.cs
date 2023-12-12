@@ -8,10 +8,8 @@ public class FFTOcean : MonoBehaviour
     //////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////       Public       //////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////////
-
+    
     public ComputeShader fftComputeShader;
-
-    public int RTResolution;
 
     public struct SpectrumSettings 
     {
@@ -129,8 +127,6 @@ public class FFTOcean : MonoBehaviour
     [SerializeField]
     public DisplaySpectrumSettings spectrum8;
 
-    public RenderTexture displacementTextures, slopeTextures, initialSpectrumTextures, pingPongTex, pingPongTex2, spectrumTextures;
-
     //////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////       Private       /////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////////
@@ -141,7 +137,12 @@ public class FFTOcean : MonoBehaviour
     private int N, logN, threadGroupsX, threadGroupsY;
     
     private ComputeBuffer spectrumBuffer;
-    
+    private RenderTexture displacementTextures, 
+                          slopeTextures, 
+                          initialSpectrumTextures, 
+                          pingPongTex, 
+                          pingPongTex2, 
+                          spectrumTextures;
     
     //////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////       Function       ////////////////////////////////////
@@ -243,7 +244,6 @@ public class FFTOcean : MonoBehaviour
         material = GetComponent<MeshRenderer>().material;
 
         N = 1024;
-        RTResolution = N;
         logN = (int)Mathf.Log(N, 2.0f);
         threadGroupsX = Mathf.CeilToInt(N / 8.0f);
         threadGroupsY = Mathf.CeilToInt(N / 8.0f);
@@ -321,7 +321,6 @@ public class FFTOcean : MonoBehaviour
         fftComputeShader.SetTexture(5, "_DisplacementTextures", displacementTextures);
         fftComputeShader.SetTexture(5, "_SpectrumTextures", spectrumTextures);
         fftComputeShader.SetTexture(5, "_SlopeTextures", slopeTextures);
-
         fftComputeShader.Dispatch(5, threadGroupsX, threadGroupsY, 1);
 
         displacementTextures.GenerateMips();
@@ -329,7 +328,5 @@ public class FFTOcean : MonoBehaviour
 
         material.SetTexture("_DisplacementTextures", displacementTextures);
         material.SetTexture("_SlopeTextures", slopeTextures);
-
-        
     }
 }
