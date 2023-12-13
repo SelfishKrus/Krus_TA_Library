@@ -315,7 +315,7 @@ Shader "KrusShader/FFTOcean"
                 float NoV_WS = max(dot(n_WS, v_WS), 0.00001);
                 float3 reflect_WS = reflect(-v_WS, n_WS);
                 float3 refrac_WS = refract(-v_WS, n_WS, _Test.y);
-                float3 fresnel = pow(1.0f - NoV_WS, _Test.x);
+                float3 fresnel = 0.04 + (1 - 0.04) * pow(1.0f - NoV_WS, _Test.x);
                 
                 // Shading 
                 float2 uv0 = (uv * _ScaleTranslation0.xy + _ScaleTranslation0.zw) + slopes.xy * _FlowScale0;
@@ -329,10 +329,12 @@ Shader "KrusShader/FFTOcean"
                 half3 col2 = pow(oceanTileTex2, _Power2) * _Col2;
                 half3 baseCol = col0 + col1 + col2;
                 
-                // half3 specCol = _SpecCol * fresnel * baseCol;
+                half3 specCol = _SpecCol * fresnel * baseCol;
+                half4 val = SAMPLE_TEXTURECUBE(unity_SpecCube0, samplerunity_SpecCube0, reflect_WS);
+                half3 reflCol = DecodeHDREnvironment(val, unity_SpecCube0_HDR) * fresnel * _SpecCol;
 
                 half3 col;
-                col = baseCol;
+                col = baseCol + reflCol;
                 return half4(col, 1);
             }
             ENDHLSL
