@@ -3,7 +3,27 @@ guid: 8436a7b41a956dd449032915a8e818d9
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Astronaut
+    second: {fileID: 2100000, guid: ed0ca5945a7b9dd4a8f49f75fe4bdeb1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Astronaut_Blood
+    second: {fileID: 2100000, guid: ed0ca5945a7b9dd4a8f49f75fe4bdeb1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Glasses_Blood
+    second: {fileID: 2100000, guid: 7efa942ec17f3884e8f920bc6be8194b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Person
+    second: {fileID: 2100000, guid: 666bc54dbcaa4394b9092631f47020fc, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -61,10 +81,10 @@ ModelImporter:
       maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
-    isReadable: 0
+    isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 1
+    globalScale: 2
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
@@ -118,7 +138,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 1
+    globalScale: 2
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0

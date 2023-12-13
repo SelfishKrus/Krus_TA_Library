@@ -123,6 +123,71 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &52384326
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 52384328}
+  - component: {fileID: 52384327}
+  m_Layer: 0
+  m_Name: Reflection Probe
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!215 &52384327
+ReflectionProbe:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 52384326}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Type: 0
+  m_Mode: 1
+  m_RefreshMode: 0
+  m_TimeSlicingMode: 0
+  m_Resolution: 128
+  m_UpdateFrequency: 0
+  m_BoxSize: {x: 10, y: 10, z: 10}
+  m_BoxOffset: {x: 0, y: 0, z: 0}
+  m_NearClip: 0.3
+  m_FarClip: 1000
+  m_ShadowDistance: 100
+  m_ClearFlags: 1
+  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IntensityMultiplier: 1
+  m_BlendDistance: 1
+  m_HDR: 1
+  m_BoxProjection: 0
+  m_RenderDynamicObjects: 0
+  m_UseOcclusionCulling: 1
+  m_Importance: 1
+  m_CustomBakedTexture: {fileID: 0}
+--- !u!4 &52384328
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 52384326}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.067, y: 2.44, z: 0.96}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &59641043
 GameObject:
   m_ObjectHideFlags: 0
@@ -364,9 +429,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fftComputeShader: {fileID: 7200000, guid: 4e28932459a4b7b438be9dea2c50a237, type: 3}
-  tileGlobalScale: 10
-  globalScale: 8
-  tessellationFactor: 10
+  RTResolution: 0
+  tileGlobalScale: 5
+  globalScale: 5
+  tessellationFactor: 20
   seed: 19133
   lowCutoff: 0.0001
   highCutoff: 9000
@@ -469,6 +535,12 @@ MonoBehaviour:
     swell: 0
     peakEnhancement: 0
     shortWavesFade: 0
+  displacementTextures: {fileID: 0}
+  slopeTextures: {fileID: 0}
+  initialSpectrumTextures: {fileID: 0}
+  pingPongTex: {fileID: 0}
+  pingPongTex2: {fileID: 0}
+  spectrumTextures: {fileID: 0}
 --- !u!1001 &1141821318
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -499,7 +571,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8436a7b41a956dd449032915a8e818d9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.87
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8436a7b41a956dd449032915a8e818d9, type: 3}
       propertyPath: m_LocalPosition.z
@@ -542,7 +614,8 @@ PrefabInstance:
       value: Mod_TreadingAstronaut
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: -1001733916229422670, guid: 8436a7b41a956dd449032915a8e818d9, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 8436a7b41a956dd449032915a8e818d9, type: 3}
@@ -569,7 +642,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e9abe11b21aca946a37dbb06c67e5bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: {x: 0, y: -2.7, z: 0}
+  offset: {x: 0, y: -2.9, z: 0}
+  xzScale: 0.05
+  yScale: 0.03
 --- !u!95 &1201397217
 Animator:
   serializedVersion: 5
@@ -781,9 +856,9 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: 0.01
   far clip plane: 1000
-  field of view: 60
+  field of view: 50
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -809,7 +884,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1206316474}
   m_LocalRotation: {x: 0.000000041676685, y: 1, z: -0.0000006109476, w: 0.00000013038516}
-  m_LocalPosition: {x: -0.5, y: 1.02, z: 3.95}
+  m_LocalPosition: {x: 0.39075947, y: 0.60952, z: 3.251835}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -828,9 +903,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1917771f66408e44e8fab44f22ca34ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 1201397214}
+  target: {fileID: 0}
   offset: {x: -0.45, y: 1.5, z: 0}
-  scale: 0.5
+  scale: 0.244
 --- !u!21 &1405767180
 Material:
   serializedVersion: 8
@@ -940,25 +1015,25 @@ Material:
     - _DstBlendAlpha: 0
     - _EdgeContrast: 1
     - _EnvironmentReflections: 1
-    - _FlowScale0: 0.1
-    - _FlowScale1: 0.1
-    - _FlowScale2: 0.1
+    - _FlowScale0: 0.01
+    - _FlowScale1: 0.02
+    - _FlowScale2: 0.06
     - _FlowScale3: 0.1
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _HexSize: 0.1
+    - _HexSize: 0.13
     - _LOD: 0
     - _LOD0: 0
     - _LOD1: 0
-    - _LOD2: 0
+    - _LOD2: 1.7
     - _LOD3: 0
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
-    - _Power0: 1
-    - _Power1: 1
-    - _Power2: 1
+    - _Power0: 1.36
+    - _Power1: 2.12
+    - _Power2: 2.72
     - _Power3: 1
     - _QueueOffset: 0
     - _ReceiveShadows: 1
@@ -973,21 +1048,21 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Col0: {r: 1, g: 1, b: 1, a: 1}
-    - _Col1: {r: 1, g: 0, b: 0, a: 1}
-    - _Col2: {r: 0, g: 1, b: 0.4034543, a: 1}
-    - _Col3: {r: 0, g: 0.7604742, b: 1, a: 1}
+    - _Col0: {r: 0, g: 3.1360016, b: 8, a: 1}
+    - _Col1: {r: 17.98404, g: 5.5799527, b: 4.6939464, a: 1}
+    - _Col2: {r: 1, g: 1, b: 1, a: 1}
+    - _Col3: {r: 0, g: 0, b: 0, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DeepCol: {r: 0.043482676, g: 0.30025062, b: 0.5377358, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _ScaleTranslation0: {r: 1, g: 1, b: 0, a: 0}
     - _ScaleTranslation1: {r: 1, g: 1, b: 0, a: 0}
-    - _ScaleTranslation2: {r: 1, g: 1, b: 0, a: 0}
+    - _ScaleTranslation2: {r: 0.1, g: 0.1, b: 0, a: 0}
     - _ScaleTranslation3: {r: 1, g: 1, b: 0, a: 0}
     - _ShallowCol: {r: 0, g: 0.6021218, b: 0.990566, a: 1}
-    - _SpecCol: {r: 1, g: 1, b: 1, a: 1}
+    - _SpecCol: {r: 7.4642644, g: 7.4642644, b: 7.4642644, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _Test: {r: 0, g: 1, b: 1, a: 1}
+    - _Test: {r: 40, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
 --- !u!43 &1528731572
 Mesh:
