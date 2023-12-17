@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class FloatingTransformationFFT : MonoBehaviour
-{
+{   
+    public Vector3 displacement;
+    public Vector3 astronautDisplacement;
+
     GameObject ocean;
     Mesh oceanMesh;
     Vector3 oceanVertex_initialPos;
@@ -91,13 +94,13 @@ public class FloatingTransformationFFT : MonoBehaviour
         RenderTexture.active = fftOcean.displacementTextures;
         tex.ReadPixels(new Rect(0, 0, fftOcean.displacementTextures.width, fftOcean.displacementTextures.height), 0, 0);
         Color color = tex.GetPixel((int)pixelPos.x, (int)pixelPos.y);
-        Vector3 displacement = new Vector3(color.r, color.g, color.b);
+        displacement = new Vector3(color.r, color.g, color.b);
 
-        Debug.Log(displacement);
-        displacement.x *= xzScale;
-        displacement.y *= yScale;
-        displacement.z *= xzScale;
+        // Debug.Log(displacement);
+        astronautDisplacement = new Vector3(0, 0, 0);
+        astronautDisplacement.x = displacement.x * xzScale;
+        astronautDisplacement.y = displacement.y * yScale;
 
-        transform.position = oceanVertex_currentPos + offset + displacement;
+        transform.position = oceanVertex_currentPos + offset + astronautDisplacement;
     }
 }

@@ -46,15 +46,17 @@ Shader "KrusShader/FFTOcean"
         [HDR]_SpecCol ("Specular Color", Color) = (1,1,1,1)
         _ShallowCol ("Shallow Color", Color) = (0,0,1,1)
         _DeepCol ("Deep Color", Color) = (0,0,0.5,1)
+        _AstronautTexScaleTranslation ("Astronaut Tex Scale Translation", Vector) = (1,0,0,0)
     }
     SubShader
     {
-        Tags { "RenderType"="Transparent" "RenderPipeline"="UniversalRenderPipeline" "Queue"="Transparent"}
+        Tags { "RenderType"="Geometry" "RenderPipeline"="UniversalRenderPipeline" "Queue"="Geometry"}
 
 
         Pass
         {
             Tags {"LightMode"="UniversalForward"}
+            ZWrite On
 
             HLSLPROGRAM
             #pragma target 5.0
@@ -151,12 +153,15 @@ Shader "KrusShader/FFTOcean"
             float _HexSize;
             float _EdgeContrast;
 
+            float4 _AstronautTexScaleTranslation;
+
             TEXTURE2D_ARRAY(_DisplacementTextures);     SAMPLER(sampler_DisplacementTextures);
             TEXTURE2D_ARRAY(_SlopeTextures);            SAMPLER(sampler_SlopeTextures);
             TEXTURE2D(_MainTex);                        SAMPLER(sampler_MainTex);
             TEXTURECUBE(_ReflecCubemap);                SAMPLER(sampler_ReflecCubemap);
             TEXTURE2D(_OceanTile);                      SAMPLER(sampler_OceanTile);
             TEXTURE2D(_OceanLitTex);                    SAMPLER(sampler_OceanLitTex);
+            sampler2D _AstronautDepthTex;
 
             //////////////////////////////////////////////////////////////////////////////////////////////
             //////////////////////////              VERTEX SHADER                /////////////////////////
@@ -294,11 +299,11 @@ Shader "KrusShader/FFTOcean"
                     float2 uv = i.uv;
                 #endif
 
-                half3 displacement1 = SAMPLE_TEXTURE2D_ARRAY(_DisplacementTextures, sampler_DisplacementTextures, uv * _Tile0, 0) * _DebugLayer0 * _ContributeDisplacement0;
-                half3 displacement2 = SAMPLE_TEXTURE2D_ARRAY(_DisplacementTextures, sampler_DisplacementTextures, (uv - 0.5f) * _Tile1, 1) * _DebugLayer1 * _ContributeDisplacement1;
-                half3 displacement3 = SAMPLE_TEXTURE2D_ARRAY(_DisplacementTextures, sampler_DisplacementTextures, (uv - 1.125f) * _Tile2, 2) * _DebugLayer2 * _ContributeDisplacement2;
-                // half3 displacement4 = SAMPLE_TEXTURE2D_ARRAY(_DisplacementTextures, sampler_DisplacementTextures, (uv - 1.25f) * _Tile3, 3) * _DebugLayer3 * _ContributeDisplacement3;
-				half3 displacement = displacement1 + displacement2 + displacement3;
+                // half3 displacement1 = SAMPLE_TEXTURE2D_ARRAY(_DisplacementTextures, sampler_DisplacementTextures, uv * _Tile0, 0) * _DebugLayer0 * _ContributeDisplacement0;
+                // half3 displacement2 = SAMPLE_TEXTURE2D_ARRAY(_DisplacementTextures, sampler_DisplacementTextures, (uv - 0.5f) * _Tile1, 1) * _DebugLayer1 * _ContributeDisplacement1;
+                // half3 displacement3 = SAMPLE_TEXTURE2D_ARRAY(_DisplacementTextures, sampler_DisplacementTextures, (uv - 1.125f) * _Tile2, 2) * _DebugLayer2 * _ContributeDisplacement2;
+                // // half3 displacement4 = SAMPLE_TEXTURE2D_ARRAY(_DisplacementTextures, sampler_DisplacementTextures, (uv - 1.25f) * _Tile3, 3) * _DebugLayer3 * _ContributeDisplacement3;
+				// half3 displacement = displacement1 + displacement2 + displacement3;
 
                 float2 slopes1 = SAMPLE_TEXTURE2D_ARRAY(_SlopeTextures, sampler_SlopeTextures, uv * _Tile0, 0) * _DebugLayer0;
 				float2 slopes2 = SAMPLE_TEXTURE2D_ARRAY(_SlopeTextures, sampler_SlopeTextures, (uv - 0.5) * _Tile1, 1) * _DebugLayer1;
@@ -315,7 +320,7 @@ Shader "KrusShader/FFTOcean"
                 float NoV_WS = max(dot(n_WS, v_WS), 0.00001);
                 float3 reflect_WS = reflect(-v_WS, n_WS);
                 float3 refrac_WS = refract(-v_WS, n_WS, _Test.y);
-                float3 fresnel = 0.04 + (1 - 0.04) * pow(1.0f - NoV_WS, _Test.x);
+                float3 fresnel = 0.04 + (1 - 0.04) * pow(1.0f - NoV_WS, 10);
                 
                 // Shading 
                 float2 uv0 = (uv * _ScaleTranslation0.xy + _ScaleTranslation0.zw) + slopes.xy * _FlowScale0;
@@ -332,6 +337,22 @@ Shader "KrusShader/FFTOcean"
                 half3 specCol = _SpecCol * fresnel * baseCol;
                 half4 val = SAMPLE_TEXTURECUBE(unity_SpecCube0, samplerunity_SpecCube0, reflect_WS);
                 half3 reflCol = DecodeHDREnvironment(val, unity_SpecCube0_HDR) * fresnel * _SpecCol;
+
+                // // Foam
+                float2 uv_screen = i.pos.xy / _ScaledScreenParams.xy;
+                float depth = SampleSceneDepth(uv_screen);
+                float3 posWS_depth = ComputeWorldSpacePosition(uv_screen, depth, UNITY_MATRIX_I_VP);
+                // float depth = SAMPLE_TEXTURE2D(_CameraDepthTexture, sampler_CameraDepthTexture, uv_screen).r;
+                // float4 posHCS_depth = float4(uv_screen * 2 - 1, depth, 1.0);
+                // float4 posWS_depth = mul(UNITY_MATRIX_I_VP, posHCS_depth);
+                // posWS_depth.xyz /= posWS_depth.w;
+                float dist = distance(posWS_depth, i.posWS);
+                dist = 1 - step(_Test.x, dist);
+
+                // float2 uv_astronaut = i.uv / _OceanTile_ST.xy;
+                // uv_astronaut = (uv_astronaut - 0.5) * _AstronautTexScaleTranslation.xy + 0.5;
+                // uv_astronaut += _AstronautTexScaleTranslation.zw;
+                // half astronautDepth = tex2D(_AstronautDepthTex, uv_astronaut).r;
 
                 half3 col;
                 col = baseCol + reflCol;

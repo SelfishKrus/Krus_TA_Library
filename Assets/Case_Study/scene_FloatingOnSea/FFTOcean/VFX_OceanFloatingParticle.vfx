@@ -19,8 +19,8 @@ MonoBehaviour:
     serializedVersion: 2
     x: -7
     y: -190
-    width: 1374
-    height: 2406
+    width: 1372
+    height: 2404
 --- !u!114 &114350483966674976
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -160,7 +160,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
           PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 30
+      m_SerializableObject: 20
     m_Space: 2147483647
   m_Property:
     name: Rate
@@ -1232,7 +1232,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEngine.AnimationCurve, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"frames":[{"time":0.0,"value":0.2352294921875,"inTangent":-0.007342956028878689,"outTangent":-0.007342956028878689,"tangentMode":0,"leftTangentMode":0,"rightTangentMode":0,"broken":false},{"time":1.0,"value":0.489593505859375,"inTangent":-0.005440667737275362,"outTangent":-0.005440667737275362,"tangentMode":0,"leftTangentMode":0,"rightTangentMode":0,"broken":false}],"preWrapMode":8,"postWrapMode":8,"version":1}'
+      m_SerializableObject: '{"frames":[{"time":0.0,"value":0.2352294921875,"inTangent":-0.007342956028878689,"outTangent":-0.007342956028878689,"tangentMode":0,"leftTangentMode":0,"rightTangentMode":0,"broken":false},{"time":0.32444480061531069,"value":0.48889145255088808,"inTangent":0.6976849436759949,"outTangent":0.6976849436759949,"tangentMode":0,"leftTangentMode":0,"rightTangentMode":0,"broken":false},{"time":0.5121909379959106,"value":0.5418470501899719,"inTangent":0.02843080647289753,"outTangent":0.02843080647289753,"tangentMode":0,"leftTangentMode":0,"rightTangentMode":0,"broken":false},{"time":0.7088052034378052,"value":0.4979007840156555,"inTangent":-0.3895198106765747,"outTangent":-0.3895198106765747,"tangentMode":0,"leftTangentMode":0,"rightTangentMode":0,"broken":false},{"time":0.9842331409454346,"value":0.007809960283339024,"inTangent":0.020504450425505639,"outTangent":0.020504450425505639,"tangentMode":0,"leftTangentMode":0,"rightTangentMode":0,"broken":false}],"preWrapMode":8,"postWrapMode":8,"version":1}'
     m_Space: 2147483647
   m_Property:
     name: Size
@@ -2201,7 +2201,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
           PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 0.3
+      m_SerializableObject: 0.2
     m_Space: 2147483647
   m_Property:
     name: B
