@@ -51,5 +51,6 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Krus_TA_Library.sln"
+    "dotnet.defaultSolution": "Krus_TA_Library.sln",
+    "dotnet.preferCSharpExtension": true
 }

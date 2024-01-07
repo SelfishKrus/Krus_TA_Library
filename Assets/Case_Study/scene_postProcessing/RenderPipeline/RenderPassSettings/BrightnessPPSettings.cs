@@ -2,11 +2,9 @@ using System;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
-
-namespace SJSJ.BattleRendererApplication.RenderPipeline {
-
     [Serializable]
-    public class BrightnessPPSettings {
+    public class BrightnessPPSettings 
+    {
 
         [Header("Render Pass Settings")]
         public bool isEnabled;
@@ -22,8 +20,5 @@ namespace SJSJ.BattleRendererApplication.RenderPipeline {
 
         [Range(0,1)]
         public float _Brightness = 0.5f;
-
-        
         
     }
-}
