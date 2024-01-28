@@ -6,7 +6,7 @@ Shader "Common/ShaderTemplate"
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque" "RenderPipeline"="UniversalRenderPipeline" "Queue"="Geometry" "IgnoreProjector"="True"}
+        Tags { "RenderType"="Opaque" "RenderPipeline"="UniversalRenderPipeline" "Queue"="Geometry"}
         LOD 100
 
         Pass
