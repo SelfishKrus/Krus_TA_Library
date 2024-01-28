@@ -37,18 +37,18 @@ Shader "Common/ShaderTemplate"
 
             TEXTURE2D(_MainTex);    SAMPLER(sampler_MainTex);
 
-            v2f vert (appdata v)
+            v2f vert (appdata IN)
             {
-                v2f o;
-                o.pos = TransformObjectToHClip(v.posOS.xyz);
-                o.uv = TRANSFORM_TEX(v.uv, _MainTex);
-                return o;
+                v2f OUT;
+                OUT.pos = TransformObjectToHClip(IN.posOS.xyz);
+                OUT.uv = TRANSFORM_TEX(IN.uv, _MainTex);
+                return OUT;
             }
 
-            half4 frag (v2f i) : SV_Target
+            half4 frag (v2f IN) : SV_Target
             {
                 
-                half3 col = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv).rgb;
+                half3 col = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, IN.uv).rgb;
                 return half4(col, 1);
             }
             ENDHLSL
