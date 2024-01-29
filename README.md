@@ -1,4 +1,4 @@
-README.md is no more updated.
+Update at will
 
 For more demos pls move to [https://krusssssbooom.artstation.com/](https://krusssssbooom.artstation.com)
 
@@ -9,38 +9,20 @@ Unity 2022.2.12f1
 # **0 - Table of Cotents**
 
 ### [1 - Tessellation & Wireframe](#tess)
-* #### [1.1 - Demo](#tess_demo)
-* #### [1.2 - Flowchart](#tess_nt)
-* #### [Reference](#tess_ref)
 
 ### [2 - Geometry Grass](#geograss)
-* #### [2.1 - Demo](#geograss_demo)
-* #### [Reference](#geograss_ref)
 
 ### [3 - Droplet Effect](#dropletFX)
-* #### [3.1 - Demo](#dropletFX_demo)
-* #### [3.2 - Flowchart](#dropletFX_nt)
-* #### [Reference](#dropletFX_ref)
 
 ### [4 - Double-layered BRDF - a Practice of Rainy Ground Rendering](#rainyground)
-* #### [4.1 - Demo](#rainyground_demo)
-* #### [4.2 - Notes](#rainyground_nt)
-* #### [Reference](#rainyground_ref)
 
 ### [5 - Realistic Character Rendering](#rcr)
 * #### [5.1 - Skin](#rcr_skin)
-  * ##### [5.1.1 - Demo](#rcr_skin_demo)
-  * ##### [5.1.2 - Notes](#rcr_skin_nt)
-  * ##### [5.1.3 - Reference](#rcr_skin_ref)
 * #### [5.2 - Hair](#rcr_hair)
-  * ##### [5.2.1 - Demo](#rcr_hair_demo)
-  * ##### [5.2.2 - Notes](#rcr_hair_nt)
-  * ##### [5.2.3 - Reference](#rcr_hair_ref)
 
 ### [6 - 2D Frame Animation](#2danimation)
-* #### [6.1 - Demo](#2danimation_demo)
-* #### [6.2 - Notes](#2danimation_nt)
-* #### [Reference](#2danimation_ref)
+
+### [7 - Tri-planar Projection](triplanar_projection)
 
 ---
 
@@ -214,4 +196,16 @@ Unity 2022.2.12f1
 
 --- 
 
-# 7 - 
+# 7 - Tri-planar Projection <a name="triplanar_projection"></a>
+
+## 7.1 - Demo
+<figure>
+  <video src="https://github.com/SelfishKrus/Krus_TA_Library/assets/79186991/97c65f82-f21f-41c6-b95d-ea558d3c3cd8.mp4" controls>
+  </video>
+  <figcaption>
+   <center>Demo - Tri-Planar Projection Mapping
+  </figcaption>
+</figure>
+
+> ## Ref
+> 1. [Cat-like Coding - Triplanar Mapping](https://catlikecoding.com/unity/tutorials/advanced-rendering/triplanar-mapping/)
