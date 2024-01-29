@@ -22,7 +22,7 @@ Unity 2022.2.12f1
 
 ### [6 - 2D Frame Animation](#2danimation)
 
-### [7 - Tri-planar Projection](triplanar_projection)
+### [7 - Tri-planar Projection](#triplanar_projection)
 
 ---
 
