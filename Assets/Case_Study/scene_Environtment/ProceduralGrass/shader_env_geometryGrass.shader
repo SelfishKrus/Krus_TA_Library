@@ -56,7 +56,7 @@ Shader "Environment/GeometryGrass"
 
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
-            #include "Assets/Common/Library/KrusNoise.hlsl"
+            #include "Assets/Common/Shader/KrusNoise.hlsl"
 
             #pragma multi_compile _ _MAIN_LIGHT_SHADOWS
             #pragma multi_compile _ _MAIN_LIGHT_SHADOWS_CASCADE

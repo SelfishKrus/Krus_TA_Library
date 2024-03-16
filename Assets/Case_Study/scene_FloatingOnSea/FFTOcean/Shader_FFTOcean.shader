@@ -74,7 +74,7 @@ Shader "KrusShader/FFTOcean"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/UnityInput.hlsl"
-            #include "Assets/Common/Library/TextureTilingRandomization.hlsl"
+            #include "Assets/Common/Shader/TextureTilingRandomization.hlsl"
 
             struct appdata
             {
