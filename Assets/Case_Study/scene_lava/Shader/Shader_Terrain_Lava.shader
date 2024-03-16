@@ -1,0 +1,205 @@
+Shader "Terrain/Lava"
+{
+    Properties
+    {   
+        [Header(Rock)]
+        _BaseColorTex ("BaseColor Texture", 2D) = "Gray" {}
+        _BaseColorTint ("BaseColor Tint", Color) = (1, 1, 1, 1)
+
+        [NoScaleOffset]_NormalTex ("Normal Map", 2D) = "Bump" {}
+        _NormalScale ("Normal Scale", Float) = 1
+
+        [NoScaleOffset]_DisplacementTex ("Height Texture", 2D) = "" {}
+        _DisplacementScale ("Displacement Scale", Float) = 0
+        _TessellationFactor ("Tessellation Factor", Range(1 ,10)) = 1
+        [Space(30)]
+
+        [Header(Lava)]
+        _LavaBaseColorTex ("Lava BaseColor Tex", 2D) = "Gray" {}
+        _LavaHeight ("Lava Height", Float) = 0 
+        _LavaTint ("Lava Tint", Color) = (1, 1, 1, 1)
+        _BlendFac ("Blending Factor", Vector) = (0.01, 4, 1, 1)
+
+        [Space(30)]
+        _Test ("Test Factor", Vector) = (1, 1, 1, 1)
+    }
+    SubShader
+    {
+        Tags { "RenderType"="Opaque" "RenderPipeline"="UniversalRenderPipeline" "Queue"="Geometry"}
+        LOD 100
+
+        Pass
+        {
+            Tags {"LightMode"="UniversalForward"}
+
+            HLSLPROGRAM
+            #pragma vertex vert
+            #pragma hull hull
+            #pragma domain domain
+            #pragma fragment frag
+
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/Shaders/LitInput.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
+
+            #include "Assets/Common/Shader/K_Pbr.hlsl"
+
+            struct appdata
+            {
+                float4 posOS : POSITION;
+                float3 normalOS : NORMAL;
+                float4 tangentOS : TANGENT;
+                float2 uv : TEXCOORD0;
+            };
+
+            struct tessdata
+            {   
+                float4 pos : SV_POSITION;
+                float2 uv : TEXCOORD0;
+                float4 tbn_x : TEXCOORD1;
+                float4 tbn_y : TEXCOORD2;
+                float4 tbn_z : TEXCOORD3;
+
+            };
+
+            CBUFFER_START(UnityPerMaterial)
+            float4 _BaseColorTex_ST;
+            float3 _BaseColorTint;
+            float _NormalScale;
+            float _TessellationFactor;
+            float _DisplacementScale;
+
+            float3 _LavaTint;
+            float _LavaHeight;
+            float2 _BlendFac;
+
+            float4 _Test;
+            CBUFFER_END
+
+            TEXTURE2D(_BaseColorTex);    SAMPLER(sampler_BaseColorTex);
+            TEXTURE2D(_NormalTex);       SAMPLER(sampler_NormalTex);
+            TEXTURE2D(_DisplacementTex);       SAMPLER(sampler_DisplacementTex);
+
+            TEXTURE2D(_LavaBaseColorTex);       SAMPLER(sampler_LavaBaseColorTex);
+
+
+
+            // VERT SHADER // 
+            
+            tessdata vert (appdata IN)
+            {
+                tessdata OUT;
+                OUT.pos = (IN.posOS);
+                float3 posWS = TransformObjectToWorld(IN.posOS.xyz);
+
+                // tbn 
+                float3 normalWS = TransformObjectToWorldNormal(IN.normalOS);
+                float3 tangentWS = TransformObjectToWorldDir(IN.tangentOS);
+                float3 bitangentWS = cross(normalWS, tangentWS) * IN.tangentOS.w;
+                OUT.tbn_x = float4(tangentWS.x, bitangentWS.x, normalWS.x, posWS.x);
+                OUT.tbn_y = float4(tangentWS.y, bitangentWS.y, normalWS.y, posWS.y);
+                OUT.tbn_z = float4(tangentWS.z, bitangentWS.z, normalWS.z, posWS.z);
+
+                OUT.uv = TRANSFORM_TEX(IN.uv, _BaseColorTex);
+                return OUT;
+            }
+
+            // HULL SHADER // 
+
+            [domain("tri")]     // work with triangle
+            [outputcontrolpoints(3)]    // output 3 control points per patch
+            [outputtopology("triangle_cw")]     // output triangle with clockwise winding
+            [partitioning("integer")]   // integer partitioning mode
+            [patchconstantfunc("ConstantFunction")]    // use constant function to calculate patch constant data
+            tessdata hull(InputPatch<tessdata, 3> patch, uint id : SV_OutputControlPointID)
+            {
+                return patch[id];
+            }
+
+            // DOMAIN SHADER // 
+
+            struct TessellationFactors
+            {
+                float edge[3] : SV_TessFactor;
+                float inside : SV_InsideTessFactor;
+            };
+
+            TessellationFactors ConstantFunction(InputPatch<tessdata, 3> patch)
+            {
+                TessellationFactors f;
+                f.edge[0] = _TessellationFactor.x;
+                f.edge[1] = _TessellationFactor.x;
+                f.edge[2] = _TessellationFactor.x;
+                f.inside = _TessellationFactor.x;
+                return f;
+            }
+
+            [domain("tri")]
+            tessdata domain(TessellationFactors factors, OutputPatch<tessdata, 3> patch, float3 barycentricCoordinates : SV_DomainLocation)
+            {
+                tessdata data;
+
+                // Interpolation
+                #define DOMAIN_INTERPOLATE(fieldName) data.fieldName = \
+                    patch[0].fieldName * barycentricCoordinates.x + \
+                    patch[1].fieldName * barycentricCoordinates.y + \
+                    patch[2].fieldName * barycentricCoordinates.z;
+                
+                DOMAIN_INTERPOLATE(uv)
+                DOMAIN_INTERPOLATE(tbn_x)
+                DOMAIN_INTERPOLATE(tbn_y)
+                DOMAIN_INTERPOLATE(tbn_z)
+
+                // Displacement 
+                float3 posWS = float3(data.tbn_x.w, data.tbn_y.w, data.tbn_z.w);
+                float3 normalWS = float3(data.tbn_x.z, data.tbn_y.z, data.tbn_z.z);
+                float displacement = SAMPLE_TEXTURE2D_LOD(_DisplacementTex, sampler_DisplacementTex, data.uv, 0);
+                posWS += normalWS * displacement * _DisplacementScale;
+                posWS.y = posWS.y < _LavaHeight ? _LavaHeight : posWS.y;
+                data.pos = TransformWorldToHClip(posWS);
+                 
+                return data;
+            }
+
+            // FRAG SHADER // 
+
+            half4 frag (tessdata IN) : SV_Target
+            {   
+                // PRE // 
+                float3 posWS = float3(IN.tbn_x.w, IN.tbn_y.w, IN.tbn_z.w);
+
+                //// normal 
+                float3x3 m_TS2WS = float3x3(IN.tbn_x.xyz, IN.tbn_y.xyz, IN.tbn_z.xyz);
+                float3 normalTS = UnpackNormalTS(TEXTURE2D_ARGS(_NormalTex, sampler_NormalTex), IN.uv, _NormalScale);
+                float3 normalWS = mul(m_TS2WS, normalTS);
+
+                //// directional light
+                Light mainLight = GetMainLight();
+                float NoL01 = dot(normalWS, mainLight.direction) * 0.5 + 0.5;
+                float NoL = max(dot(normalWS, mainLight.direction), 0.00001);
+
+                //// displacement 
+                float displacement = SAMPLE_TEXTURE2D_LOD(_DisplacementTex, sampler_DisplacementTex, IN.uv, _BlendFac.y);
+                               
+
+                // ROCK // 
+                // DIFFUSE // 
+                half3 baseColor = SAMPLE_TEXTURE2D(_BaseColorTex, sampler_BaseColorTex, IN.uv).rgb * _BaseColorTint;
+                half3 diffuse = baseColor * NoL01 * mainLight.color;
+
+                // LAVA // 
+                // DIFFUSE // 
+                half3 lavaCol = SAMPLE_TEXTURE2D(_LavaBaseColorTex, sampler_LavaBaseColorTex, IN.uv).rgb * _LavaTint;
+
+                half3 rockCol = diffuse;
+                float lerpFac = smoothstep(_LavaHeight, _LavaHeight+_BlendFac.x, posWS.y+displacement);
+                
+                half3 col = 1.0;
+                col = lerp(lavaCol, rockCol, lerpFac);
+                return half4(col, 1); 
+            }
+
+            ENDHLSL
+        }
+    }
+}
