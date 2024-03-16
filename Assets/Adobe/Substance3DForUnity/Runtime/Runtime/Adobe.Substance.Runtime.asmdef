@@ -1,0 +1,16 @@
+{
+    "name": "Adobe.Substance.Runtime",
+    "rootNamespace": "Adobe.Substance.Runtime",
+    "references": [
+        "GUID:0322a29457affe94ab4ade0a1555000f"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

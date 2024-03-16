@@ -1,0 +1,20 @@
+{
+    "name": "Adobe.SubstanceEditor",
+    "rootNamespace": "Adobe.SubstanceEditor",
+    "references": [
+        "GUID:0322a29457affe94ab4ade0a1555000f",
+        "GUID:b78cd19d3dcc04e4a8eb1915990b2db1",
+        "GUID:b0a3fd162d0a4453698ec3f9c3b830c4"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
