@@ -39,6 +39,14 @@ Material:
         m_Texture: {fileID: 2800000, guid: 46394b49b235d4b448f347291ceb1c28, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _LavaBaseColorTex_Surface:
+        m_Texture: {fileID: 2800000, guid: 53607b60d342de14db43f284794f94f6, type: 3}
+        m_Scale: {x: 1.5, y: 1.5}
+        m_Offset: {x: 0.23, y: 0}
+    - _LavaBaseColorTex_Under:
+        m_Texture: {fileID: 2800000, guid: 6e3248306c5f9304b9b8a1c53c31f037, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _NormalTex:
         m_Texture: {fileID: 2800000, guid: cb9fb27181af00e48bcb0042958c0072, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -46,12 +54,17 @@ Material:
     m_Ints: []
     m_Floats:
     - _DisplacementScale: 1.5
+    - _LavaAmplitude: 0.02
+    - _LavaFrequency: 3
     - _LavaHeight: 0.05
+    - _LavaParallaxScale: 40
+    - _LavaSpeed: 2
+    - _LavaUnderRoughness: 5.06
     - _NormalScale: 1
     - _TessellationFactor: 3.36
     m_Colors:
     - _BaseColorTint: {r: 1, g: 1, b: 1, a: 1}
     - _BlendFac: {r: 0.005, g: 5.62, b: 1, a: 1}
-    - _LavaTint: {r: 1, g: 1, b: 1, a: 1}
-    - _Test: {r: 0.44, g: 3.12, b: 1, a: 1}
+    - _LavaTint: {r: 0, g: 0, b: 0, a: 1}
+    - _Test: {r: 35.18, g: 3.12, b: 1, a: 1}
   m_BuildTextureStacks: []

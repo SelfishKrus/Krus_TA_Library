@@ -15,9 +15,17 @@ Shader "Terrain/Lava"
         [Space(30)]
 
         [Header(Lava)]
-        _LavaBaseColorTex ("Lava BaseColor Tex", 2D) = "Gray" {}
+        _LavaBaseColorTex_Surface ("Lava Surface BaseColor Tex", 2D) = "Gray" {}
+        [NoScaleOffset]_LavaBaseColorTex_Under ("Lava Under BaseColor Tex", 2D) = "Gray" {}
         _LavaHeight ("Lava Height", Float) = 0 
         _LavaTint ("Lava Tint", Color) = (1, 1, 1, 1)
+        _LavaSpeed ("Lava Speed", Float) = 0.5
+        _LavaAmplitude ("Lava Amplitude", Float) = 0.1
+        _LavaFrequency ("Lava Frequency", Float) = 1
+
+        [Space(20)]
+        _LavaParallaxScale ("Lava Parallax Scale", Float) = 30
+        _LavaUnderRoughness ("Lava Under Roughness", Range(0, 10)) = 0
         _BlendFac ("Blending Factor", Vector) = (0.01, 4, 1, 1)
 
         [Space(30)]
@@ -41,6 +49,7 @@ Shader "Terrain/Lava"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/Shaders/LitInput.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
+            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/ParallaxMapping.hlsl"
 
             #include "Assets/Common/Shader/K_Pbr.hlsl"
 
@@ -71,7 +80,14 @@ Shader "Terrain/Lava"
 
             float3 _LavaTint;
             float _LavaHeight;
+            float _LavaSpeed;
+            float _LavaAmplitude;
+            float _LavaFrequency;
             float2 _BlendFac;
+
+            float _LavaParallaxScale;
+            float _LavaUnderRoughness;
+            float4 _LavaBaseColorTex_Surface_ST;
 
             float4 _Test;
             CBUFFER_END
@@ -80,9 +96,8 @@ Shader "Terrain/Lava"
             TEXTURE2D(_NormalTex);       SAMPLER(sampler_NormalTex);
             TEXTURE2D(_DisplacementTex);       SAMPLER(sampler_DisplacementTex);
 
-            TEXTURE2D(_LavaBaseColorTex);       SAMPLER(sampler_LavaBaseColorTex);
-
-
+            TEXTURE2D(_LavaBaseColorTex_Surface);       SAMPLER(sampler_LavaBaseColorTex_Surface);
+            TEXTURE2D(_LavaBaseColorTex_Under);       SAMPLER(sampler_LavaBaseColorTex_Under);
 
             // VERT SHADER // 
             
@@ -150,12 +165,21 @@ Shader "Terrain/Lava"
                 DOMAIN_INTERPOLATE(tbn_y)
                 DOMAIN_INTERPOLATE(tbn_z)
 
-                // Displacement 
+                // DISPLACEMENT // 
+                //// rock 
                 float3 posWS = float3(data.tbn_x.w, data.tbn_y.w, data.tbn_z.w);
                 float3 normalWS = float3(data.tbn_x.z, data.tbn_y.z, data.tbn_z.z);
                 float displacement = SAMPLE_TEXTURE2D_LOD(_DisplacementTex, sampler_DisplacementTex, data.uv, 0);
                 posWS += normalWS * displacement * _DisplacementScale;
-                posWS.y = posWS.y < _LavaHeight ? _LavaHeight : posWS.y;
+
+                //// lava 
+                float3 posWS_lava = posWS;
+                posWS_lava.y = _LavaHeight;
+                posWS_lava.y = sin(_Time.y * _LavaSpeed + (posWS_lava.x + posWS_lava.z)*_LavaFrequency) * _LavaAmplitude;
+
+                // LERP // 
+                float vLerpFac = smoothstep(_LavaHeight, _LavaHeight+_BlendFac.x, posWS.y);
+                posWS = lerp(posWS_lava, posWS, vLerpFac);
                 data.pos = TransformWorldToHClip(posWS);
                  
                 return data;
@@ -166,21 +190,25 @@ Shader "Terrain/Lava"
             half4 frag (tessdata IN) : SV_Target
             {   
                 // PRE // 
+                float3x3 m_TS2WS = float3x3(IN.tbn_x.xyz, IN.tbn_y.xyz, IN.tbn_z.xyz);
+                float3x3 m_WS2TS = transpose(m_TS2WS);
                 float3 posWS = float3(IN.tbn_x.w, IN.tbn_y.w, IN.tbn_z.w);
+                float3 viewDirWS = normalize(posWS - _WorldSpaceCameraPos);
+                float3 viewDirTS = mul(m_WS2TS, viewDirWS);
 
                 //// normal 
-                float3x3 m_TS2WS = float3x3(IN.tbn_x.xyz, IN.tbn_y.xyz, IN.tbn_z.xyz);
+
                 float3 normalTS = UnpackNormalTS(TEXTURE2D_ARGS(_NormalTex, sampler_NormalTex), IN.uv, _NormalScale);
-                float3 normalWS = mul(m_TS2WS, normalTS);
+                float3 normalWS_map = mul(m_TS2WS, normalTS);
+                float3 normalWS_geo = float3(IN.tbn_x.z, IN.tbn_y.z, IN.tbn_z.z);
 
                 //// directional light
                 Light mainLight = GetMainLight();
-                float NoL01 = dot(normalWS, mainLight.direction) * 0.5 + 0.5;
-                float NoL = max(dot(normalWS, mainLight.direction), 0.00001);
+                float NoL01 = dot(normalWS_map, mainLight.direction) * 0.5 + 0.5;
+                float NoL = max(dot(normalWS_map, mainLight.direction), 0.00001);
 
                 //// displacement 
                 float displacement = SAMPLE_TEXTURE2D_LOD(_DisplacementTex, sampler_DisplacementTex, IN.uv, _BlendFac.y);
-                               
 
                 // ROCK // 
                 // DIFFUSE // 
@@ -189,7 +217,12 @@ Shader "Terrain/Lava"
 
                 // LAVA // 
                 // DIFFUSE // 
-                half3 lavaCol = SAMPLE_TEXTURE2D(_LavaBaseColorTex, sampler_LavaBaseColorTex, IN.uv).rgb * _LavaTint;
+                float2 uv_surface = TRANSFORM_TEX(IN.uv, _LavaBaseColorTex_Surface);
+                half3 surfaceCol = SAMPLE_TEXTURE2D(_LavaBaseColorTex_Surface, sampler_LavaBaseColorTex_Surface, uv_surface).rgb;
+
+                float2 uv_under = IN.uv + ParallaxMapping(_DisplacementTex, sampler_DisplacementTex, -viewDirTS, _LavaParallaxScale * 0.01, IN.uv);
+                half3 underCol = SAMPLE_TEXTURE2D_LOD(_LavaBaseColorTex_Under, sampler_LavaBaseColorTex_Under, uv_under, _LavaUnderRoughness);
+                half3 lavaCol = surfaceCol + underCol;
 
                 half3 rockCol = diffuse;
                 float lerpFac = smoothstep(_LavaHeight, _LavaHeight+_BlendFac.x, posWS.y+displacement);
