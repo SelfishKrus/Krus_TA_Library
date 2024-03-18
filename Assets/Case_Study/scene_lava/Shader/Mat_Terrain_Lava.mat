@@ -54,9 +54,9 @@ Material:
     m_Ints: []
     m_Floats:
     - _BlendFac: 0.25
-    - _DisplacementScale: 1.5
+    - _DisplacementScale: 2
     - _LavaAmplitude: 0.15
-    - _LavaBloomSmoothness: 0.15
+    - _LavaBloomSmoothness: 0.1
     - _LavaFrequency: 3
     - _LavaHeight: 0.03
     - _LavaParallaxScale: 20
@@ -67,12 +67,12 @@ Material:
     m_Colors:
     - _BaseColorTint: {r: 1, g: 1, b: 1, a: 1}
     - _BlendFac: {r: 0.1, g: 6.52, b: 1, a: 1}
-    - _LavaBloomTint: {r: 0.3207547, g: 0.052755706, b: 0, a: 1}
+    - _LavaBloomTint: {r: 0.31132078, g: 0.061337966, b: 0, a: 1}
     - _LavaBloomTint0: {r: 1, g: 0.18039216, b: 0, a: 1}
     - _LavaBloomTint1: {r: 0.9960785, g: 0.46274513, b: 0.058823533, a: 1}
     - _LavaBloomTint2: {r: 0.6415094, g: 0.14323004, b: 0.14323004, a: 1}
     - _LavaSpeed: {r: 0.1, g: 1, b: 0.05, a: 1}
     - _LavaTint: {r: 1, g: 0.011058553, b: 0, a: 1}
     - _LavaWarpFac: {r: 8.88, g: 3.5, b: 1, a: 1}
-    - _Test: {r: 5, g: 4.42, b: 1, a: 1}
+    - _Test: {r: 0.3, g: 4.42, b: 1, a: 1}
   m_BuildTextureStacks: []
