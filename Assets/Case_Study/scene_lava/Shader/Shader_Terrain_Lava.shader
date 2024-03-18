@@ -18,7 +18,7 @@ Shader "Terrain/Lava"
         _LavaBaseColorTex_Surface ("Lava Surface BaseColor Tex", 2D) = "Gray" {}
         [NoScaleOffset]_LavaBaseColorTex_Under ("Lava Under BaseColor Tex", 2D) = "Gray" {}
         _LavaHeight ("Lava Height", Float) = 0 
-        _LavaBloomTint ("Lava Bloom Tint", Color) = (0, 0, 0, 1)
+        [HDR]_LavaBloomTint ("Lava Bloom Tint", Color) = (0, 0, 0, 1)
         _LavaBloomSmoothness ("Lava Bloom Smoothness", Float) = 0.01
         _LavaSpeed ("Lava Speed", Vector) = (0.5, 2, 0.5, 1)
         _LavaAmplitude ("Lava Amplitude", Float) = 0.1
@@ -223,10 +223,12 @@ Shader "Terrain/Lava"
                 half3 diffuse = baseColor * NoL * mainLight.color;
 
                 //// lava bloom
-                half3 lavaBloom = (1-smoothstep(IN.lavaPosWS.y, IN.lavaPosWS.y+_LavaBloomSmoothness, posWS.y+displacement)) * _LavaBloomTint;
-                half3 lavaBloom0 = (1-smoothstep(IN.lavaPosWS.y, IN.lavaPosWS.y+_LavaBloomSmoothness*0.6, posWS.y+displacement)) * _LavaBloomTint;
-                half3 lavaBloom1 = (1-smoothstep(IN.lavaPosWS.y, IN.lavaPosWS.y+_LavaBloomSmoothness*0.3, posWS.y+displacement)) * _LavaBloomTint;
+                float posY = posWS.y+displacement;
+                half3 lavaBloom = (1-smoothstep(IN.lavaPosWS.y, IN.lavaPosWS.y+_LavaBloomSmoothness, posY)) * _LavaBloomTint;
+                half3 lavaBloom0 = (1-smoothstep(IN.lavaPosWS.y, IN.lavaPosWS.y+_LavaBloomSmoothness*0.6, posY)) * _LavaBloomTint;
+                half3 lavaBloom1 = (1-smoothstep(IN.lavaPosWS.y, IN.lavaPosWS.y+_LavaBloomSmoothness*0.3, posY)) * _LavaBloomTint;
                 lavaBloom += lavaBloom0 + lavaBloom1;
+                lavaBloom *= baseColor;
 
                 half3 rockCol = diffuse + lavaBloom + unity_AmbientSky.rgb;
 
