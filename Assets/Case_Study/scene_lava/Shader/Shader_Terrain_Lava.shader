@@ -70,6 +70,7 @@ Shader "Terrain/Lava"
                 float4 tbn_x : TEXCOORD1;
                 float4 tbn_y : TEXCOORD2;
                 float4 tbn_z : TEXCOORD3;
+                float3 lavaPosWS : TEXCOOD4;
 
             };
 
@@ -173,16 +174,17 @@ Shader "Terrain/Lava"
                 //// rock 
                 float3 posWS = float3(data.tbn_x.w, data.tbn_y.w, data.tbn_z.w);
                 float3 normalWS = float3(data.tbn_x.z, data.tbn_y.z, data.tbn_z.z);
-                float displacement = SAMPLE_TEXTURE2D_LOD(_DisplacementTex, sampler_DisplacementTex, data.uv, 0);
+                float displacement = SAMPLE_TEXTURE2D_LOD(_DisplacementTex, sampler_DisplacementTex, data.uv, _BlendFac.y);
                 posWS += normalWS * displacement * _DisplacementScale;
 
                 //// lava 
                 float3 posWS_lava = posWS;
                 posWS_lava.y = _LavaHeight;
-                posWS_lava.y = sin(_Time.y * _LavaSpeed.y + (posWS_lava.x + posWS_lava.z)*_LavaFrequency) * _LavaAmplitude;
+                posWS_lava.y += sin(_Time.y * _LavaSpeed.y + (posWS_lava.x + posWS_lava.z)*_LavaFrequency) * _LavaAmplitude * 0.1;
+                data.lavaPosWS = posWS_lava;
 
                 // LERP // 
-                float vLerpFac = smoothstep(_LavaHeight, _LavaHeight+_BlendFac.x, posWS.y);
+                float vLerpFac = smoothstep(posWS_lava.y, posWS_lava.y+_BlendFac.x*0.1, posWS.y);
                 posWS = lerp(posWS_lava, posWS, vLerpFac);
                 data.pos = TransformWorldToHClip(posWS);
                  
@@ -220,9 +222,9 @@ Shader "Terrain/Lava"
                 half3 diffuse = baseColor * NoL * mainLight.color;
 
                 //// lava bloom
-                half3 lavaBloom = (1-smoothstep(_LavaHeight, _LavaHeight+_LavaBloomSmoothness, posWS.y+displacement)) * _LavaBloomTint;
-                half3 lavaBloom0 = (1-smoothstep(_LavaHeight, _LavaHeight+_LavaBloomSmoothness*0.6, posWS.y+displacement)) * _LavaBloomTint;
-                half3 lavaBloom1 = (1-smoothstep(_LavaHeight, _LavaHeight+_LavaBloomSmoothness*0.3, posWS.y+displacement)) * _LavaBloomTint;
+                half3 lavaBloom = (1-smoothstep(IN.lavaPosWS.y, IN.lavaPosWS.y+_LavaBloomSmoothness, posWS.y+displacement)) * _LavaBloomTint;
+                half3 lavaBloom0 = (1-smoothstep(IN.lavaPosWS.y, IN.lavaPosWS.y+_LavaBloomSmoothness*0.6, posWS.y+displacement)) * _LavaBloomTint;
+                half3 lavaBloom1 = (1-smoothstep(IN.lavaPosWS.y, IN.lavaPosWS.y+_LavaBloomSmoothness*0.3, posWS.y+displacement)) * _LavaBloomTint;
                 lavaBloom += lavaBloom0 + lavaBloom1;
 
                 half3 rockCol = diffuse + lavaBloom + unity_AmbientSky.rgb * baseColor;
@@ -240,7 +242,7 @@ Shader "Terrain/Lava"
                 half3 underCol = SAMPLE_TEXTURE2D_LOD(_LavaBaseColorTex_Under, sampler_LavaBaseColorTex_Under, uv_under, _LavaUnderRoughness);
                 half3 lavaCol = surfaceCol + underCol;
 
-                float lerpFac = smoothstep(_LavaHeight, _LavaHeight+_BlendFac.x, posWS.y+displacement);
+                float lerpFac = smoothstep(IN.lavaPosWS.y, IN.lavaPosWS.y+_BlendFac.x*0.1, posWS.y+displacement);
                 
                 half3 col = 1.0;
                 col = lerp(lavaCol, rockCol, lerpFac);
