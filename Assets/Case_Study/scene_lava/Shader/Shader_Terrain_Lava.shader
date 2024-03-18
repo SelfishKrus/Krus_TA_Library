@@ -18,17 +18,17 @@ Shader "Terrain/Lava"
         _LavaBaseColorTex_Surface ("Lava Surface BaseColor Tex", 2D) = "Gray" {}
         [NoScaleOffset]_LavaBaseColorTex_Under ("Lava Under BaseColor Tex", 2D) = "Gray" {}
         _LavaHeight ("Lava Height", Float) = 0 
-        _LavaTint ("Lava Tint", Color) = (1, 1, 1, 1)
         [HDR]_LavaBloomTint ("Lava Bloom Tint", Color) = (0, 0, 0, 1)
         _LavaBloomSmoothness ("Lava Bloom Smoothness", Float) = 0.01
         _LavaSpeed ("Lava Speed", Vector) = (0.5, 2, 0.5, 1)
         _LavaAmplitude ("Lava Amplitude", Float) = 0.1
         _LavaFrequency ("Lava Frequency", Float) = 1
+        _LavaWarpFac ("Lava Warp Factor, x - center, y - total intens", Vector) = (5,4,1,1)
 
         [Space(20)]
         _LavaParallaxScale ("Lava Parallax Scale", Float) = 30
         _LavaUnderRoughness ("Lava Under Roughness", Range(0, 10)) = 0
-        _BlendFac ("Blending Factor", Vector) = (0.01, 4, 1, 1)
+        _BlendFac ("Blending Factor", Vector) = (0.25, 5, 0, 0)
 
         [Space(30)]
         _Test ("Test Factor", Vector) = (1, 1, 1, 1)
@@ -81,7 +81,6 @@ Shader "Terrain/Lava"
             float _TessellationFactor;
             float _DisplacementScale;
 
-            float3 _LavaTint;
             float3 _LavaBloomTint;
             float _LavaBloomSmoothness;
             float _LavaHeight;
@@ -93,6 +92,7 @@ Shader "Terrain/Lava"
             float _LavaParallaxScale;
             float _LavaUnderRoughness;
             float4 _LavaBaseColorTex_Surface_ST;
+            float2 _LavaWarpFac;
 
             float4 _Test;
             CBUFFER_END
@@ -215,6 +215,7 @@ Shader "Terrain/Lava"
 
                 //// displacement 
                 float displacement = SAMPLE_TEXTURE2D_LOD(_DisplacementTex, sampler_DisplacementTex, IN.uv, _BlendFac.y);
+                float displacement_lod5 = SAMPLE_TEXTURE2D_LOD(_DisplacementTex, sampler_DisplacementTex, IN.uv, 5);
 
                 // ROCK // 
                 //// diffuse 
@@ -222,21 +223,25 @@ Shader "Terrain/Lava"
                 half3 diffuse = baseColor * NoL * mainLight.color;
 
                 //// lava bloom
-                half3 lavaBloom = (1-smoothstep(IN.lavaPosWS.y, IN.lavaPosWS.y+_LavaBloomSmoothness, posWS.y+displacement)) * _LavaBloomTint;
-                half3 lavaBloom0 = (1-smoothstep(IN.lavaPosWS.y, IN.lavaPosWS.y+_LavaBloomSmoothness*0.6, posWS.y+displacement)) * _LavaBloomTint;
-                half3 lavaBloom1 = (1-smoothstep(IN.lavaPosWS.y, IN.lavaPosWS.y+_LavaBloomSmoothness*0.3, posWS.y+displacement)) * _LavaBloomTint;
+                float posY = posWS.y+displacement;
+                half3 lavaBloom = (1-smoothstep(IN.lavaPosWS.y, IN.lavaPosWS.y+_LavaBloomSmoothness, posY)) * _LavaBloomTint;
+                half3 lavaBloom0 = (1-smoothstep(IN.lavaPosWS.y, IN.lavaPosWS.y+_LavaBloomSmoothness*0.6, posY)) * _LavaBloomTint;
+                half3 lavaBloom1 = (1-smoothstep(IN.lavaPosWS.y, IN.lavaPosWS.y+_LavaBloomSmoothness*0.3, posY)) * _LavaBloomTint;
                 lavaBloom += lavaBloom0 + lavaBloom1;
+                lavaBloom *= baseColor;
 
-                half3 rockCol = diffuse + lavaBloom + unity_AmbientSky.rgb * baseColor;
+                half3 rockCol = diffuse + lavaBloom + unity_AmbientSky.rgb;
 
                 // LAVA // 
                 //// diffuse 
                 float2 uv_surface = TRANSFORM_TEX(IN.uv, _LavaBaseColorTex_Surface);
-                float2 uv_surface0 = uv_surface + _LavaSpeed.xz * _Time.y * 0.1;
-                float2 uv_surface1 = uv_surface + float2(0.5, 0.5) + _LavaSpeed.xz * _Time.y * 0.03;
+                float speedNoise = (1 - (displacement_lod5 + _LavaWarpFac.x) / (1 + _LavaWarpFac.x)) * _LavaWarpFac.y;
+                float time = _Time.y;
+                float2 uv_surface0 = uv_surface + _LavaSpeed.xz * time * 0.1 + speedNoise;
+                float2 uv_surface1 = uv_surface + float2(0.5, 0.5) + _LavaSpeed.xz * time * 0.05;
                 half3 surfaceCol0 = SAMPLE_TEXTURE2D(_LavaBaseColorTex_Surface, sampler_LavaBaseColorTex_Surface, uv_surface0).rgb;
                 half3 surfaceCol1 = SAMPLE_TEXTURE2D(_LavaBaseColorTex_Surface, sampler_LavaBaseColorTex_Surface, uv_surface1).rgb;
-                half3 surfaceCol = surfaceCol1 + surfaceCol0;
+                half3 surfaceCol = (surfaceCol0 * 0.6 + surfaceCol1 * 0.3);
 
                 float2 uv_under = IN.uv + ParallaxMapping(_DisplacementTex, sampler_DisplacementTex, -viewDirTS, _LavaParallaxScale * 0.01, IN.uv);
                 half3 underCol = SAMPLE_TEXTURE2D_LOD(_LavaBaseColorTex_Under, sampler_LavaBaseColorTex_Under, uv_under, _LavaUnderRoughness);

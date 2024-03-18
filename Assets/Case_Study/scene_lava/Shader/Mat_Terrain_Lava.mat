@@ -25,7 +25,7 @@ Material:
     m_TexEnvs:
     - _BaseColorTex:
         m_Texture: {fileID: 2800000, guid: ebdedd2b50d0278498b28f2d8a83d48a, type: 3}
-        m_Scale: {x: 2, y: 2}
+        m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DisplacementTex:
         m_Texture: {fileID: 2800000, guid: 5343d9c0a0b2b19458db83a3c4ebfd82, type: 3}
@@ -41,7 +41,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _LavaBaseColorTex_Surface:
         m_Texture: {fileID: 2800000, guid: 53607b60d342de14db43f284794f94f6, type: 3}
-        m_Scale: {x: 0.37, y: 1.33}
+        m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _LavaBaseColorTex_Under:
         m_Texture: {fileID: 2800000, guid: 6e3248306c5f9304b9b8a1c53c31f037, type: 3}
@@ -53,22 +53,26 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _DisplacementScale: 1.5
+    - _BlendFac: 0.25
+    - _DisplacementScale: 2
     - _LavaAmplitude: 0.15
-    - _LavaBloomSmoothness: 0.06
+    - _LavaBloomSmoothness: 0.1
     - _LavaFrequency: 3
-    - _LavaHeight: 0.03
+    - _LavaHeight: 0.05
     - _LavaParallaxScale: 20
     - _LavaSpeed: 2
-    - _LavaUnderRoughness: 0
+    - _LavaUnderRoughness: 5.82
     - _NormalScale: 1
     - _TessellationFactor: 16.2
     m_Colors:
-    - _BaseColorTint: {r: 1, g: 0.9308176, b: 0.9383116, a: 1}
-    - _BlendFac: {r: 0.1, g: 3.45, b: 1, a: 1}
-    - _LavaBloomTint: {r: 0.31132078, g: 0.012971699, b: 0, a: 1}
-    - _LavaBloomTint0: {r: 0.5188679, g: 0.076702215, b: 0, a: 1}
-    - _LavaSpeed: {r: 0.15, g: 1, b: 0, a: 1}
-    - _LavaTint: {r: 0, g: 0, b: 0, a: 1}
-    - _Test: {r: 0.94, g: 3.15, b: 1, a: 1}
+    - _BaseColorTint: {r: 1, g: 1, b: 1, a: 1}
+    - _BlendFac: {r: 0.1, g: 6.52, b: 1, a: 1}
+    - _LavaBloomTint: {r: 10.680627, g: 0.09866501, b: 0, a: 1}
+    - _LavaBloomTint0: {r: 1, g: 0.18039216, b: 0, a: 1}
+    - _LavaBloomTint1: {r: 0.9960785, g: 0.46274513, b: 0.058823533, a: 1}
+    - _LavaBloomTint2: {r: 0.6415094, g: 0.14323004, b: 0.14323004, a: 1}
+    - _LavaSpeed: {r: 0.1, g: 1, b: 0.05, a: 1}
+    - _LavaTint: {r: 1, g: 0.011058553, b: 0, a: 1}
+    - _LavaWarpFac: {r: 8.88, g: 3.5, b: 1, a: 1}
+    - _Test: {r: 0.3, g: 4.42, b: 1, a: 1}
   m_BuildTextureStacks: []
