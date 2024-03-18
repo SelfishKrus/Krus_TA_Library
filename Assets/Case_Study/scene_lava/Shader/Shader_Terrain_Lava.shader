@@ -23,11 +23,12 @@ Shader "Terrain/Lava"
         _LavaSpeed ("Lava Speed", Vector) = (0.5, 2, 0.5, 1)
         _LavaAmplitude ("Lava Amplitude", Float) = 0.1
         _LavaFrequency ("Lava Frequency", Float) = 1
+        _LavaWarpFac ("Lava Warp Factor, x - center, y - total intens", Vector) = (5,4,1,1)
 
         [Space(20)]
         _LavaParallaxScale ("Lava Parallax Scale", Float) = 30
         _LavaUnderRoughness ("Lava Under Roughness", Range(0, 10)) = 0
-        _BlendFac ("Edge Blending Factor", Float) = 0.03
+        _BlendFac ("Blending Factor", Vector) = (0.25, 5, 0, 0)
 
         [Space(30)]
         _Test ("Test Factor", Vector) = (1, 1, 1, 1)
@@ -86,11 +87,12 @@ Shader "Terrain/Lava"
             float3 _LavaSpeed;
             float _LavaAmplitude;
             float _LavaFrequency;
-            float _BlendFac;
+            float2 _BlendFac;
 
             float _LavaParallaxScale;
             float _LavaUnderRoughness;
             float4 _LavaBaseColorTex_Surface_ST;
+            float2 _LavaWarpFac;
 
             float4 _Test;
             CBUFFER_END
@@ -172,7 +174,7 @@ Shader "Terrain/Lava"
                 //// rock 
                 float3 posWS = float3(data.tbn_x.w, data.tbn_y.w, data.tbn_z.w);
                 float3 normalWS = float3(data.tbn_x.z, data.tbn_y.z, data.tbn_z.z);
-                float displacement = SAMPLE_TEXTURE2D_LOD(_DisplacementTex, sampler_DisplacementTex, data.uv, 0);
+                float displacement = SAMPLE_TEXTURE2D_LOD(_DisplacementTex, sampler_DisplacementTex, data.uv, _BlendFac.y);
                 posWS += normalWS * displacement * _DisplacementScale;
 
                 //// lava 
@@ -212,7 +214,7 @@ Shader "Terrain/Lava"
                 float NoL = max(dot(normalWS_map, mainLight.direction), 0.00001);
 
                 //// displacement 
-                float displacement = SAMPLE_TEXTURE2D_LOD(_DisplacementTex, sampler_DisplacementTex, IN.uv, 0);
+                float displacement = SAMPLE_TEXTURE2D_LOD(_DisplacementTex, sampler_DisplacementTex, IN.uv, _BlendFac.y);
                 float displacement_lod5 = SAMPLE_TEXTURE2D_LOD(_DisplacementTex, sampler_DisplacementTex, IN.uv, 5);
 
                 // ROCK // 
@@ -231,9 +233,10 @@ Shader "Terrain/Lava"
                 // LAVA // 
                 //// diffuse 
                 float2 uv_surface = TRANSFORM_TEX(IN.uv, _LavaBaseColorTex_Surface);
-                float speedNoise = (1-displacement_lod5) * 0.15;
-                float2 uv_surface0 = uv_surface + _LavaSpeed.xz * _Time.y * 0.1 + speedNoise;
-                float2 uv_surface1 = uv_surface + float2(0.5, 0.5) + _LavaSpeed.xz * _Time.y * 0.05;
+                float speedNoise = (1 - (displacement_lod5 + _LavaWarpFac.x) / (1 + _LavaWarpFac.x)) * _LavaWarpFac.y;
+                float time = _Time.y;
+                float2 uv_surface0 = uv_surface + _LavaSpeed.xz * time * 0.1 + speedNoise;
+                float2 uv_surface1 = uv_surface + float2(0.5, 0.5) + _LavaSpeed.xz * time * 0.05;
                 half3 surfaceCol0 = SAMPLE_TEXTURE2D(_LavaBaseColorTex_Surface, sampler_LavaBaseColorTex_Surface, uv_surface0).rgb;
                 half3 surfaceCol1 = SAMPLE_TEXTURE2D(_LavaBaseColorTex_Surface, sampler_LavaBaseColorTex_Surface, uv_surface1).rgb;
                 half3 surfaceCol = (surfaceCol0 + surfaceCol1 * 0.3);
