@@ -251,6 +251,7 @@ Shader "Terrain/Lava"
                     half3 surfaceCol1 = SAMPLE_TEXTURE2D(_LavaBaseColorTex_Surface, sampler_LavaBaseColorTex_Surface, uv_surface1).rgb;
                     half3 surfaceCol = (surfaceCol0 * 0.6 + surfaceCol1 * 0.3);
                 #else 
+                    uv_surface += _LavaSpeed.xz * time * 0.1 + speedNoise;
                     half3 surfaceCol = SAMPLE_TEXTURE2D(_LavaBaseColorTex_Surface, sampler_LavaBaseColorTex_Surface, uv_surface).rgb;
                 #endif 
 

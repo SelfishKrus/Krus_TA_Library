@@ -16,9 +16,9 @@ MonoBehaviour:
   - title: Color from texture
     position:
       serializedVersion: 2
-      x: -815
-      y: 867
-      width: 587
+      x: -809
+      y: 866
+      width: 579
       height: 244
     contents:
     - model: {fileID: 8926484042661614884}
@@ -51,9 +51,9 @@ MonoBehaviour:
   categories: []
   uiBounds:
     serializedVersion: 2
-    x: -817
+    x: -809
     y: -474
-    width: 2815
+    width: 2807
     height: 3541
 --- !u!114 &114350483966674976
 MonoBehaviour:
@@ -239,12 +239,12 @@ MonoBehaviour:
   m_UIIgnoredErrors: []
   m_Parent: {fileID: 114350483966674976}
   m_Children:
+  - {fileID: 8926484042661614954}
   - {fileID: 8926484042661614569}
   - {fileID: 8926484042661615104}
   - {fileID: 8926484042661614580}
   - {fileID: 8926484042661615018}
   - {fileID: 8926484042661614922}
-  - {fileID: 8926484042661614954}
   - {fileID: 8926484042661614980}
   - {fileID: 8926484042661615727}
   m_UIPosition: {x: 941, y: 115}
@@ -655,7 +655,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEditor.VFX.Vector, Unity.VisualEffectGraph.Editor,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"vector":{"x":-0.5,"y":0.3330000042915344,"z":-0.5}}'
+      m_SerializableObject: '{"vector":{"x":-1.0,"y":0.3330000042915344,"z":-1.0}}'
     m_Space: 0
   m_Property:
     name: A
@@ -825,7 +825,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEditor.VFX.Vector, Unity.VisualEffectGraph.Editor,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"vector":{"x":0.5,"y":1.0,"z":0.5}}'
+      m_SerializableObject: '{"vector":{"x":1.0,"y":1.0,"z":1.0}}'
     m_Space: 0
   m_Property:
     name: B
@@ -1689,7 +1689,7 @@ MonoBehaviour:
   m_UIIgnoredErrors: []
   m_Parent: {fileID: 114350483966674976}
   m_Children: []
-  m_UIPosition: {x: -791, y: 925}
+  m_UIPosition: {x: -784, y: 932}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots: []
@@ -4220,7 +4220,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEditor.VFX.Vector, Unity.VisualEffectGraph.Editor,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"vector":{"x":0.0,"y":-8.0600004196167,"z":0.0}}'
+      m_SerializableObject: '{"vector":{"x":0.0,"y":-18.139999389648439,"z":0.0}}'
     m_Space: 0
   m_Property:
     name: Force
