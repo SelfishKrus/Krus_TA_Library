@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.0058001243, g: 0.0025043185, b: 0.0031155194, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -402,14 +402,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 254349976}
-  m_LocalRotation: {x: -0.18267962, y: -0.89013344, z: 0.29866058, w: 0.29170626}
-  m_LocalPosition: {x: -0.38805464, y: 2.1, z: 0.27842623}
+  m_LocalRotation: {x: -0.004266732, y: -0.72619516, z: 0.4025723, w: 0.55727726}
+  m_LocalPosition: {x: -0.38805464, y: 3.89, z: 0.27842623}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 212003896}
   m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 25.158, y: 583.971, z: 33.491}
+  m_LocalEulerAnglesHint: {x: 35.446, y: 626.146, z: 33.943}
 --- !u!114 &254349979
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -627,7 +627,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: 0.01
   far clip plane: 1000
   field of view: 60
   orthographic: 0
@@ -654,14 +654,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1230626377}
-  m_LocalRotation: {x: -0.006570831, y: -0.6918306, z: -0.0020981103, w: 0.722027}
-  m_LocalPosition: {x: -0.38198996, y: 2.7428308, z: -0.68327}
+  m_LocalRotation: {x: -0.018870844, y: -0.9586086, z: 0.056006517, w: -0.27852586}
+  m_LocalPosition: {x: -7.875, y: 2.928, z: 4.06}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1335269418}
   m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 6.77, y: -212.386, z: 0.287}
 --- !u!114 &1230626381
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -685,7 +685,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
@@ -1127,7 +1127,10 @@ VisualEffect:
   m_ResourceVersion: 1
   m_PropertySheet:
     m_Float:
-      m_Array: []
+      m_Array:
+      - m_Value: 0.05
+        m_Name: _Alpha
+        m_Overridden: 1
     m_Vector2f:
       m_Array: []
     m_Vector3f:
