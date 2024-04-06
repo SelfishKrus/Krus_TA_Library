@@ -84,6 +84,13 @@ Shader "Terrain/Lava"
 
             };
 
+            float3 UnpackNormalTS(TEXTURE2D_PARAM(bumpMap, sampler_bumpMap), float2 uv, float bumpScale)
+            {
+                float3 normalTS = SAMPLE_TEXTURE2D(bumpMap, sampler_bumpMap, uv).xyz * 2.0 - 1.0;
+                normalTS.xy *= bumpScale;
+                return normalize(normalTS);
+            }
+
             CBUFFER_START(UnityPerMaterial)
             float4 _BaseColorTex_ST;
             float3 _BaseColorTint;

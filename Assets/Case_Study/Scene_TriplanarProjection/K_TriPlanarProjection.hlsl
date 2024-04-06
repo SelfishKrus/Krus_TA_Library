@@ -1,5 +1,5 @@
-#ifndef _K_TRIPLANAR_PROJECTION
-#define _K_TRIPLANAR_PROJECTION
+#ifndef K_TRIPLANAR_PROJECTION
+#define K_TRIPLANAR_PROJECTION
 
     // Mapping UV for different axes
     struct TriplanarUV
@@ -11,9 +11,9 @@
     TriplanarUV GetTriplanarUV (float3 pos, float3 normal, float2 ST)
     {
         TriplanarUV triUV;
-        triUV.x = pos.zy * ST.x + ST.y;
-        triUV.y = pos.xz * ST.x + ST.y;
-        triUV.z = pos.xy * ST.x + ST.y;
+        triUV.x = pos.zy * ST.xx + ST.yy;
+        triUV.y = pos.xz * ST.xx + ST.yy;
+        triUV.z = pos.xy * ST.xx + ST.yy;
 
         // Fix mirror problems
         if (normal.x < 0) triUV.x.x = -triUV.x.x;
@@ -48,6 +48,11 @@
         float3 mapZ = map.Sample(sampler_map, triUV.z);
 
         return mapX * triW.x + mapY * triW.y + mapZ * triW.z;
+    }
+
+    void TriplanarSampling_float(Texture2D map, SamplerState sampler_map, float3 normal, float3 pos, float2 ST, float blendOffset, out float3 finalMap)
+    {
+        finalMap = TriplanarSampling(map, sampler_map, normal, pos, ST, blendOffset);
     }
 
 #endif 
