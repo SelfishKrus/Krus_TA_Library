@@ -14,8 +14,8 @@ TagManager:
   - UI
   - VFX
   - Lava
-  - 
-  - 
+  - Ignorable
+  - NoDirectionalLight
   - 
   - 
   - 

@@ -2,7 +2,6 @@ using System;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
-using UnityEditor;
 
 namespace SJSJ.BattleRendererApplication.RenderPipeline {
 

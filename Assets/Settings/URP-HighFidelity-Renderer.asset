@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-5876730597716794161
+--- !u!114 &-6683848642225891976
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9,84 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50624326b812b83418910966bfda076c, type: 3}
-  m_Name: StreakBloomRendererFeature
+  m_Script: {fileID: 11500000, guid: be3dae20adad42d4294473d61b2c15d7, type: 3}
+  m_Name: TemplateRendererFeature
   m_EditorClassIdentifier: 
   m_Active: 1
-  settings:
-    material: {fileID: 2100000, guid: 41bb1d729f11c3044b18e53c96724afd, type: 2}
-    renderPassEvent: 550
-    colorTargetDestinationID: _CamColTex
---- !u!114 &-4464675019466643322
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06b63172626be9c439eb379dba31b589, type: 3}
-  m_Name: RaindropRendererFeature
-  m_EditorClassIdentifier: 
-  m_Active: 0
-  settings:
-    renderPassEvent: 500
-    mat: {fileID: 2100000, guid: d460179db0b004f4cb297f3879b86378, type: 2}
-    downsample: 1
-    copyToFramebuffer: 0
-    targetName: _MainTex
---- !u!114 &-1933483439274283846
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9811329575365147a5f7fe8b98b55f8, type: 3}
-  m_Name: DistortPass
-  m_EditorClassIdentifier: 
-  m_Active: 0
-  distortSettings:
-    renderPassEvent: 550
-    distortMaterial: {fileID: 2100000, guid: 987cc1f319ed2d6449c4a1e7075a1f9b, type: 2}
---- !u!114 &-1878332245247344467
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f62c9c65cf3354c93be831c8bc075510, type: 3}
-  m_Name: SSAO
-  m_EditorClassIdentifier: 
-  m_Active: 0
-  m_Settings:
-    AOMethod: 1
-    Downsample: 0
-    AfterOpaque: 0
-    Source: 1
-    NormalSamples: 1
-    Intensity: 0.5
-    DirectLightingStrength: 0.25
-    Radius: 0.25
-    Samples: 0
-    BlurQuality: 0
-    Falloff: 100
-    SampleCount: -1
-  m_BlueNoise256Textures:
-  - {fileID: 2800000, guid: 36f118343fc974119bee3d09e2111500, type: 3}
-  - {fileID: 2800000, guid: 4b7b083e6b6734e8bb2838b0b50a0bc8, type: 3}
-  - {fileID: 2800000, guid: c06cc21c692f94f5fb5206247191eeee, type: 3}
-  - {fileID: 2800000, guid: cb76dd40fa7654f9587f6a344f125c9a, type: 3}
-  - {fileID: 2800000, guid: e32226222ff144b24bf3a5a451de54bc, type: 3}
-  - {fileID: 2800000, guid: 3302065f671a8450b82c9ddf07426f3a, type: 3}
-  - {fileID: 2800000, guid: 56a77a3e8d64f47b6afe9e3c95cb57d5, type: 3}
-  m_Shader: {fileID: 4800000, guid: 0849e84e3d62649e8882e9d6f056a017, type: 3}
 --- !u!114 &-1812177383102402892
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -103,60 +29,6 @@ MonoBehaviour:
   settings:
     renderPassEvent: 500
     shader: {fileID: 4800000, guid: 45e3cb27ee9327a4eb91420dc7b506cd, type: 3}
---- !u!114 &-1619260576177665274
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 281b5c019b4fd8a428e172b85955991b, type: 3}
-  m_Name: CameraTransparentTextureRenderPassFeature
-  m_EditorClassIdentifier: 
-  m_Active: 0
-  textureName: _CameraTransparentTexture
---- !u!114 &-390333726739092589
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a1945629bfb78d4ca8d297b31d2397b, type: 3}
-  m_Name: PostProcessingRendererFeature
-  m_EditorClassIdentifier: 
-  m_Active: 0
-  GlobalSettings:
-    downsample: 1
-    renderPassEvent: 500
-  brightnessSettings:
-    isEnabled: 1
-    copyToFrameBuffer: 0
-    targetName: _MainTex
-    mat: {fileID: 2100000, guid: 557997f22c8840b41a1654cd5cfd2b1b, type: 2}
-    _Brightness: 0.5
-  radialBlurSettings:
-    isEnabled: 1
-    copyToFrameBuffer: 0
-    targetName: _MainTex
-    mat: {fileID: 2100000, guid: d1dbc1fc846b83c44aebd75020fb658c, type: 2}
-    _BlurCenter: {x: 0.5, y: 0.5}
-    _BlurStep: 0.14
-    _MaskInnerRadius: 0.01
-    _MaskOuterRadius: 0.07
-  radialDistortionSettings:
-    isEnabled: 1
-    copyToFrameBuffer: 0
-    targetName: _MainTex
-    mat: {fileID: 2100000, guid: 02b1fab34eb006a4eae5782caff648b5, type: 2}
-    _ScaleUV: {x: 1, y: 1}
-    _Speed: 2.43
-    _DistortionRange: 0.228
-    _DistrotionIntensity: 0.91
 --- !u!114 &-129267873607964880
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -191,13 +63,8 @@ MonoBehaviour:
   debugShaders:
     debugReplacementPS: {fileID: 4800000, guid: cf852408f2e174538bcd9b7fda1c5ae7, type: 3}
   m_RendererFeatures:
-  - {fileID: -1878332245247344467}
-  - {fileID: -4464675019466643322}
-  - {fileID: -390333726739092589}
-  - {fileID: -1933483439274283846}
-  - {fileID: -1619260576177665274}
-  - {fileID: -5876730597716794161}
-  m_RendererFeatureMap: adc0de57c6d2eee586682183b9490ac293abdc298b4195fabaacf4560ee32ae506cb22ce153b87e9cfe46b5aa8a871ae
+  - {fileID: -6683848642225891976}
+  m_RendererFeatureMap: 7815a68b12333ea3
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}

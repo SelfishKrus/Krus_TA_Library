@@ -5,7 +5,7 @@
     {
         float intTime = floor(time * speed);
         float row = floor(intTime / uNum);
-        float column = intTime - row * vNum;
+        float column = intTime - row * uNum;
 
         uv_sequence = uv + float2(column, -row);
         uv_sequence.x /= uNum;
